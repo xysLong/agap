@@ -47,7 +47,7 @@ with flocking simulations.
   choose *Colab*: the notebook opens in Google Colab, ready to run and modify
   in the browser.
 - **Run it locally.** Clone the
-  [repository](https://github.com/xysLong/generative-art-course) and follow
+  [repository](https://github.com/xysLong/algorithmic-generative-art-with-python) and follow
   the setup instructions in the README.
 
 ## About the author

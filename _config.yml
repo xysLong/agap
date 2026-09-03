@@ -15,7 +15,7 @@ launch_buttons:
   notebook_interface: jupyterlab
 
 repository:
-  url: https://github.com/xysLong/generative-art-course
+  url: https://github.com/xysLong/algorithmic-generative-art-with-python
   branch: main
 
 html:

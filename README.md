@@ -1,7 +1,7 @@
 # Algorithmic Generative Art with Python
 
-[![Read online](https://img.shields.io/badge/read-online-1B4B9B)](https://xyslong.github.io/generative-art-course/)
-**Read this course as a website: <https://xyslong.github.io/generative-art-course/>**
+[![Read online](https://img.shields.io/badge/read-online-1B4B9B)](https://xyslong.github.io/algorithmic-generative-art-with-python/)
+**Read this course as a website: <https://xyslong.github.io/algorithmic-generative-art-with-python/>**
 
 A 15-week university course for art history students with no programming
 background. Each 2-hour session pairs an art-historical framing with a

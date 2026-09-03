@@ -47,7 +47,7 @@ def save_artwork(fig_or_array, name, week):
                              facecolor=fig_or_array.get_facecolor())
     else:
         plt.imsave(filename, np.asarray(fig_or_array))
-    print(f"saved: {filename}")
+    print(f"saved: {filename.relative_to(OUTPUT_DIR.parent.parent)}")
     return filename
 
 
