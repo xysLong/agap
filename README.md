@@ -39,7 +39,7 @@ You need Python ≥ 3.10. Choose **one** of the three options below.
 
 ```bash
 conda env create -f environment.yml
-conda activate genart
+conda activate agap
 jupyter notebook
 ```
 

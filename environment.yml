@@ -1,4 +1,4 @@
-name: genart
+name: agap   # AGAP = Algorithmic Generative Art with Python
 channels:
   - conda-forge
 dependencies:
