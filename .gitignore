@@ -1,0 +1,15 @@
+# student outputs are not tracked -- but the course showpieces are
+assets/outputs/*
+!assets/outputs/week*_showpiece.png
+
+# downloaded input images (re-fetch with assets/images/get_images.py)
+assets/images/*.jpg
+assets/images/poster_demo.png
+
+# jupyter-book build output
+_build/
+
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store

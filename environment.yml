@@ -1,0 +1,17 @@
+name: genart
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10
+  - numpy
+  - scipy
+  - matplotlib
+  - pillow
+  - scikit-learn
+  - scikit-image
+  - jupyter
+  - ipywidgets
+  - imageio
+  - pip
+  - pip:
+      - opensimplex
