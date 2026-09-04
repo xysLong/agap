@@ -33,7 +33,7 @@ PALETTES = {
     "pastel": ["#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF", "#E3BAFF"],
     # monochrome ramp, near-black to near-white
     "monochrome": ["#111111", "#3D3D3D", "#6B6B6B", "#9C9C9C", "#CFCFCF", "#F5F5F5"],
-    # perceptually uniform sets, sampled from matplotlib's viridis and magma
+    # sampled from matplotlib's perceptually uniform viridis and magma colormaps
     "viridis": ["#440154", "#414487", "#2A788E", "#22A884", "#7AD151", "#FDE725"],
     "magma": ["#000004", "#3B0F70", "#8C2981", "#DE4968", "#FE9F6D", "#FCFDBF"],
     # bright spectrum after Ellsworth Kelly's chance color panels
