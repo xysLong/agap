@@ -26,9 +26,9 @@ If you use this book in your research or teaching, please cite it as:
 |----:|-------|-------------|------------|
 | 1 | [Random Walks: The First Generative System](notebooks/01-random-walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
 | 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
-| 3 | Geometric Patterns and Symmetry *(in preparation)* | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
-| 4 | Recursion and Subdivision *(in preparation)* | recursive functions | Mondrian, De Stijl |
-| 5 | Color: Spaces, Palettes, Extraction *(in preparation)* | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
+| 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
+| 4 | [Recursion and Subdivision](notebooks/04-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
+| 5 | [Color: Spaces, Palettes, Extraction](notebooks/05-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
 | 6 | L-Systems and Botanical Form *(in preparation)* | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
 | 7 | Fractals: Infinite Detail *(in preparation)* | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
 | 8 | Noise and Flow Fields *(in preparation)* | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |

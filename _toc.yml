@@ -7,9 +7,9 @@ parts:
     chapters:
       - file: notebooks/01-random-walks
       - file: notebooks/02-chance-and-randomness
-      # - file: notebooks/03-geometric-patterns
-      # - file: notebooks/04-recursion-and-subdivision
-      # - file: notebooks/05-color
+      - file: notebooks/03-geometric-patterns
+      - file: notebooks/04-recursion-and-subdivision
+      - file: notebooks/05-color
   # TODO uncomment this part when chapter 06 exists
   # - caption: "Part II · Natural Form and Emergence"
   #   chapters:
