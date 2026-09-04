@@ -1,6 +1,6 @@
 # Algorithmic Generative Art with Python
 
-**A hands-on book teaching mathematics and Python through the making of generative art — written for art history students.**
+**A hands-on book teaching mathematics and Python through the making of generative art, written for art history students.**
 
 ![Artworks generated in this book](assets/site/hero.png)
 
@@ -44,7 +44,7 @@ If you use this book in your research or teaching, please cite it as:
 
 ## How to use this book
 
-Every chapter is a fully executed notebook — all generated art is embedded,
+Every chapter is a fully executed notebook: all generated art is embedded,
 and reading online requires no installation.
 
 Written by [Xingyu Long](https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/).
