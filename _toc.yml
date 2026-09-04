@@ -3,9 +3,11 @@
 format: jb-book
 root: intro
 parts:
-  - caption: "Part I · Foundations"
+  - caption: "Prelude"
     chapters:
       - file: notebooks/00-warming-up
+  - caption: "Part I · Foundations"
+    chapters:
       - file: notebooks/01-random-walks
       - file: notebooks/02-chance-and-randomness
       - file: notebooks/03-geometric-patterns
