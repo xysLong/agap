@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build-and-deploy:
@@ -45,9 +45,11 @@ jobs:
       - name: Build the book
         run: jupyter-book build .
 
-      - name: Deploy to gh-pages
+      - name: Deploy to the site repository
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: xysLong/algorithmic-generative-art-with-python
+          publish_branch: gh-pages
           publish_dir: _build/html
           force_orphan: true

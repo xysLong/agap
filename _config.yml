@@ -10,17 +10,7 @@ execute:
   # notebooks may write into assets/outputs/ during execution
   allow_errors: false
 
-launch_buttons:
-  colab_url: "https://colab.research.google.com"
-  notebook_interface: jupyterlab
-
-repository:
-  url: https://github.com/xysLong/algorithmic-generative-art-with-python
-  branch: main
-
 html:
-  use_repository_button: true
-  use_issues_button: false
   favicon: assets/site/favicon.png
 
 sphinx:

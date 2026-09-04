@@ -43,12 +43,10 @@ with flocking simulations.
 
 - **Read online.** Every chapter is a fully executed notebook — all generated
   art is embedded, nothing needs to be installed.
-- **Run it live.** On any chapter, press the rocket button at the top and
-  choose *Colab*: the notebook opens in Google Colab, ready to run and modify
-  in the browser.
-- **Run it locally.** Clone the
-  [repository](https://github.com/xysLong/algorithmic-generative-art-with-python) and follow
-  the setup instructions in the README.
+- **Run it yourself.** Use the download button at the top of any chapter to
+  save it as a Jupyter notebook, then run it locally or upload it to
+  [Google Colab](https://colab.research.google.com). Course participants
+  receive the full setup (helper package and assets) from the instructor.
 
 ## About the author
 
@@ -60,8 +58,7 @@ empirical aesthetics, and computational art history — week 11, on making
 attention visible, comes directly from that work.
 
 <!-- TODO: add links to personal site and ORCID here, e.g.
-[Personal site](https://...) · [ORCID](https://orcid.org/...) · -->
-[GitHub](https://github.com/xysLong)
+[Personal site](https://...) · [ORCID](https://orcid.org/...) -->
 
 ---
 
