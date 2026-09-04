@@ -5,7 +5,7 @@ in the notebooks:
 
 - save_artwork(...)  saves a figure or an image array to assets/outputs/
 - show(...)          displays an image array with the axes switched off
-- PALETTES           named color palettes shared across all weeks
+- PALETTES           named color palettes shared across all chapters
 - PAPER              the warm paper-white ground all artworks sit on
 """
 
@@ -42,15 +42,15 @@ PALETTES = {
 }
 
 
-def save_artwork(fig_or_array, name, week):
+def save_artwork(fig_or_array, name, chapter):
     """Save a matplotlib figure or an image array to assets/outputs/ as a
     print-quality PNG (figures: at least MIN_PIXELS on the long side) and
     print where it went.
 
-    Filename pattern: weekXX_<name>.png
+    Filename pattern: chXX_<name>.png
     """
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    filename = OUTPUT_DIR / f"week{week:02d}_{name}.png"
+    filename = OUTPUT_DIR / f"ch{chapter:02d}_{name}.png"
     if isinstance(fig_or_array, plt.Figure):
         # pick the dpi that makes the long side reach MIN_PIXELS (never < 300)
         tight = fig_or_array.get_tightbbox()

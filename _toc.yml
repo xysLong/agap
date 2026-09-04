@@ -1,31 +1,31 @@
-# Table of contents. To publish a new week: create the notebook, then
-# uncomment its line below (and its part caption, if still commented).
+# Table of contents. To publish a new chapter: create the notebook, then
+# uncomment its line below (and its part, if the whole part is still commented).
 format: jb-book
 root: intro
 parts:
-  - caption: Part I — Foundations
+  - caption: "Part I · Foundations"
     chapters:
-      - file: notebooks/week01_random_walks
-      - file: notebooks/week02_chance_and_randomness
-      # - file: notebooks/week03_geometric_patterns
-      # - file: notebooks/week04_recursion_subdivision
-      # - file: notebooks/week05_color_palettes
-  # TODO uncomment this part when week06 exists
-  # - caption: Part II — Natural Form and Emergence
+      - file: notebooks/01-random-walks
+      - file: notebooks/02-chance-and-randomness
+      # - file: notebooks/03-geometric-patterns
+      # - file: notebooks/04-recursion-and-subdivision
+      # - file: notebooks/05-color
+  # TODO uncomment this part when chapter 06 exists
+  # - caption: "Part II · Natural Form and Emergence"
   #   chapters:
-  #     - file: notebooks/week06_lsystems
-  #     - file: notebooks/week07_fractals
-  #     - file: notebooks/week08_noise_flowfields
-  #     - file: notebooks/week09_cellular_automata
-  #     - file: notebooks/week10_reaction_diffusion
-  # TODO uncomment this part when week11 exists
-  # - caption: Part III — Image, Perception, Representation
+  #     - file: notebooks/06-l-systems
+  #     - file: notebooks/07-fractals
+  #     - file: notebooks/08-noise-and-flow-fields
+  #     - file: notebooks/09-cellular-automata
+  #     - file: notebooks/10-reaction-diffusion
+  # TODO uncomment this part when chapter 11 exists
+  # - caption: "Part III · Image, Perception, Representation"
   #   chapters:
-  #     - file: notebooks/week11_heatmaps_kde
-  #     - file: notebooks/week12_voronoi_stippling
-  #     - file: notebooks/week13_filters_dithering
-  # TODO uncomment this part when week14 exists
-  # - caption: Part IV — Agents and Reflection
+  #     - file: notebooks/11-heatmaps
+  #     - file: notebooks/12-voronoi-and-stippling
+  #     - file: notebooks/13-filters-and-dithering
+  # TODO uncomment this part when chapter 14 exists
+  # - caption: "Part IV · Agents and Reflection"
   #   chapters:
-  #     - file: notebooks/week14_particles_flocking
-  #     - file: notebooks/week15_synthesis
+  #     - file: notebooks/14-particles-and-flocking
+  #     - file: notebooks/15-synthesis

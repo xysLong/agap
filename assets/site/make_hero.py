@@ -1,12 +1,12 @@
 """Build the landing-page hero image by tiling the course showpieces.
 
-Collects every assets/outputs/week*_showpiece.png, scales them to a common
+Collects every assets/outputs/ch*_showpiece.png, scales them to a common
 height, and arranges them in rows on a cream background. Re-run manually as
-new weeks land:
+new chapters land:
 
     python assets/site/make_hero.py
 
-Once week 15's contact sheet exists, this script can be retired and the
+Once chapter 15's contact sheet exists, this script can be retired and the
 hero replaced by that image.
 """
 
@@ -25,7 +25,7 @@ BACKGROUND = (246, 243, 236)
 
 
 def main():
-    paths = sorted(glob.glob(str(OUTPUT_DIR / "week*_showpiece.png")))
+    paths = sorted(glob.glob(str(OUTPUT_DIR / "ch*_showpiece.png")))
     if not paths:
         raise SystemExit("no showpieces found in assets/outputs/ -- run the notebooks first")
 

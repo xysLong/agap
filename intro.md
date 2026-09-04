@@ -1,64 +1,53 @@
 # Algorithmic Generative Art with Python
 
-**A hands-on course teaching mathematics and Python through the making of generative art — written for art history students.**
+**A hands-on book teaching mathematics and Python through the making of generative art — written for art history students.**
 
-![Artworks generated in the course so far](assets/site/hero.png)
+![Artworks generated in this book](assets/site/hero.png)
 
-<!-- DRAFT: author should personalize -->
-This course treats code as an artistic material. Every session starts from a
-work of art — Nees' plotter drawings, Richter's color charts, Islamic star
-patterns, Seurat's dots — and works backward to the algorithm and the small
-piece of mathematics that makes it tick. Then you build that system yourself,
-in plain Python, and turn its dials until the output is yours.
+## How to cite
 
-Three commitments shape every chapter. First, *the output is the motivation*:
-each week ends with an artwork worth keeping, not an exercise sheet. Second,
-*every formula gets a picture*: no equation appears without a visual companion
-within one cell. Third, *the art history is substantive, not decorative*: the
-algorithms are taught as answers to questions artists actually asked. No prior
-programming experience is assumed — the course begins with `print` and ends
-with flocking simulations.
+If you use this book in your research or teaching, please cite it as:
 
-## Syllabus
+<!-- TODO: add "doi = {...}" / "DOI: 10.5281/zenodo.XXXXXXX" once the Zenodo concept DOI is reserved. Zenodo upload will be MANUAL (built artifacts, no GitHub integration) so the record does not link to the source repo. -->
+> Long, Xingyu. *Algorithmic Generative Art with Python.* 2026.
+> https://xyslong.github.io/algorithmic-generative-art-with-python/
 
-| Week | Title | Core method | Art anchor |
-|-----:|-------|-------------|------------|
-| 01 | [Random Walks: The First Generative System](notebooks/week01_random_walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
-| 02 | [Chance Operations and Controlled Randomness](notebooks/week02_chance_and_randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
-| 03 | Geometric Patterns and Symmetry *(coming soon)* | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
-| 04 | Recursion and Subdivision *(coming soon)* | recursive functions | Mondrian, De Stijl |
-| 05 | Color: Spaces, Palettes, Extraction *(coming soon)* | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
-| 06 | L-Systems and Botanical Form *(coming soon)* | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
-| 07 | Fractals: Infinite Detail *(coming soon)* | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
-| 08 | Noise and Flow Fields *(coming soon)* | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
-| 09 | Cellular Automata and Emergence *(coming soon)* | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
-| 10 | Reaction-Diffusion: Turing Patterns *(coming soon)* | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
-| 11 | Attention Made Visible: Gaussians, KDE, Heatmaps *(coming soon)* | kernel density estimation | Yarbus, museum eye tracking |
-| 12 | Voronoi, Delaunay, and Stippling *(coming soon)* | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
-| 13 | Filters, Edges, and Dithering *(coming soon)* | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
-| 14 | Particles, Agents, and Flocking *(coming soon)* | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
-| 15 | Synthesis: Systems, Authorship, Final Project *(coming soon)* | combining techniques | Boden, Molnár's late fame, the NFT arc |
+```bibtex
+@book{long2026agap,
+  author = {Long, Xingyu},
+  title  = {Algorithmic Generative Art with Python},
+  year   = {2026},
+  url    = {https://xyslong.github.io/algorithmic-generative-art-with-python/}
+}
+```
+
+## Chapters
+
+| Ch. | Title | Core method | Art anchor |
+|----:|-------|-------------|------------|
+| 1 | [Random Walks: The First Generative System](notebooks/01-random-walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
+| 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
+| 3 | Geometric Patterns and Symmetry *(in preparation)* | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
+| 4 | Recursion and Subdivision *(in preparation)* | recursive functions | Mondrian, De Stijl |
+| 5 | Color: Spaces, Palettes, Extraction *(in preparation)* | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
+| 6 | L-Systems and Botanical Form *(in preparation)* | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
+| 7 | Fractals: Infinite Detail *(in preparation)* | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
+| 8 | Noise and Flow Fields *(in preparation)* | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
+| 9 | Cellular Automata and Emergence *(in preparation)* | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
+| 10 | Reaction-Diffusion: Turing Patterns *(in preparation)* | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
+| 11 | Attention Made Visible: Gaussians, KDE, Heatmaps *(in preparation)* | kernel density estimation | Yarbus, museum eye tracking |
+| 12 | Voronoi, Delaunay, and Stippling *(in preparation)* | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
+| 13 | Filters, Edges, and Dithering *(in preparation)* | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
+| 14 | Particles, Agents, and Flocking *(in preparation)* | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
+| 15 | Synthesis: Systems, Authorship, Final Project *(in preparation)* | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book
 
-- **Read online.** Every chapter is a fully executed notebook — all generated
-  art is embedded, nothing needs to be installed.
-- **Run it yourself.** Use the download button at the top of any chapter to
-  save it as a Jupyter notebook, then run it locally or upload it to
-  [Google Colab](https://colab.research.google.com). Course participants
-  receive the full setup (helper package and assets) from the instructor.
+Every chapter is a fully executed notebook — all generated art is embedded,
+and reading online requires no installation.
 
-## About the author
-
-**Xingyu Long** is a PhD candidate in Cognitive Science at the University of
-Vienna (Vienna Doctoral School CoBeNe) and a research assistant at the
-Cognitive Research in Art History (CReA) Lab, Department of Art History.
-This course grew out of his research at the intersection of eye tracking,
-empirical aesthetics, and computational art history — week 11, on making
-attention visible, comes directly from that work.
-
-<!-- TODO: add links to personal site and ORCID here, e.g.
-[Personal site](https://...) · [ORCID](https://orcid.org/...) -->
+<!-- TODO: link the name to the author's departmental homepage at the University of Vienna: [Xingyu Long](DEPT_HOMEPAGE_URL) -->
+Written by Xingyu Long.
 
 ---
 

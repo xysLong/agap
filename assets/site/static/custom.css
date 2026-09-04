@@ -1,0 +1,61 @@
+/* Lean book look — subtraction, not decoration. */
+
+/* prose column: comfortable book measure; code cells and figures may run wider */
+.bd-article-container {
+  max-width: 46rem;
+}
+.bd-article-container .cell_output img,
+.bd-article-container .cell {
+  max-width: 100%;
+}
+
+/* typography */
+.bd-article-container p,
+.bd-article-container li {
+  line-height: 1.65;
+}
+h1, h2, h3 {
+  color: #2a2a2a;
+  letter-spacing: -0.01em;
+}
+
+/* links: one restrained accent, underline on hover only */
+html[data-theme="light"] {
+  --pst-color-primary: #1b4b9b;
+  --pst-color-link: #1b4b9b;
+  --pst-color-link-hover: #12356e;
+}
+.bd-article-container a {
+  text-decoration: none;
+}
+.bd-article-container a:hover {
+  text-decoration: underline;
+}
+
+/* primary sidebar: smaller and quieter, current page marked by color only */
+.bd-sidebar-primary {
+  font-size: 0.85rem;
+}
+.bd-sidebar-primary .sidebar-primary-items__start .caption,
+.bd-sidebar-primary p.caption {
+  font-weight: 600;
+  color: #6b6b6b;
+}
+nav.bd-links li > a {
+  font-weight: 400;
+}
+nav.bd-links li > a.current,
+nav.bd-links .current > a {
+  background: none;
+  color: var(--pst-color-primary);
+  font-weight: 600;
+}
+
+/* kill visual noise: hairline borders, no shadows */
+.admonition, div.admonition {
+  border-width: 1px;
+  box-shadow: none;
+}
+.cell .cell_output, div.output_area {
+  box-shadow: none;
+}
