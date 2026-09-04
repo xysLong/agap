@@ -30,11 +30,11 @@ If you use this book in your research or teaching, please cite it as:
 | 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
 | 4 | [Recursion and Subdivision](notebooks/04-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
 | 5 | [Color: Spaces, Palettes, Extraction](notebooks/05-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
-| 6 | L-Systems and Botanical Form *(in preparation)* | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
-| 7 | Fractals: Infinite Detail *(in preparation)* | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
-| 8 | Noise and Flow Fields *(in preparation)* | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
-| 9 | Cellular Automata and Emergence *(in preparation)* | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
-| 10 | Reaction-Diffusion: Turing Patterns *(in preparation)* | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
+| 6 | [L-Systems and Botanical Form](notebooks/06-l-systems.ipynb) | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
+| 7 | [Fractals: Infinite Detail](notebooks/07-fractals.ipynb) | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
+| 8 | [Noise and Flow Fields](notebooks/08-noise-and-flow-fields.ipynb) | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
+| 9 | [Cellular Automata and Emergence](notebooks/09-cellular-automata.ipynb) | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
+| 10 | [Reaction-Diffusion: Turing Patterns](notebooks/10-reaction-diffusion.ipynb) | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
 | 11 | Attention Made Visible: Gaussians, KDE, Heatmaps *(in preparation)* | kernel density estimation | Yarbus, museum eye tracking |
 | 12 | Voronoi, Delaunay, and Stippling *(in preparation)* | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 13 | Filters, Edges, and Dithering *(in preparation)* | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |

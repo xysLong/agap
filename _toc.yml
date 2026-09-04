@@ -11,14 +11,13 @@ parts:
       - file: notebooks/03-geometric-patterns
       - file: notebooks/04-recursion-and-subdivision
       - file: notebooks/05-color
-  # TODO uncomment this part when chapter 06 exists
-  # - caption: "Part II · Natural Form and Emergence"
-  #   chapters:
-  #     - file: notebooks/06-l-systems
-  #     - file: notebooks/07-fractals
-  #     - file: notebooks/08-noise-and-flow-fields
-  #     - file: notebooks/09-cellular-automata
-  #     - file: notebooks/10-reaction-diffusion
+  - caption: "Part II · Natural Form and Emergence"
+    chapters:
+      - file: notebooks/06-l-systems
+      - file: notebooks/07-fractals
+      - file: notebooks/08-noise-and-flow-fields
+      - file: notebooks/09-cellular-automata
+      - file: notebooks/10-reaction-diffusion
   # TODO uncomment this part when chapter 11 exists
   # - caption: "Part III · Image, Perception, Representation"
   #   chapters:
