@@ -8,8 +8,8 @@
 
 If you use this book in your research or teaching, please cite it as:
 
-<!-- TODO: add "doi = {...}" / "DOI: 10.5281/zenodo.XXXXXXX" once the Zenodo concept DOI is reserved. Zenodo upload will be MANUAL (built artifacts, no GitHub integration) so the record does not link to the source repo. -->
 > Long, Xingyu. *Algorithmic Generative Art with Python.* 2026.
+> DOI: [10.5281/zenodo.22309138](https://doi.org/10.5281/zenodo.22309138).
 > https://xyslong.github.io/algorithmic-generative-art-with-python/
 
 ```bibtex
@@ -17,6 +17,7 @@ If you use this book in your research or teaching, please cite it as:
   author = {Long, Xingyu},
   title  = {Algorithmic Generative Art with Python},
   year   = {2026},
+  doi    = {10.5281/zenodo.22309138},
   url    = {https://xyslong.github.io/algorithmic-generative-art-with-python/}
 }
 ```
@@ -46,8 +47,7 @@ If you use this book in your research or teaching, please cite it as:
 Every chapter is a fully executed notebook — all generated art is embedded,
 and reading online requires no installation.
 
-<!-- TODO: link the name to the author's departmental homepage at the University of Vienna: [Xingyu Long](DEPT_HOMEPAGE_URL) -->
-Written by Xingyu Long.
+Written by [Xingyu Long](https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/).
 
 ---
 
