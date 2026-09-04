@@ -6,8 +6,10 @@ in the notebooks:
 - save_artwork(...)  saves a figure or an image array to assets/outputs/
 - show(...)          displays an image array with the axes switched off
 - PALETTES           named color palettes shared across all weeks
+- PAPER              the warm paper-white ground all artworks sit on
 """
 
+import math
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -15,6 +17,12 @@ import numpy as np
 
 # assets/outputs/ located relative to this file, so it works from any notebook
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "assets" / "outputs"
+
+# artworks are saved at least this many pixels on the long side (print quality)
+MIN_PIXELS = 2000
+
+# soft warm off-white -- the ground for artwork figures (diagrams stay white)
+PAPER = "#FAF7F0"
 
 PALETTES = {
     # Bauhaus primaries: red, blue, yellow, near-black, warm paper white
@@ -36,14 +44,18 @@ PALETTES = {
 
 def save_artwork(fig_or_array, name, week):
     """Save a matplotlib figure or an image array to assets/outputs/ as a
-    print-quality PNG (figures at 300 dpi) and print where it went.
+    print-quality PNG (figures: at least MIN_PIXELS on the long side) and
+    print where it went.
 
     Filename pattern: weekXX_<name>.png
     """
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     filename = OUTPUT_DIR / f"week{week:02d}_{name}.png"
     if isinstance(fig_or_array, plt.Figure):
-        fig_or_array.savefig(filename, dpi=300, bbox_inches="tight",
+        # pick the dpi that makes the long side reach MIN_PIXELS (never < 300)
+        tight = fig_or_array.get_tightbbox()
+        dpi = max(300, math.ceil(MIN_PIXELS / max(tight.width, tight.height)))
+        fig_or_array.savefig(filename, dpi=dpi, bbox_inches="tight",
                              facecolor=fig_or_array.get_facecolor())
     else:
         plt.imsave(filename, np.asarray(fig_or_array))

@@ -1,1 +1,1 @@
-from agap.helpers import PALETTES, save_artwork, show
+from agap.helpers import PALETTES, PAPER, save_artwork, show
