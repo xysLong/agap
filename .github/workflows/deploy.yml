@@ -53,3 +53,4 @@ jobs:
           publish_branch: gh-pages
           publish_dir: _build/html
           force_orphan: true
+          full_commit_message: "deploy"
