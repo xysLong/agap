@@ -1,7 +1,7 @@
 """Small helper package for the Algorithmic Generative Art course.
 
-Only three things live here, on purpose -- all the real code stays visible
-in the notebooks:
+Only a handful of things live here, on purpose -- all the real code stays
+visible in the notebooks:
 
 - save_artwork(...)  saves a figure or an image array to assets/outputs/
 - show(...)          displays an image array with the axes switched off
