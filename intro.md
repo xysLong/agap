@@ -8,6 +8,7 @@
 
 If you use this book in your research or teaching, please cite it as:
 
+<!-- TODO: once the arXiv version exists, add the arXiv ID + DOI here (eprint = {XXXX.XXXXX}, archivePrefix = {arXiv}) and switch the recommended citation to the arXiv record; the URL of the live book stays in the citation as the canonical reading version. The arXiv PDF must contain no source-repo links (same privacy invariant as the site). -->
 > Long, Xingyu. *Algorithmic Generative Art with Python.* 2026.
 > DOI: [10.5281/zenodo.22309138](https://doi.org/10.5281/zenodo.22309138).
 > https://xyslong.github.io/algorithmic-generative-art-with-python/
