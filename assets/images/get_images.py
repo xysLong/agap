@@ -1,4 +1,4 @@
-"""Download the public-domain input images used in weeks 5, 11, 12 and 13.
+"""Download the public-domain input images used by the book's image chapters.
 
 Run once after setting up the environment:
 
@@ -7,7 +7,7 @@ Run once after setting up the environment:
 All artworks are public domain, served by Wikimedia Commons. If a download
 fails (no internet, changed URL), a synthetic stand-in image is generated
 instead so that no notebook ever breaks offline. The poster `poster_demo.png`
-(used in week 11) ships with the repository: it is a real conference poster
+(used in chapter 19) ships with the repository: it is a real conference poster
 (the instructor's, ETRA 2026 doctoral consortium), downsampled until only the
 title is readable. It cannot be regenerated here; if the file is missing, a
 synthetic stand-in poster is drawn instead.
@@ -75,7 +75,7 @@ def make_poster_demo(target):
     """A fake conference poster: title block, two text columns, one figure box.
 
     Fallback only: the repository ships a real (downsampled) poster as
-    poster_demo.png, the week 11 surface for simulated attention heatmaps.
+    poster_demo.png, the chapter 19 surface for simulated attention heatmaps.
     This stand-in keeps the notebook runnable if that file ever goes missing,
     but the fixation regions in the notebook are placed for the real poster.
     """

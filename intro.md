@@ -6,16 +6,11 @@
 
 ## Chapters
 
-### Prelude
-
-| Ch. | Title | Core method | Art anchor |
-|----:|-------|-------------|------------|
-| 0 | [Warming Up: Python from Zero](notebooks/00-warming-up.ipynb) | Python basics, first matplotlib | stripe painting: Stella, Davis, Riley, Buren |
-
 ### Part I · Foundations
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
+| 0 | [Warming Up: Python from Zero](notebooks/00-warming-up.ipynb) | Python basics, first matplotlib | stripe painting: Stella, Davis, Riley, Buren |
 | 1 | [Random Walks: The First Generative System](notebooks/01-random-walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
 | 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
 | 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
@@ -32,14 +27,14 @@
 | 9 | [Cellular Automata and Emergence](notebooks/09-cellular-automata.ipynb) | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
 | 10 | [Reaction-Diffusion: Turing Patterns](notebooks/10-reaction-diffusion.ipynb) | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
 
-### Part III · Image, Perception, Representation
+### Part III · The Image, Transformed
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 11 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/11-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
-| 12 | [Voronoi, Delaunay, and Stippling](notebooks/12-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
-| 13 | [Filters, Edges, and Dithering](notebooks/13-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
-| 14 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/14-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
+| 11 | [Voronoi, Delaunay, and Stippling](notebooks/11-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
+| 12 | [Filters, Edges, and Dithering](notebooks/12-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
+| 13 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/13-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
+| 14 | Circle Packing: The Portrait in Dots (in preparation) | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
 
 ### Part IV · Agents and Complexity
 
@@ -54,8 +49,10 @@
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 19 | [The Sounding Image: From Pixels to Sound](notebooks/19-the-sounding-image.ipynb) | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
-| 20 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/20-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
+| 19 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/19-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
+| 20 | [The Sounding Image: From Pixels to Sound](notebooks/20-the-sounding-image.ipynb) | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
+| 21 | The Plotted Line: Vector Graphics and the Machine's Hand (in preparation) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
+| 22 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/22-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book
 
