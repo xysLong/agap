@@ -40,12 +40,12 @@
 | 12 | [Voronoi, Delaunay, and Stippling](notebooks/12-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 13 | [Filters, Edges, and Dithering](notebooks/13-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
 
-### Part IV · Agents and Reflection *(in preparation)*
+### Part IV · Agents and Reflection
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 14 | Particles, Agents, and Flocking | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
-| 15 | Synthesis: Systems, Authorship, Final Project | combining techniques | Boden, Molnár's late fame, the NFT arc |
+| 14 | [Particles, Agents, and Flocking](notebooks/14-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
+| 15 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/15-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book
 

@@ -25,8 +25,7 @@ parts:
       - file: notebooks/11-heatmaps
       - file: notebooks/12-voronoi-and-stippling
       - file: notebooks/13-filters-and-dithering
-  # TODO uncomment this part when chapter 14 exists
-  # - caption: "Part IV · Agents and Reflection"
-  #   chapters:
-  #     - file: notebooks/14-particles-and-flocking
-  #     - file: notebooks/15-synthesis
+  - caption: "Part IV · Agents and Reflection"
+    chapters:
+      - file: notebooks/14-particles-and-flocking
+      - file: notebooks/15-synthesis
