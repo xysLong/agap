@@ -2,9 +2,9 @@
 assets/outputs/*
 !assets/outputs/ch*_showpiece.png
 
-# downloaded input images (re-fetch with assets/images/get_images.py)
+# downloaded input images (re-fetch with assets/images/get_images.py);
+# poster_demo.png IS tracked: a downsampled real poster, not regenerable
 assets/images/*.jpg
-assets/images/poster_demo.png
 
 # jupyter-book build output
 _build/

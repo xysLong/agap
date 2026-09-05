@@ -6,8 +6,11 @@ Run once after setting up the environment:
 
 All artworks are public domain, served by Wikimedia Commons. If a download
 fails (no internet, changed URL), a synthetic stand-in image is generated
-instead so that no notebook ever breaks offline. The synthetic poster
-`poster_demo.png` (used in week 11) is always generated locally.
+instead so that no notebook ever breaks offline. The poster `poster_demo.png`
+(used in week 11) ships with the repository: it is a real conference poster
+(the instructor's, ETRA 2026 doctoral consortium), downsampled until only the
+title is readable. It cannot be regenerated here; if the file is missing, a
+synthetic stand-in poster is drawn instead.
 """
 
 import urllib.parse
@@ -71,7 +74,10 @@ def synthetic_standin(target, label):
 def make_poster_demo(target):
     """A fake conference poster: title block, two text columns, one figure box.
 
-    Used in week 11 as the surface for simulated attention heatmaps.
+    Fallback only: the repository ships a real (downsampled) poster as
+    poster_demo.png, the week 11 surface for simulated attention heatmaps.
+    This stand-in keeps the notebook runnable if that file ever goes missing,
+    but the fixation regions in the notebook are placed for the real poster.
     """
     width, height = 1200, 1600
     image = Image.new("RGB", (width, height), (245, 243, 238))
@@ -119,6 +125,8 @@ def main():
             synthetic_standin(target, filename)
     poster = IMAGE_DIR / "poster_demo.png"
     if not poster.exists():
+        print("poster_demo.png missing (it ships with the repo); "
+              "drawing the synthetic fallback")
         make_poster_demo(poster)
     else:
         print("exists, skipping: poster_demo.png")
