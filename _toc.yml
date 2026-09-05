@@ -25,7 +25,7 @@ parts:
       - file: notebooks/11-heatmaps
       - file: notebooks/12-voronoi-and-stippling
       - file: notebooks/13-filters-and-dithering
-      # - file: notebooks/14-pixel-sorting
+      - file: notebooks/14-pixel-sorting
   - caption: "Part IV · Agents and Complexity"
     chapters:
       - file: notebooks/15-particles-and-flocking

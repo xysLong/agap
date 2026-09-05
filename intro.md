@@ -39,7 +39,7 @@
 | 11 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/11-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
 | 12 | [Voronoi, Delaunay, and Stippling](notebooks/12-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 13 | [Filters, Edges, and Dithering](notebooks/13-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
-| 14 | Pixel Sorting: The Aesthetics of the Glitch *(in preparation)* | sorting, masks, interval detection | Paik, Menkman, Asendorf |
+| 14 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/14-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
 
 ### Part IV · Agents and Complexity
 
