@@ -53,9 +53,20 @@ html[data-theme="light"] {
   text-decoration: underline;
 }
 
-/* primary sidebar: smaller and quieter, current page marked by color only */
+/* primary sidebar: smaller and quieter, current page marked by color only;
+   wide enough that full chapter titles stay on one line */
 .bd-sidebar-primary {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+}
+@media (min-width: 960px) {
+  .bd-sidebar-primary {
+    width: 23rem;
+  }
+}
+/* if a title must wrap, continuation lines align under the title, not the number */
+nav.bd-links li > a.reference.internal {
+  text-indent: -1.6em;
+  margin-left: 1.6em;
 }
 .bd-sidebar-primary .sidebar-primary-items__start .caption,
 .bd-sidebar-primary p.caption {
