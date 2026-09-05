@@ -63,10 +63,10 @@ html[data-theme="light"] {
     width: 23rem;
   }
 }
-/* if a title must wrap, continuation lines align under the title, not the number */
+/* flex layout: number in a fixed slot, title in its own box, so any wrapped
+   line aligns under the title (no text-indent: it inherits and misplaces) */
 nav.bd-links li > a.reference.internal {
-  text-indent: -1.6em;
-  margin-left: 1.6em;
+  display: flex;
 }
 .bd-sidebar-primary .sidebar-primary-items__start .caption,
 .bd-sidebar-primary p.caption {
@@ -85,11 +85,9 @@ nav.bd-links .current > a {
 /* chapter number: dark and column-ish, title stays muted (blue when current);
    spans created by custom.js */
 nav.bd-links .toc-chapter-number {
-  display: inline-block;
-  min-width: 1.2em;
+  flex: 0 0 1.2em;
   margin-right: 0.4em;
   text-align: right;
-  text-indent: 0; /* the link's hanging indent is inherited; undo it here */
   color: var(--pst-color-text-base);
   font-variant-numeric: tabular-nums;
 }
