@@ -23,6 +23,7 @@ sphinx:
     html_static_path: ["assets/site/static"]
     templates_path: ["assets/site/templates"]
     html_css_files: ["custom.css"]
+    html_js_files: ["custom.js"]
     html_theme_options:
       use_download_button: false
       use_fullscreen_button: false

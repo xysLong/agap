@@ -35,9 +35,9 @@ h1, h2, h3 {
 
 /* links: one restrained accent, underline on hover only */
 html[data-theme="light"] {
-  --pst-color-primary: #1b4b9b;
-  --pst-color-link: #1b4b9b;
-  --pst-color-link-hover: #12356e;
+  --pst-color-primary: #2761e3;
+  --pst-color-link: #2761e3;
+  --pst-color-link-hover: #1a4bc4;
 }
 .bd-article-container a {
   text-decoration: none;
@@ -62,7 +62,15 @@ nav.bd-links li > a.current,
 nav.bd-links .current > a {
   background: none;
   color: var(--pst-color-primary);
-  font-weight: 600;
+  font-weight: 400;
+}
+/* chapter number: dark and column-ish, title stays muted (blue when current);
+   spans created by custom.js */
+nav.bd-links .toc-chapter-number {
+  display: inline-block;
+  min-width: 1.6em;
+  color: var(--pst-color-text-base);
+  font-variant-numeric: tabular-nums;
 }
 
 /* no search in the article header; the sidebar's search field is enough */
