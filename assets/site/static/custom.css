@@ -6,7 +6,12 @@
 html {
   --pst-font-family-base: "IBM Plex Sans", var(--pst-font-family-base-system);
   --pst-font-family-heading: "IBM Plex Sans", var(--pst-font-family-base-system);
-  font-size: 17px;
+  font-size: 16px;
+}
+
+/* article text slightly below UI size; headings keep the rem scale */
+.bd-article {
+  font-size: 0.95rem;
 }
 
 /* prose column: comfortable book measure; code cells and figures may run wider */
@@ -58,6 +63,21 @@ nav.bd-links .current > a {
   background: none;
   color: var(--pst-color-primary);
   font-weight: 600;
+}
+
+/* no search in the article header; the sidebar's search field is enough */
+.bd-header-article .search-button {
+  display: none;
+}
+/* desktop: no top navbar (only held a redundant search bar) and no broken
+   sidebar toggle; on mobile the toggle is the nav opener, so keep it there */
+@media (min-width: 960px) {
+  header.bd-header {
+    display: none;
+  }
+  button.sidebar-toggle.primary-toggle {
+    display: none;
+  }
 }
 
 /* kill visual noise: hairline borders, no shadows */
