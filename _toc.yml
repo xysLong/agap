@@ -30,7 +30,7 @@ parts:
     chapters:
       - file: notebooks/15-particles-and-flocking
       - file: notebooks/16-diffusion-limited-aggregation
-      # - file: notebooks/17-physarum
+      - file: notebooks/17-physarum
       # - file: notebooks/18-evolving-images
   - caption: "Part V · Coda"
     chapters:

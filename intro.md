@@ -47,7 +47,7 @@
 |----:|-------|-------------|------------|
 | 15 | [Particles, Agents, and Flocking](notebooks/15-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
 | 16 | [Aggregation: Growth by Random Walk](notebooks/16-diffusion-limited-aggregation.ipynb) | diffusion-limited aggregation | Bentley, Lichtenberg figures, Witten & Sander |
-| 17 | Physarum: The Trail-Laying Swarm *(in preparation)* | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
+| 17 | [Physarum: The Trail-Laying Swarm](notebooks/17-physarum.ipynb) | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
 | 18 | Evolving Images: Breeding as Composition *(in preparation)* | mutation, selection by eye | Dawkins, Latham, Sims |
 
 ### Part V · Coda
