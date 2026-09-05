@@ -9,14 +9,14 @@
 If you use this book in your research or teaching, please cite it as:
 
 > Long, Xingyu. *Algorithmic Generative Art with Python.* 2026.
-> https://xyslong.github.io/algorithmic-generative-art-with-python/
+> https://xyslong.github.io/agap/
 
 ```bibtex
 @book{long2026agap,
   author = {Long, Xingyu},
   title  = {Algorithmic Generative Art with Python},
   year   = {2026},
-  url    = {https://xyslong.github.io/algorithmic-generative-art-with-python/}
+  url    = {https://xyslong.github.io/agap/}
 }
 ```
 
