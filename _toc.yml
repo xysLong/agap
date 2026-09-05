@@ -34,5 +34,5 @@ parts:
       - file: notebooks/18-evolving-images
   - caption: "Part V · Coda"
     chapters:
-      # - file: notebooks/19-the-sounding-image
+      - file: notebooks/19-the-sounding-image
       - file: notebooks/20-synthesis

@@ -54,7 +54,7 @@
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 19 | The Sounding Image: From Pixels to Sound *(in preparation)* | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
+| 19 | [The Sounding Image: From Pixels to Sound](notebooks/19-the-sounding-image.ipynb) | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
 | 20 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/20-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book
