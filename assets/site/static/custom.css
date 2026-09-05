@@ -1,5 +1,14 @@
 /* Lean book look: subtraction, not decoration. */
 
+/* typeface: IBM Plex Sans, webfont so all readers see the same face */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
+
+html {
+  --pst-font-family-base: "IBM Plex Sans", var(--pst-font-family-base-system);
+  --pst-font-family-heading: "IBM Plex Sans", var(--pst-font-family-base-system);
+  font-size: 17px;
+}
+
 /* prose column: comfortable book measure; code cells and figures may run wider */
 .bd-article-container {
   max-width: 46rem;
