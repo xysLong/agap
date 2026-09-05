@@ -25,7 +25,14 @@ parts:
       - file: notebooks/11-heatmaps
       - file: notebooks/12-voronoi-and-stippling
       - file: notebooks/13-filters-and-dithering
-  - caption: "Part IV · Agents and Reflection"
+      # - file: notebooks/14-pixel-sorting
+  - caption: "Part IV · Agents and Complexity"
     chapters:
-      - file: notebooks/14-particles-and-flocking
-      - file: notebooks/15-synthesis
+      - file: notebooks/15-particles-and-flocking
+      # - file: notebooks/16-diffusion-limited-aggregation
+      # - file: notebooks/17-physarum
+      # - file: notebooks/18-evolving-images
+  - caption: "Part V · Coda"
+    chapters:
+      # - file: notebooks/19-the-sounding-image
+      - file: notebooks/20-synthesis

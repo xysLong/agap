@@ -6,7 +6,7 @@ new chapters land:
 
     python assets/site/make_hero.py
 
-Once chapter 15's contact sheet exists, this script can be retired and the
+Once chapter 20's contact sheet exists, this script can be retired and the
 hero replaced by that image.
 """
 

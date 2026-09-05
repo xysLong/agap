@@ -39,13 +39,23 @@
 | 11 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/11-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
 | 12 | [Voronoi, Delaunay, and Stippling](notebooks/12-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 13 | [Filters, Edges, and Dithering](notebooks/13-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
+| 14 | Pixel Sorting: The Aesthetics of the Glitch *(in preparation)* | sorting, masks, interval detection | Paik, Menkman, Asendorf |
 
-### Part IV · Agents and Reflection
+### Part IV · Agents and Complexity
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 14 | [Particles, Agents, and Flocking](notebooks/14-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
-| 15 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/15-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
+| 15 | [Particles, Agents, and Flocking](notebooks/15-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
+| 16 | Aggregation: Growth by Random Walk *(in preparation)* | diffusion-limited aggregation | Bentley, Lichtenberg figures, Witten & Sander |
+| 17 | Physarum: The Trail-Laying Swarm *(in preparation)* | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
+| 18 | Evolving Images: Breeding as Composition *(in preparation)* | mutation, selection by eye | Dawkins, Latham, Sims |
+
+### Part V · Coda
+
+| Ch. | Title | Core method | Art anchor |
+|----:|-------|-------------|------------|
+| 19 | The Sounding Image: From Pixels to Sound *(in preparation)* | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
+| 20 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/20-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book
 
