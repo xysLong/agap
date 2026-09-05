@@ -51,7 +51,7 @@
 |----:|-------|-------------|------------|
 | 19 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/19-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
 | 20 | [The Sounding Image: From Pixels to Sound](notebooks/20-the-sounding-image.ipynb) | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
-| 21 | The Plotted Line: Vector Graphics and the Machine's Hand (in preparation) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
+| 21 | [The Plotted Line: Vector Graphics and the Machine's Hand](notebooks/21-the-plotted-line.ipynb) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
 | 22 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/22-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use this book

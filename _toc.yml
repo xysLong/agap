@@ -34,5 +34,5 @@ parts:
     chapters:
       - file: notebooks/19-heatmaps
       - file: notebooks/20-the-sounding-image
-      # - file: notebooks/21-the-plotted-line
+      - file: notebooks/21-the-plotted-line
       - file: notebooks/22-synthesis
