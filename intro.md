@@ -6,11 +6,16 @@
 
 ## Chapters
 
+### Prelude
+
+| Ch. | Title | Core method | Art anchor |
+|----:|-------|-------------|------------|
+| 0 | [Warming Up: Python and Mathematics from Zero](notebooks/00-warming-up.ipynb) | Python basics, notation, first matplotlib | stripe painting: Stella, Davis, Riley, Buren |
+
 ### Part I · Foundations
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 0 | [Warming Up: Python from Zero](notebooks/00-warming-up.ipynb) | Python basics, first matplotlib | stripe painting: Stella, Davis, Riley, Buren |
 | 1 | [Random Walks: The First Generative System](notebooks/01-random-walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
 | 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
 | 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
