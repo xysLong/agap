@@ -34,7 +34,7 @@
 | 11 | [Voronoi, Delaunay, and Stippling](notebooks/11-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 12 | [Filters, Edges, and Dithering](notebooks/12-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
 | 13 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/13-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
-| 14 | Circle Packing: The Portrait in Dots (in preparation) | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
+| 14 | [Circle Packing: The Portrait in Dots](notebooks/14-circle-packing.ipynb) | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
 
 ### Part IV · Agents and Complexity
 

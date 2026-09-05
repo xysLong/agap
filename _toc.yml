@@ -23,7 +23,7 @@ parts:
       - file: notebooks/11-voronoi-and-stippling
       - file: notebooks/12-filters-and-dithering
       - file: notebooks/13-pixel-sorting
-      # - file: notebooks/14-circle-packing
+      - file: notebooks/14-circle-packing
   - caption: "Part IV · Agents and Complexity"
     chapters:
       - file: notebooks/15-particles-and-flocking
