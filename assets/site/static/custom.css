@@ -86,7 +86,10 @@ nav.bd-links .current > a {
    spans created by custom.js */
 nav.bd-links .toc-chapter-number {
   display: inline-block;
-  min-width: 1.6em;
+  min-width: 1.2em;
+  margin-right: 0.4em;
+  text-align: right;
+  text-indent: 0; /* the link's hanging indent is inherited; undo it here */
   color: var(--pst-color-text-base);
   font-variant-numeric: tabular-nums;
 }
