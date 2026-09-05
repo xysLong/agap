@@ -9,6 +9,13 @@ html {
   font-size: 16px;
 }
 
+/* macOS renders thinner, leaner strokes with this (Molnar's book sets it too);
+   without it the same font looks fatter */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* article text slightly below UI size; headings keep the rem scale */
 .bd-article {
   font-size: 0.95rem;
