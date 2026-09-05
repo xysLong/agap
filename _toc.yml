@@ -2,32 +2,50 @@
 # uncomment its line below (and its part, if the whole part is still commented).
 format: jb-book
 root: intro
+# Chapter `title:` keys are short sidebar labels (Molnar-style); the pages
+# themselves keep their full H1 titles.
 parts:
   - caption: "Prelude"
     chapters:
       - file: notebooks/00-warming-up
+        title: "0. Warming Up"
   - caption: "Part I · Foundations"
     chapters:
       - file: notebooks/01-random-walks
+        title: "1. Random Walks"
       - file: notebooks/02-chance-and-randomness
+        title: "2. Chance Operations"
       - file: notebooks/03-geometric-patterns
+        title: "3. Geometric Patterns"
       - file: notebooks/04-recursion-and-subdivision
+        title: "4. Recursion and Subdivision"
       - file: notebooks/05-color
+        title: "5. Color"
   - caption: "Part II · Natural Form and Emergence"
     chapters:
       - file: notebooks/06-l-systems
+        title: "6. L-Systems"
       - file: notebooks/07-fractals
+        title: "7. Fractals"
       - file: notebooks/08-noise-and-flow-fields
+        title: "8. Noise and Flow Fields"
       - file: notebooks/09-cellular-automata
+        title: "9. Cellular Automata"
       - file: notebooks/10-reaction-diffusion
+        title: "10. Reaction-Diffusion"
   # TODO uncomment this part when chapter 11 exists
   # - caption: "Part III · Image, Perception, Representation"
   #   chapters:
   #     - file: notebooks/11-heatmaps
+  #       title: "11. Heatmaps"
   #     - file: notebooks/12-voronoi-and-stippling
+  #       title: "12. Voronoi and Stippling"
   #     - file: notebooks/13-filters-and-dithering
+  #       title: "13. Filters and Dithering"
   # TODO uncomment this part when chapter 14 exists
   # - caption: "Part IV · Agents and Reflection"
   #   chapters:
   #     - file: notebooks/14-particles-and-flocking
+  #       title: "14. Particles and Flocking"
   #     - file: notebooks/15-synthesis
+  #       title: "15. Synthesis"
