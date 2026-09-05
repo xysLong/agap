@@ -21,6 +21,7 @@ sphinx:
     html_show_sphinx: false
     nb_merge_streams: true
     html_static_path: ["assets/site/static"]
+    templates_path: ["assets/site/templates"]
     html_css_files: ["custom.css"]
     html_theme_options:
       use_download_button: false

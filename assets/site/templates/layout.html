@@ -1,0 +1,10 @@
+{% extends "!layout.html" %}
+{# The homepage H1 equals the book title, so the default "page - book" tab
+   title doubles it; show the book title once there. #}
+{% block htmltitle %}
+  {%- if pagename == master_doc -%}
+    <title>{{ docstitle|e }}</title>
+  {%- else -%}
+    {{ super() }}
+  {%- endif -%}
+{% endblock %}
