@@ -32,13 +32,13 @@
 | 9 | [Cellular Automata and Emergence](notebooks/09-cellular-automata.ipynb) | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
 | 10 | [Reaction-Diffusion: Turing Patterns](notebooks/10-reaction-diffusion.ipynb) | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
 
-### Part III · Image, Perception, Representation *(in preparation)*
+### Part III · Image, Perception, Representation
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 11 | Attention Made Visible: Gaussians, KDE, Heatmaps | kernel density estimation | Yarbus, museum eye tracking |
-| 12 | Voronoi, Delaunay, and Stippling | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
-| 13 | Filters, Edges, and Dithering | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
+| 11 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/11-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
+| 12 | [Voronoi, Delaunay, and Stippling](notebooks/12-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
+| 13 | [Filters, Edges, and Dithering](notebooks/13-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
 
 ### Part IV · Agents and Reflection *(in preparation)*
 
