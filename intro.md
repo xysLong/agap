@@ -57,7 +57,7 @@
 | 19 | [Particles, Agents, and Flocking](notebooks/19-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
 | 20 | [Aggregation: Growth by Random Walk](notebooks/20-diffusion-limited-aggregation.ipynb) | diffusion-limited aggregation | Bentley, Lichtenberg figures, Witten & Sander |
 | 21 | [Physarum: The Trail-Laying Swarm](notebooks/21-physarum.ipynb) | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
-| 22 | Differential Growth: The Restless Line *(in preparation)* | neighbor forces, node insertion | Nervous System, Anders Hoff, kale and coral |
+| 22 | [Differential Growth: The Restless Line](notebooks/22-differential-growth.ipynb) | neighbor forces, node insertion | Nervous System, Anders Hoff, kale and coral |
 | 23 | [Evolving Images: Breeding as Composition](notebooks/23-evolving-images.ipynb) | mutation, selection by eye | Dawkins, Latham, Sims |
 
 ### Part VI · Coda

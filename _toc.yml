@@ -37,7 +37,7 @@ parts:
       - file: notebooks/19-particles-and-flocking
       - file: notebooks/20-diffusion-limited-aggregation
       - file: notebooks/21-physarum
-      # - file: notebooks/22-differential-growth
+      - file: notebooks/22-differential-growth
       - file: notebooks/23-evolving-images
   - caption: "Part VI · Coda"
     chapters:
