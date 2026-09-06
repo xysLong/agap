@@ -11,30 +11,37 @@ parts:
       - file: notebooks/01-random-walks
       - file: notebooks/02-chance-and-randomness
       - file: notebooks/03-geometric-patterns
-      - file: notebooks/04-recursion-and-subdivision
-      - file: notebooks/05-color
-  - caption: "Part II · Natural Form and Emergence"
+      # - file: notebooks/04-truchet-tiles
+      - file: notebooks/05-recursion-and-subdivision
+      - file: notebooks/06-color
+  - caption: "Part II · Growth and Iteration"
     chapters:
-      - file: notebooks/06-l-systems
-      - file: notebooks/07-fractals
-      - file: notebooks/08-noise-and-flow-fields
-      - file: notebooks/09-cellular-automata
-      - file: notebooks/10-reaction-diffusion
-  - caption: "Part III · The Image, Transformed"
+      - file: notebooks/07-l-systems
+      - file: notebooks/08-fractals
+      # - file: notebooks/09-strange-attractors
+  - caption: "Part III · Fields and Grids"
     chapters:
-      - file: notebooks/11-voronoi-and-stippling
-      - file: notebooks/12-filters-and-dithering
-      - file: notebooks/13-pixel-sorting
-      - file: notebooks/14-circle-packing
-  - caption: "Part IV · Agents and Complexity"
+      - file: notebooks/10-noise-and-flow-fields
+      # - file: notebooks/11-deeper-noise
+      # - file: notebooks/12-curl-and-loops
+      - file: notebooks/13-cellular-automata
+      - file: notebooks/14-reaction-diffusion
+  - caption: "Part IV · The Image, Transformed"
     chapters:
-      - file: notebooks/15-particles-and-flocking
-      - file: notebooks/16-diffusion-limited-aggregation
-      - file: notebooks/17-physarum
-      - file: notebooks/18-evolving-images
-  - caption: "Part V · Coda"
+      - file: notebooks/15-voronoi-and-stippling
+      - file: notebooks/16-filters-and-dithering
+      - file: notebooks/17-pixel-sorting
+      - file: notebooks/18-circle-packing
+  - caption: "Part V · Agents and Complexity"
     chapters:
-      - file: notebooks/19-heatmaps
-      - file: notebooks/20-the-sounding-image
-      - file: notebooks/21-the-plotted-line
-      - file: notebooks/22-synthesis
+      - file: notebooks/19-particles-and-flocking
+      - file: notebooks/20-diffusion-limited-aggregation
+      - file: notebooks/21-physarum
+      # - file: notebooks/22-differential-growth
+      - file: notebooks/23-evolving-images
+  - caption: "Part VI · Coda"
+    chapters:
+      - file: notebooks/24-heatmaps
+      - file: notebooks/25-the-sounding-image
+      - file: notebooks/26-the-plotted-line
+      - file: notebooks/27-synthesis
