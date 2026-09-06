@@ -23,7 +23,7 @@ parts:
     chapters:
       - file: notebooks/10-noise-and-flow-fields
       - file: notebooks/11-deeper-noise
-      # - file: notebooks/12-curl-and-loops
+      - file: notebooks/12-curl-and-loops
       - file: notebooks/13-cellular-automata
       - file: notebooks/14-reaction-diffusion
   - caption: "Part IV · The Image, Transformed"

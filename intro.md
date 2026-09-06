@@ -37,7 +37,7 @@
 |----:|-------|-------------|------------|
 | 10 | [Noise and Flow Fields](notebooks/10-noise-and-flow-fields.ipynb) | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
 | 11 | [Deeper Noise: Cells, Ridges, and Warped Space](notebooks/11-deeper-noise.ipynb) | Worley noise, ridged fbm, domain warping | Ebru marbling, Worley, Musgrave, Quilez |
-| 12 | Curl and the Endless Loop: Fields in Motion *(in preparation)* | curl noise, seamless loops | Bridson, phenakistiscope, the GIF |
+| 12 | [Curl and the Endless Loop: Fields in Motion](notebooks/12-curl-and-loops.ipynb) | curl noise, seamless loops | Bridson, phenakistiscope, the GIF |
 | 13 | [Cellular Automata and Emergence](notebooks/13-cellular-automata.ipynb) | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
 | 14 | [Reaction-Diffusion: Turing Patterns](notebooks/14-reaction-diffusion.ipynb) | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
 
