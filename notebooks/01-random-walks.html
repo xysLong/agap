@@ -1,0 +1,986 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Random Walks: The First Generative System &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01-random-walks';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Chance Operations and Controlled Randomness" href="02-chance-and-randomness.html" />
+    <link rel="prev" title="0. Warming Up: Python and Mathematics from Zero" href="00-warming-up.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Random Walks: The First Generative System</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-artist-as-system-designer">Context: the artist as system designer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-recipe-that-rolls-dice">A recipe that rolls dice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-canvas-coordinates">The canvas: coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up">Build-up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-random-walk">The random walk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#many-walkers-and-a-first-palette">Many walkers, and a first palette</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-schotter">Reconstructing <em>Schotter</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="random-walks-the-first-generative-system">
+<h1>1. Random Walks: The First Generative System<a class="headerlink" href="#random-walks-the-first-generative-system" title="Link to this heading">#</a></h1>
+<p>Today we write our first generative system: a handful of Python lines that wander across the canvas by chance and leave behind a drawing that nobody, including us, has planned in advance.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>By the end of this chapter you will be able to generate the image below yourself: a reconstruction of Georg Nees’ <em>Schotter</em> (“gravel”, 1968–70), one of the most famous works of early computer art. Notice how it moves from perfect order at the top to disorder at the bottom. That gradient is produced by exactly one idea, controlled randomness, and you will program it from scratch today.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch01_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6b015cdd1137c3949b7a893e8b3e8bec96214b175f3d9106c9da46d3d2c505ba.png" src="../_images/6b015cdd1137c3949b7a893e8b3e8bec96214b175f3d9106c9da46d3d2c505ba.png" />
+</div>
+</div>
+</section>
+<section id="context-the-artist-as-system-designer">
+<h2>Context: the artist as system designer<a class="headerlink" href="#context-the-artist-as-system-designer" title="Link to this heading">#</a></h2>
+<p>In 1967, Sol LeWitt wrote a sentence that could serve as the motto of this whole course <a class="cite" href="#ref-lewitt1967">(LeWitt 1967)</a>: <em>“The idea becomes a machine that makes the art.”</em> From 1968 on, his wall drawings existed primarily as <strong>written instructions</strong> (“ten thousand lines about 10 inches long, covering the wall evenly”), executed by assistants, differently at every site (<a class="cite" href="#ref-massmoca">MASS MoCA, <em>Wall Drawing 86</em></a>; <a class="cite" href="#ref-paulacooper">Paula Cooper Gallery, artist page</a>). The artwork is not the wall; it is the <em>system</em> that produces walls. Whoever designs a system and lets it run has already, in an important sense, made generative art, no computer required.</p>
+<p>At almost the same moment, computers entered the picture. In February 1965, the mathematician <strong>Georg Nees</strong> showed algorithmic drawings at the Studiengalerie of the TH Stuttgart, widely counted as the first exhibition of computer art <a class="cite" href="#ref-nake2009">(Nake 2009)</a>. His best-known work, <em><strong>Schotter</strong></em> (1968–70), is a grid of squares that dissolves from strict order into tumbling chaos as your eye moves down the page: a program in ALGOL, a random number generator, and a flatbed plotter <a class="cite" href="#ref-vam">(Victoria and Albert Museum, collection entry)</a>. When Nees was asked at that first exhibition whether he could make his machine draw the way an artist does, he reportedly answered <a class="cite" href="#ref-nake2009">(Nake 2009)</a> that he could, <em>if you tell me how the artist draws.</em> The provocation still stings, and we will return to it in chapter 27.</p>
+<p>The third figure to remember is <strong>Vera Molnár</strong> (1924–2023), who from 1959 worked with what she called the <em>machine imaginaire</em>: she executed algorithms by hand, step by step, years before she got access to an actual computer in 1968 <a class="cite" href="#ref-dam">(DAM, artist entry)</a>. Her point was radical for a painter trained in composition: replacing intuitive choice with a rule-plus-chance procedure was not a loss of authorship but a sharper instrument for it: the rule <em>is</em> the composition.</p>
+<p>What unites LeWitt’s instructions, Nees’ plotter, and Molnár’s imaginary machine? The theorist Philip <a class="cite" href="#ref-galanter2003">Galanter’s much-quoted definition (2003)</a>: generative art is any practice where the artist cedes control to a system that acts with some degree of autonomy, contributing to or resulting in the finished work. Today you build your first such system. It will be modest, a walker taking random steps, but it already contains everything: a rule, a dose of chance, and a result that surprises its own author.</p>
+</section>
+<section id="a-recipe-that-rolls-dice">
+<h2>A recipe that rolls dice<a class="headerlink" href="#a-recipe-that-rolls-dice" title="Link to this heading">#</a></h2>
+<p>An <strong>algorithm</strong> (Algorithmus) is nothing more than a precise recipe: a finite list of steps that a machine can follow without asking questions. LeWitt’s wall drawing instructions are algorithms for humans; today we write them for Python.</p>
+<p>Our recipes need one special ingredient: <strong>randomness</strong>. A computer cannot actually roll dice: it produces <em>pseudo-random</em> numbers, generated by a deterministic formula that is designed to look statistically random. That subtle cheat will turn out to be a gift for artists (a “random” artwork we can reproduce exactly!), and we will exploit it properly in the next chapter. For now, let’s just get some random numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ask Python for three random numbers between 0 and 1</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5325587794967415
+0.8289450362219999
+0.8454236336288986
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the cell above a second time (click it, then press <code class="docutils literal notranslate"><span class="pre">Shift+Enter</span></code>): you get <em>different</em> numbers. Every call to <code class="docutils literal notranslate"><span class="pre">random.random()</span></code> draws a fresh value between 0 and 1. Making chance <em>repeatable</em> is the next chapter’s topic, but the drawing cells below already use the trick quietly, in their <code class="docutils literal notranslate"><span class="pre">random.seed(...)</span></code> line, so that your images come out exactly like the ones in this notebook. Change or delete that line whenever you want a one-of-a-kind run.</p>
+</section>
+<section id="the-canvas-coordinates">
+<h2>The canvas: coordinates<a class="headerlink" href="#the-canvas-coordinates" title="Link to this heading">#</a></h2>
+<p>Before we can draw, we need to know where things go. Matplotlib, the drawing library we use throughout the book, places points on an (x, y) coordinate system: x runs to the <strong>right</strong>, y runs <strong>up</strong>, exactly like in school mathematics. (Careful: digital <em>images</em> traditionally count y downwards from the top-left corner. We will meet that convention in chapter 8; today, y goes up.)</p>
+<p>Remember the course convention from chapter 0: when a plot is a <strong>diagram</strong> the axes stay visible, because the numbers matter; when it is an <strong>artwork</strong> they go off (<code class="docutils literal notranslate"><span class="pre">plt.axis(&quot;off&quot;)</span></code>), because a picture of a random walk does not need a ruler. You will see both today, and from the first palette piece onward the artworks sit, as always, on the soft paper-white ground <code class="docutils literal notranslate"><span class="pre">PAPER</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># three labeled points on the coordinate system -- axes ON, this is a diagram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">"(0, 0)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">"(2, 1)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.1</span><span class="p">,</span> <span class="s2">"(3, 3)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"the canvas: x goes right, y goes up"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3b2ff11d39b740cee15f016c34fd73314f120073f712447095295590c7e480e3.png" src="../_images/3b2ff11d39b740cee15f016c34fd73314f120073f712447095295590c7e480e3.png" />
+</div>
+</div>
+</section>
+<section id="build-up">
+<h2>Build-up<a class="headerlink" href="#build-up" title="Link to this heading">#</a></h2>
+<p>We assemble the system piece by piece, from parts you know from chapter 0: a loop collecting random numbers, then random points on the canvas, then the walk itself.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a for-loop (chapter 0) -- here: five random step lengths</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"step"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">"-&gt;"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>step 0 -&gt; 0.5811521325045647
+step 1 -&gt; 0.1947544955341367
+step 2 -&gt; 0.9652511070611112
+step 3 -&gt; 0.9239764016767943
+step 4 -&gt; 0.46713867819697397
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now a loop collects random coordinates in two lists, <code class="docutils literal notranslate"><span class="pre">xs</span></code> and <code class="docutils literal notranslate"><span class="pre">ys</span></code> (chapter 0’s <code class="docutils literal notranslate"><span class="pre">append</span></code> at work), and matplotlib scatters them onto the canvas in one go.</p>
+<p><strong>Try it:</strong> run the cell, then change <code class="docutils literal notranslate"><span class="pre">200</span></code> to <code class="docutils literal notranslate"><span class="pre">2000</span></code> and run it again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># scatter 200 random points -- our first image made of chance</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>   <span class="c1"># fixes the chance sequence, so we all see the same points</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"200 random points"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0b7b1a2e92dcc02af3dab02ece9434ff66e201b7e3fea10e7d3b3a36f2c8613d.png" src="../_images/0b7b1a2e92dcc02af3dab02ece9434ff66e201b7e3fea10e7d3b3a36f2c8613d.png" />
+</div>
+</div>
+<section id="the-random-walk">
+<h3>The random walk<a class="headerlink" href="#the-random-walk" title="Link to this heading">#</a></h3>
+<p>Scattered points have no memory: each one ignores all the others. A <strong>random walk</strong> (Irrfahrt) is different: a walker starts somewhere and takes one random step at a time, so every position depends on the entire history before it. We give the walker four possible moves (up, down, right, left) and let <code class="docutils literal notranslate"><span class="pre">random.choice</span></code> pick one per step. Connecting the positions with a line makes the path visible. Each move is a <strong>tuple</strong> <code class="docutils literal notranslate"><span class="pre">(dx,</span> <span class="pre">dy)</span></code>, and <code class="docutils literal notranslate"><span class="pre">dx,</span> <span class="pre">dy</span> <span class="pre">=</span> <span class="pre">random.choice(directions)</span></code> unpacks the chosen one (chapter 0).</p>
+<p><strong>Try it:</strong> after running the cell, change the seed or the number of steps and run it again; every walk is one of a kind.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a random walk: start at (0, 0), take 2000 random steps, draw the path</span>
+<span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># up, down, right, left</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">directions</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>   <span class="c1"># this is artwork now, not a diagram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4ed650ccff38664a8f85cbda977d8b3283bc33b5ff2aa85c9bd32dc3ae896f09.png" src="../_images/4ed650ccff38664a8f85cbda977d8b3283bc33b5ff2aa85c9bd32dc3ae896f09.png" />
+</div>
+</div>
+</section>
+<section id="many-walkers-and-a-first-palette">
+<h3>Many walkers, and a first palette<a class="headerlink" href="#many-walkers-and-a-first-palette" title="Link to this heading">#</a></h3>
+<p>One walker draws a tangle; several walkers in different colors draw a composition. Color choices matter enormously in this course, so we bring back the named <strong>palettes</strong> of the course package <code class="docutils literal notranslate"><span class="pre">agap</span></code>, exactly as in chapter 0; <code class="docutils literal notranslate"><span class="pre">palette[w</span> <span class="pre">%</span> <span class="pre">len(palette)]</span></code> cycles through the colors with the modulo clock.</p>
+<p><strong>Try it:</strong> in the second cell below, swap <code class="docutils literal notranslate"><span class="pre">&quot;kelly&quot;</span></code> for any other palette name the first cell prints.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make the course helper package importable, then look at the palettes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"available palettes:"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"bauhaus ="</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>available palettes: ['bauhaus', 'rothko_dark', 'pastel', 'monochrome', 'viridis', 'magma', 'kelly']
+bauhaus = ['#D02433', '#1B4B9B', '#F7C523', '#1A1A1A', '#F2EFE9']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># five walks in one figure, each in its own palette color</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"kelly"</span><span class="p">]</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1500</span><span class="p">):</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">directions</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+        <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="c1"># alpha= sets transparency (0 clear, 1 solid); no relation to the angle alpha ahead</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">w</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b9cfef5f8769322b1d56424afa9c45118d1f9348c54d65e7e24d46a785efe962.png" src="../_images/b9cfef5f8769322b1d56424afa9c45118d1f9348c54d65e7e24d46a785efe962.png" />
+</div>
+</div>
+</section>
+<section id="reconstructing-schotter">
+<h3>Reconstructing <em>Schotter</em><a class="headerlink" href="#reconstructing-schotter" title="Link to this heading">#</a></h3>
+<p>Now for the showpiece. Nees’ <em>Schotter</em> is a grid of 12 × 22 squares. In the top row, every square sits perfectly in place. With every row further down, two doses of randomness grow stronger: each square gets a random <strong>rotation</strong> and a random <strong>displacement</strong> away from its grid position. Order does not break; it <em>erodes</em>.</p>
+<p><strong>Try it:</strong> once the grid two cells below has drawn itself, raise <code class="docutils literal notranslate"><span class="pre">max_rotation</span></code> or <code class="docutils literal notranslate"><span class="pre">max_shift</span></code> and run it again. At what values does the grid stop being a grid?</p>
+<p>To rotate a square we need a little trigonometry: a corner at position (px, py) relative to the square’s center moves to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{aligned} r_x &amp;= p_x\cos\alpha - p_y\sin\alpha \\ r_y &amp;= p_x\sin\alpha + p_y\cos\alpha \end{aligned} \end{split}\]</div>
+<p>for a rotation by the angle <span class="math notranslate nohighlight">\(\alpha\)</span>. Don’t memorize this; watch what it does in the test cell below, and trust it. (We will meet rotation properly in chapter 3.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># corners of a square centered at (cx, cy), rotated by angle (in radians)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">square_corners</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+    <span class="n">corners_x</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">corners_y</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="o">-</span><span class="n">half</span><span class="p">),</span> <span class="p">(</span><span class="n">half</span><span class="p">,</span> <span class="o">-</span><span class="n">half</span><span class="p">),</span> <span class="p">(</span><span class="n">half</span><span class="p">,</span> <span class="n">half</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="n">half</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="o">-</span><span class="n">half</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="ow">in</span> <span class="n">base</span><span class="p">:</span>
+        <span class="n">rx</span> <span class="o">=</span> <span class="n">px</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">-</span> <span class="n">py</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">ry</span> <span class="o">=</span> <span class="n">px</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">py</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">corners_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">rx</span><span class="p">)</span>
+        <span class="n">corners_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cy</span> <span class="o">+</span> <span class="n">ry</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">corners_x</span><span class="p">,</span> <span class="n">corners_y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># test: the same square rotated by 0, 0.2 and 0.7 radians -- axes ON, diagram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)]:</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">square_corners</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">-</span> <span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"angle = </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"one square, three rotations"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5ee497bec0d9ef7c4a3241209cb78b7f7c584a41282182ff361eb83fb0624caf.png" src="../_images/5ee497bec0d9ef7c4a3241209cb78b7f7c584a41282182ff361eb83fb0624caf.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Schotter: order at the top, disorder at the bottom</span>
+<span class="c1"># random.uniform(-1, 1) draws a value anywhere between -1 and 1</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1968</span><span class="p">)</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">max_rotation</span> <span class="o">=</span> <span class="mf">1.2</span>   <span class="c1"># radians of tilt, reached in the last row</span>
+<span class="n">max_shift</span> <span class="o">=</span> <span class="mf">0.45</span>     <span class="c1"># displacement in cell units, reached in the last row</span>
+<span class="n">square_size</span> <span class="o">=</span> <span class="mf">0.94</span>   <span class="c1"># squares slightly smaller than one grid cell</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="n">disorder</span> <span class="o">=</span> <span class="n">row</span> <span class="o">/</span> <span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>          <span class="c1"># 0.0 in the top row, 1.0 in the last</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_rotation</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">square_corners</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">square_size</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/509ce7109d75083517063ce092667fe25f17fa5f7d0dbf9cd81830448b073264.png" src="../_images/509ce7109d75083517063ce092667fe25f17fa5f7d0dbf9cd81830448b073264.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>Time to make the systems yours. Below, both generators are wrapped into functions whose <strong>parameters</strong> are all in one place: the number of walkers, the step count, the palette, the amount of disorder. Each function also takes a <code class="docutils literal notranslate"><span class="pre">seed</span></code>, the artwork’s serial number: same seed, same artwork (chapter 2 explains why; change it freely). And the <code class="docutils literal notranslate"><span class="pre">name=value</span></code> pairs in the <code class="docutils literal notranslate"><span class="pre">def</span></code> lines are default values, chapter 0’s trick: call <code class="docutils literal notranslate"><span class="pre">random_walk_art()</span></code> with no arguments and you get all of them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished walk generator: every parameter in one place</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_walk_art</span><span class="p">(</span><span class="n">n_walkers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_walkers</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+            <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">directions</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+            <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">w</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished Schotter generator</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">schotter</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span>
+             <span class="n">square_size</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">cell_inches</span><span class="o">=</span><span class="mf">0.42</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1968</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="n">cell_inches</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">cell_inches</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="n">disorder</span> <span class="o">=</span> <span class="n">row</span> <span class="o">/</span> <span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_rotation</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+            <span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+            <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">square_corners</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">square_size</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four variations -- compare them before reading the question below</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">random_walk_art</span><span class="p">(</span><span class="n">n_walkers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"monochrome"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">random_walk_art</span><span class="p">(</span><span class="n">n_walkers</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"pastel"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/74647451a2a5ba4fcf4986d10239c926b435ab289ccf95f74566a18f3f85a386.png" src="../_images/74647451a2a5ba4fcf4986d10239c926b435ab289ccf95f74566a18f3f85a386.png" />
+<img alt="../_images/2d50e063a81762331fd30b95e6476d065a91822be45334aee2a36372a446c876.png" src="../_images/2d50e063a81762331fd30b95e6476d065a91822be45334aee2a36372a446c876.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">art_3</span> <span class="o">=</span> <span class="n">schotter</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">art_4</span> <span class="o">=</span> <span class="n">schotter</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d88f9b1c7e248af70b37ef49dcfe6ffaccb0c01874f3502b842c3fade682099c.png" src="../_images/d88f9b1c7e248af70b37ef49dcfe6ffaccb0c01874f3502b842c3fade682099c.png" />
+<img alt="../_images/237176f21b5e3c0b4554ac0bc57d6fa56a9d2ef48c216e8c95f3d678b7e0c0e7.png" src="../_images/237176f21b5e3c0b4554ac0bc57d6fa56a9d2ef48c216e8c95f3d678b7e0c0e7.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Which of the four images feels calmest, which feels most violent? For the two <em>Schotter</em> variants: both use the <em>same</em> random sequence (<code class="docutils literal notranslate"><span class="pre">seed=7</span></code>), so every difference you see comes from <code class="docutils literal notranslate"><span class="pre">max_rotation</span></code> and <code class="docutils literal notranslate"><span class="pre">max_shift</span></code> alone. At which point does the grid stop reading as a grid? Is the original’s charm perhaps precisely that it stops <em>just</em> before that point?</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Pick your favorite parameters, put your name in the cell below, and run it. The image lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code> at print quality; this folder becomes your personal gallery over the course of the book.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">schotter</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f15e51dbf2cc3eb527fe271087475f5dbdc4edc51e3f62ddf26a24df8b9beed1.png" src="../_images/f15e51dbf2cc3eb527fe271087475f5dbdc4edc51e3f62ddf26a24df8b9beed1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch01_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the drifting walker.</strong> <code class="docutils literal notranslate"><span class="pre">random.choice(directions)</span></code> treats all four directions equally. Use <code class="docutils literal notranslate"><span class="pre">random.choices(directions,</span> <span class="pre">weights=[1,</span> <span class="pre">1,</span> <span class="pre">3,</span> <span class="pre">1])[0]</span></code> (note the plural and the final <code class="docutils literal notranslate"><span class="pre">[0]</span></code>: <code class="docutils literal notranslate"><span class="pre">random.choices</span></code> returns a <em>list</em> of picks, here of length one; also look at the order of our <code class="docutils literal notranslate"><span class="pre">directions</span></code> list) to make the walker drift to the right. Try different weights: at what ratio does the drift become visible? At what ratio does the walk become boring?</p>
+<p><strong>(b) Code modification: rotate the erosion.</strong> Modify <code class="docutils literal notranslate"><span class="pre">schotter</span></code> so that disorder grows from <strong>left to right</strong> instead of from top to bottom (Nees’ vertical becomes a horizontal). One line decides.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">schotter_horizontal</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span>
+                        <span class="n">square_size</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">cell_inches</span><span class="o">=</span><span class="mf">0.42</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1968</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="n">cell_inches</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">cell_inches</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">disorder</span> <span class="o">=</span> <span class="n">col</span> <span class="o">/</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># &lt;- was: row / (rows - 1)</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_rotation</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+            <span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">disorder</span> <span class="o">*</span> <span class="n">max_shift</span>
+            <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">square_corners</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">square_size</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">schotter_horizontal</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The disorder gradient now depends on the column index. Swapping <code class="docutils literal notranslate"><span class="pre">rows</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> in the call keeps the landscape format.</p>
+</details>
+<p><strong>(c) Creative challenge: your own erosion rule.</strong> <em>Schotter</em>’s rule is “disorder grows downward”. Invent a different one: disorder growing from the center outward, disorder only in a diagonal band, order and disorder alternating in stripes… Change how <code class="docutils literal notranslate"><span class="pre">disorder</span></code> is computed from <code class="docutils literal notranslate"><span class="pre">row</span></code> and <code class="docutils literal notranslate"><span class="pre">col</span></code>, and give your piece a title.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Sol LeWitt, <a class="reference external" href="https://en.wikipedia.org/wiki/Paragraphs_on_Conceptual_Art">“Paragraphs on Conceptual Art”</a>, <em>Artforum</em>, 1967: four pages, the founding text of art-as-instruction.</p></li>
+<li><p>Georg Nees, <a class="reference external" href="https://collections.vam.ac.uk/item/O221321/schotter-print-nees-georg/"><em>Schotter</em> in the Victoria &amp; Albert Museum collection</a>: the original plotter drawing, with context on Nees and the Stuttgart school.</p></li>
+<li><p>Philip Galanter, <a class="reference external" href="https://www.philipgalanter.com/downloads/ga2003_paper.pdf">“What Is Generative Art?”</a> (2003): the definition quoted above; read sections 1–3, skim the rest.</p></li>
+<li><p>Daniel Shiffman, <a class="reference external" href="https://natureofcode.com/random/"><em>The Nature of Code</em>, chapter 0 “Randomness”</a>: the same ideas as today in JavaScript; the prose is excellent and language-independent.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-dam"></span>DAM (Digital Art Museum). Vera Molnar, artist entry. <a class="reference external" href="https://dam.org/museum/artists_ui/artists/molnar-vera/">dam.org</a>. Her dates, the hand-executed <em>machine imaginaire</em> method, and the move to a real computer in 1968.</p></li>
+<li><p><span id="ref-galanter2003"></span>Galanter, P. (2003). What Is Generative Art? Complexity Theory as a Context for Art Theory. In <em>Proceedings of the 6th Generative Art Conference (GA2003)</em>, Milan. <a class="reference external" href="https://www.philipgalanter.com/downloads/ga2003_paper.pdf">philipgalanter.com/downloads/ga2003_paper.pdf</a>.</p></li>
+<li><p><span id="ref-lewitt1967"></span>LeWitt, S. (1967). Paragraphs on Conceptual Art. <em>Artforum</em>, 5(10), 79–83. The source of “The idea becomes a machine that makes the art.”</p></li>
+<li><p><span id="ref-massmoca"></span>MASS MoCA. Sol LeWitt, <em>Wall Drawing 86</em>, 1971. <a class="reference external" href="https://massmoca.org/event/walldrawing86/">massmoca.org/event/walldrawing86</a>. Gives the ten-thousand-lines instruction verbatim.</p></li>
+<li><p><span id="ref-nake2009"></span>Nake, F. (2009). The Semiotic Engine: Notes on the History of Algorithmic Images in Europe. <em>Art Journal</em>, 68(1), 76–89. <a class="reference external" href="https://doi.org/10.1080/00043249.2009.10791337">doi:10.1080/00043249.2009.10791337</a>. Nake’s eyewitness account of the February 1965 Stuttgart opening, including the Nees anecdote.</p></li>
+<li><p><span id="ref-paulacooper"></span>Paula Cooper Gallery. Sol LeWitt, artist page. <a class="reference external" href="https://www.paulacoopergallery.com/artists/sol-lewitt">paulacoopergallery.com</a>. LeWitt’s first wall drawing was executed for the gallery’s inaugural show in 1968.</p></li>
+<li><p><span id="ref-vam"></span>Victoria and Albert Museum. Georg Nees, <em>Schotter</em>, collection entry. <a class="reference external" href="https://collections.vam.ac.uk/item/O221321/schotter-print-nees-georg/">collections.vam.ac.uk</a>. Dates, the ALGOL program, and the computer-driven drawing machine.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">schotter</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">max_rotation</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1968</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/78e59d4cc02f0916117966111fc6f7dc703f469026af8398005a9527e1468087.png" src="../_images/78e59d4cc02f0916117966111fc6f7dc703f469026af8398005a9527e1468087.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch01_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="00-warming-up.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">0. Warming Up: Python and Mathematics from Zero</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-chance-and-randomness.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. Chance Operations and Controlled Randomness</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-artist-as-system-designer">Context: the artist as system designer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-recipe-that-rolls-dice">A recipe that rolls dice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-canvas-coordinates">The canvas: coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up">Build-up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-random-walk">The random walk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#many-walkers-and-a-first-palette">Many walkers, and a first palette</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-schotter">Reconstructing <em>Schotter</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

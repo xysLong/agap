@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>16. Filters, Edges, and Dithering &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/16-filters-and-dithering';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="17. Pixel Sorting: The Aesthetics of the Glitch" href="17-pixel-sorting.html" />
+    <link rel="prev" title="15. Voronoi, Delaunay, and Stippling" href="15-voronoi-and-stippling.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>16. Filters, Edges, and Dithering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-dot-that-conquered-the-image">Context: the dot that conquered the image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-finally-opened">Convolution, finally opened</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filter-in-your-cortex">The filter in your cortex</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dithering-continuous-tone-from-binary-ink">Dithering: continuous tone from binary ink</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-colors-are-enough-duotone-and-halftone">Two colors are enough: duotone and halftone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="filters-edges-and-dithering">
+<h1>16. Filters, Edges, and Dithering<a class="headerlink" href="#filters-edges-and-dithering" title="Link to this heading">#</a></h1>
+<p>Nine numbers slid across a painting can blur it, sharpen it, or find its bones. Today we finally open the convolution box we have been borrowing since chapter 13, meet the filter bank wired into your own visual cortex, and end by printing a Vermeer with two colors and no gray at all.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p><em>Girl with a Pearl Earring</em> in navy and cream. Look closely: there is no shading anywhere, every single pixel is pure navy or pure cream. The halftones you nonetheless see are an arithmetic illusion called error diffusion, invented in 1976 for screens that could only switch pixels on or off, and secretly one of the most elegant algorithms in graphics. By the end of today you can run any image through it, and through the rest of the algorithmic eye.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch16_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ecab9a2ad29ad4f9070543c609225c6b8956b03e00146d8c309daeb5aa987dce.png" src="../_images/ecab9a2ad29ad4f9070543c609225c6b8956b03e00146d8c309daeb5aa987dce.png" />
+</div>
+</div>
+</section>
+<section id="context-the-dot-that-conquered-the-image">
+<h2>Context: the dot that conquered the image<a class="headerlink" href="#context-the-dot-that-conquered-the-image" title="Link to this heading">#</a></h2>
+<p>In 1879 the printer <strong>Benjamin Henry Day Jr.</strong> patented a cheap way to lay tone onto a printing plate: uniform fields of small dots <a class="cite" href="#ref-day1879">(Day 1879)</a>. <strong>Ben-Day dots</strong> became the workhorse of pulp comics, four colors of dot screens stacked into flesh and sky, and they would have stayed a printer’s trade secret had <strong>Roy Lichtenstein</strong> not blown them up to canvas size. <em>Look Mickey</em> (1961) <a class="cite" href="#ref-nga">(National Gallery of Art, collection entry)</a> and <em>Whaam!</em> (1963) <a class="cite" href="#ref-tate">(Tate, collection entry)</a> reproduce, by hand and stencil, the mechanical texture of cheap printing, at a scale where the mechanism becomes the subject. It was a scandal precisely because everyone recognized the dots: the <em>reproduction process itself</em> had become the style.</p>
+<p>Lichtenstein could count on that recognition because the mass-produced image had saturated the world for eighty years. Halftone screens, which turn a photograph into printable dots, carried pictures into newspapers from the 1880s on <a class="cite" href="#ref-mirseyedi2017">(Mirseyedi 2017)</a>, and in 1935 <strong>Walter Benjamin</strong> wrote the essay that still frames every discussion of the subject, <em>The Work of Art in the Age of Its Technological Reproducibility</em> <a class="cite" href="#ref-benjamin1936">(Benjamin 1935/36)</a>: what evaporates in mass reproduction, he argued, is the artwork’s <em>aura</em>, its unique presence in one place and time, and what replaces it is a new, political way of seeing. One respectful paragraph is all we can give him here, but notice that today’s session is spent entirely inside his subject: every technique below is a way of <em>re-encoding</em> an image for a reproduction technology, and every one of them has since been adopted as an aesthetic in its own right. The glitch artists made that adoption explicit: from the 2000s on, artists such as <strong>Rosa Menkman</strong> treat compression artifacts, scan lines and dither patterns not as failures but as the medium showing its true face <a class="cite" href="#ref-menkman2011">(Menkman 2011)</a>.</p>
+<p>One more thread, running toward the sciences. In 1959 <strong>David Hubel</strong> and <strong>Torsten Wiesel</strong> discovered that neurons in the cat’s primary visual cortex fire not at points of light but at <em>oriented edges</em>, each neuron tuned to its own angle <a class="cite" href="#ref-hubel1959">(Hubel and Wiesel 1959)</a> (a finding that earned them the 1981 Nobel Prize; <a class="cite" href="#ref-nobel1981">Nobel Foundation</a>). The mathematical filter that best mimics these neurons is the <strong>Gabor filter</strong>, a Gaussian window multiplied by a wave, and when researchers fit real cortical measurements <a class="cite" href="#ref-jones1987">(Jones and Palmer, 1987)</a>, Gabor functions matched remarkably well. So when we run a bank of Gabor filters over Hokusai later today, we are computing a crude sketch of what your own early visual system extracts from the print before you <em>see</em> anything at all. The gap between such computable features and felt aesthetic experience is an open research question, and it happens to be the one the instructor’s field lives in.</p>
+</section>
+<section id="convolution-finally-opened">
+<h2>Convolution, finally opened<a class="headerlink" href="#convolution-finally-opened" title="Link to this heading">#</a></h2>
+<p>Chapter 13 used <code class="docutils literal notranslate"><span class="pre">convolve</span></code> to count a cell’s neighbors; chapter 14 used it to diffuse chemicals. Time to open the box. <strong>Convolution</strong> (Faltung) slides a small grid of weights, the <strong>kernel</strong>, across the image; at every stop, each image value under the kernel is multiplied by the weight over it, and the products are summed into one output pixel.</p>
+<p>One stop worked through by hand. Take a 5 x 5 image patch and the 3 x 3 <em>averaging</em> kernel (all weights <span class="math notranslate nohighlight">\(\tfrac{1}{9}\)</span>), centered on the middle pixel:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{image patch} = \begin{pmatrix} 0 &amp; 0 &amp; 0 &amp; 9 &amp; 9 \\ 0 &amp; \mathbf{0} &amp; \mathbf{0} &amp; \mathbf{9} &amp; 9 \\ 0 &amp; \mathbf{0} &amp; \mathbf{0} &amp; \mathbf{9} &amp; 9 \\ 0 &amp; \mathbf{0} &amp; \mathbf{0} &amp; \mathbf{9} &amp; 9 \\ 0 &amp; 0 &amp; 0 &amp; 9 &amp; 9 \end{pmatrix} \qquad \text{kernel} = \begin{pmatrix} 1/9 &amp; 1/9 &amp; 1/9 \\ 1/9 &amp; 1/9 &amp; 1/9 \\ 1/9 &amp; 1/9 &amp; 1/9 \end{pmatrix}\end{split}\]</div>
+<p>Centered on the middle pixel, the kernel covers the bold 3 x 3 window: six zeros and three nines. The output there is <span class="math notranslate nohighlight">\(\tfrac{1}{9}(0+0+9+0+0+9+0+0+9) = 3\)</span>: the hard 0-to-9 cliff has become a 3, a step on a ramp. Slide the kernel one pixel everywhere and every cliff softens: that is all a blur is. The whole operation is two loops and a multiply-sum, so we write it ourselves before ever trusting the library again:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># convolution by hand: slide the kernel, multiply, sum -- nothing else</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convolve_manual</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">reach</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reach</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">reach</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reach</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">reach</span><span class="p">):</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="n">reach</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="n">reach</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                           <span class="n">col</span> <span class="o">-</span> <span class="n">reach</span><span class="p">:</span><span class="n">col</span> <span class="o">+</span> <span class="n">reach</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">window</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">tiny</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+<span class="n">blur_kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">9</span>
+<span class="n">ours</span> <span class="o">=</span> <span class="n">convolve_manual</span><span class="p">(</span><span class="n">tiny</span><span class="p">,</span> <span class="n">blur_kernel</span><span class="p">)</span>
+<span class="n">scipys</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">tiny</span><span class="p">,</span> <span class="n">blur_kernel</span><span class="p">)</span>
+<span class="c1"># np.allclose: equal up to tiny floating-point rounding</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"matches scipy (away from the border):"</span><span class="p">,</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">ours</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">scipys</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matches scipy (away from the border): True
+</pre></div>
+</div>
+</div>
+</div>
+<p>(The borders differ because scipy invents values beyond the edge and we simply stop; every convolution implementation must choose some such policy. A second small print: textbooks define convolution with the kernel rotated 180 degrees first, and scipy’s <code class="docutils literal notranslate"><span class="pre">convolve</span></code> duly rotates it; our slide-and-sum does not bother. For symmetric kernels nothing changes, and for the Sobel kernels below only the sign of the output flips, invisible in these autoscaled pictures.) From here we use scipy’s <code class="docutils literal notranslate"><span class="pre">convolve</span></code> for speed, knowing exactly what it does.</p>
+<p>Now the astonishing part. Blurring, sharpening and edge-finding are <strong>the same operation with different weights</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{blur} = \tfrac{1}{25}\begin{pmatrix} 1 &amp; \cdots &amp; 1 \\ \vdots &amp; &amp; \vdots \\ 1 &amp; \cdots &amp; 1 \end{pmatrix} \qquad \text{sharpen} = \begin{pmatrix} 0 &amp; -1 &amp; 0 \\ -1 &amp; 5 &amp; -1 \\ 0 &amp; -1 &amp; 0 \end{pmatrix} \qquad \text{Sobel}_x = \begin{pmatrix} -1 &amp; 0 &amp; 1 \\ -2 &amp; 0 &amp; 2 \\ -1 &amp; 0 &amp; 1 \end{pmatrix}\end{split}\]</div>
+<p>Read the Sobel kernel aloud: <em>right neighbors minus left neighbors</em>. Its output is large wherever brightness changes horizontally, an estimate of the derivative, which is why edge people call it a <strong>gradient</strong> filter. Its transpose (the same grid flipped so rows become columns) does the same vertically, and the length of the combined vector, <span class="math notranslate nohighlight">\(\sqrt{S_x^2 + S_y^2}\)</span>, measures edge strength regardless of direction (chapter 15’s mosaic used exactly this, via <code class="docutils literal notranslate"><span class="pre">np.gradient</span></code>, to place its seeds).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one print, five filters: the same sliding sum, different nine numbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">original</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../assets/images/hokusai_wave.jpg"</span><span class="p">)</span>
+<span class="n">scale_w</span> <span class="o">=</span> <span class="mi">480</span>
+<span class="n">scale_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">scale_w</span> <span class="o">/</span> <span class="n">original</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">KERNELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"blur"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">/</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="s2">"sharpen"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+    <span class="s2">"Sobel x"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span>
+    <span class="s2">"Sobel y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span>
+<span class="p">}</span>
+<span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">convolve</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">KERNELS</span><span class="p">[</span><span class="s2">"Sobel x"</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+                   <span class="o">+</span> <span class="n">convolve</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">KERNELS</span><span class="p">[</span><span class="s2">"Sobel y"</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">5.6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"original"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">KERNELS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">convolve</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"gradient magnitude"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f504107d9dde05f4f62b5c79c54f757b932a9a400ebc1e4eb229ee39754ba66e.png" src="../_images/f504107d9dde05f4f62b5c79c54f757b932a9a400ebc1e4eb229ee39754ba66e.png" />
+</div>
+</div>
+<p>The Sobel pair sees the wave differently: Sobel x lights up the falling walls of water (vertical edges change horizontally), Sobel y the horizontal rims of foam. The gradient magnitude combines them into a line drawing Hokusai never drew, yet every line of it is his.</p>
+<p><strong>Try it.</strong> Make the blur kernel 15 x 15 (<code class="docutils literal notranslate"><span class="pre">np.ones((15,</span> <span class="pre">15))</span> <span class="pre">/</span> <span class="pre">225</span></code>) and the print goes properly myopic. Then try a kernel of your own invention; predicting what nine numbers will do before running them is exercise (a).</p>
+</section>
+<section id="the-filter-in-your-cortex">
+<h2>The filter in your cortex<a class="headerlink" href="#the-filter-in-your-cortex" title="Link to this heading">#</a></h2>
+<p>A <strong>Gabor filter</strong> is a <strong>Gaussian</strong> bump multiplied by a cosine wave. The Gaussian is the bell curve behind chapter 2’s <code class="docutils literal notranslate"><span class="pre">rng.normal</span></code>, here met as a formula for the first time: the letter <span class="math notranslate nohighlight">\(e\)</span> is a fixed number, roughly 2.718, and <span class="math notranslate nohighlight">\(e^{-t}\)</span> falls smoothly toward 0 as <span class="math notranslate nohighlight">\(t\)</span> grows, so the bell fades away from its center (chapter 24 will make this curve a whole chapter’s brush). The product is: a little patch of <em>oriented stripes that fades out</em>. Formally, with coordinates rotated by the filter’s angle <span class="math notranslate nohighlight">\(\theta\)</span> (two more Greek dials inside: <span class="math notranslate nohighlight">\(\sigma\)</span>, sigma, sets the width of the bell, and <span class="math notranslate nohighlight">\(\lambda\)</span>, lambda, the spacing of the stripes):</p>
+<div class="math notranslate nohighlight">
+\[G(x, y) = \underbrace{e^{-\frac{x'^2 + y'^2}{2\sigma^2}}}_{\text{Gaussian window}} \cdot \underbrace{\cos\!\left(\frac{2\pi x'}{\lambda}\right)}_{\text{wave}}\]</div>
+<p>Convolved with an image, it responds strongly exactly where the image contains stripes of its own orientation and spacing, which is what Hubel and Wiesel’s neurons do. First look the filter itself in the eye:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the Gabor kernel itself: a Gaussian bump times a wave, at four angles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">gabor_kernel</span><span class="p">,</span> <span class="n">gabor</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">135</span><span class="p">]):</span>
+    <span class="c1"># gabor_kernel is complex (chapter 8's numbers); we keep the real part</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">gabor_kernel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tuned to </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2"> degrees"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ac58780a47d140bbbf5921c43f9091c82f797811b33df0f9789b9792939d46e3.png" src="../_images/ac58780a47d140bbbf5921c43f9091c82f797811b33df0f9789b9792939d46e3.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a six-neuron cortex looks at the wave: what does each orientation see?</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">5.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">150</span><span class="p">]):</span>
+    <span class="n">real</span><span class="p">,</span> <span class="n">imag</span> <span class="o">=</span> <span class="n">gabor</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">imag</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2"> degrees"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/874483597dfd602d587075c49a0938750267a9f7812e924d1e2e378ee996cfcf.png" src="../_images/874483597dfd602d587075c49a0938750267a9f7812e924d1e2e378ee996cfcf.png" />
+</div>
+</div>
+<p>Six pictures of the same print, none of which is the print: each panel is the firing map of one orientation channel, bright where that channel finds food. (One subtlety: skimage’s angle names the direction the wave <em>travels</em>, so the 0-degree kernel is striped vertically and fires on <em>vertical</em> structure.) The wave’s great claw feeds several channels at once as it curls through every orientation, while the flat sky feeds none, and the rain of foam flecks scatters energy everywhere. Vision science reads such maps as a first draft of seeing; for us they are also simply <em>pictures</em>, and “what does the painting look like to an orientation detector” is a legitimate answer to “show me this artwork again, differently.”</p>
+<p><strong>Try it.</strong> In the cell above, change <code class="docutils literal notranslate"><span class="pre">frequency=0.15</span></code> to <code class="docutils literal notranslate"><span class="pre">0.05</span></code>: the channels go long-sighted and respond only to broad, slow stripes. Then edit the angle list itself; the six neurons are yours to rewire.</p>
+</section>
+<section id="dithering-continuous-tone-from-binary-ink">
+<h2>Dithering: continuous tone from binary ink<a class="headerlink" href="#dithering-continuous-tone-from-binary-ink" title="Link to this heading">#</a></h2>
+<p>Now the finale. Suppose your output device has exactly two states per pixel, ink or no ink (a 1970s terminal, a laser printer, a riso master). The naive move is a <strong>threshold</strong>: everything darker than 50 percent becomes ink. You will see in a moment how brutally that fails: entire tonal regions collapse into silhouette.</p>
+<p>The fix, found by <strong>Robert Floyd</strong> and <strong>Louis Steinberg</strong> in 1976, is one of those algorithms that fits on an index card and changed everything <a class="cite" href="#ref-floyd1976">(Floyd and Steinberg 1976)</a>. Round each pixel to 0 or 1, but <em>keep the rounding error</em> and hand it to the neighbors not yet visited, in fixed shares of sixteenths:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{matrix} &amp; \bullet &amp; 7/16 \\ 3/16 &amp; 5/16 &amp; 1/16 \end{matrix}\end{split}\]</div>
+<p>Watch it work on a single row of four pixels (0 is black ink, 1 is white paper), all mid-gray except the first, slightly brighter: 0.6, 0.5, 0.5, 0.5. Pixel one: 0.6 rounds <em>up</em> to 1 (paper), error <span class="math notranslate nohighlight">\(0.6 - 1 = -0.4\)</span>, of which <span class="math notranslate nohighlight">\(7/16\)</span> (that is <span class="math notranslate nohighlight">\(-0.175\)</span>) flows right. Pixel two now holds <span class="math notranslate nohighlight">\(0.5 - 0.175 = 0.325\)</span>, rounds to 0 (ink), error <span class="math notranslate nohighlight">\(+0.325\)</span>, flows on. Pixel three holds <span class="math notranslate nohighlight">\(0.5 + 0.142 = 0.642\)</span> (<span class="math notranslate nohighlight">\(7/16\)</span> of <span class="math notranslate nohighlight">\(+0.325\)</span> is the <span class="math notranslate nohighlight">\(+0.142\)</span>), rounds to 1. Pixel four, pushed down again, rounds to 0. Result: paper, ink, paper, ink, a 50 percent checker, which is exactly what mid-gray <em>should</em> look like in binary. No pixel is ever right; the neighborhood is right on average, because the error is never thrown away. <strong>Error diffusion</strong> (Fehlerdiffusion) is bookkeeping as art.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Floyd-Steinberg: round each pixel, hand the rounding error onward</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">floyd_steinberg</span><span class="p">(</span><span class="n">gray</span><span class="p">):</span>
+    <span class="n">canvas</span> <span class="o">=</span> <span class="n">gray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="n">old</span> <span class="o">=</span> <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">old</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">old</span> <span class="o">-</span> <span class="n">new</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">/</span> <span class="mi">16</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">16</span>
+                <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">16</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                    <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">16</span>
+    <span class="k">return</span> <span class="n">canvas</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the same Vermeer with one bit per pixel: threshold vs error diffusion</span>
+<span class="n">vermeer_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../assets/images/vermeer_pearl_earring.jpg"</span><span class="p">)</span>
+<span class="n">v_w</span> <span class="o">=</span> <span class="mi">360</span>
+<span class="n">v_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vermeer_image</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">v_w</span> <span class="o">/</span> <span class="n">vermeer_image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">vermeer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vermeer_image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">v_w</span><span class="p">,</span> <span class="n">v_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">thresholded</span> <span class="o">=</span> <span class="p">(</span><span class="n">vermeer</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dithered</span> <span class="o">=</span> <span class="n">floyd_steinberg</span><span class="p">(</span><span class="n">vermeer</span><span class="p">)</span>      <span class="c1"># a few seconds of pure-python honesty</span>
+
+<span class="n">panels</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vermeer</span><span class="p">,</span> <span class="s2">"256 grays"</span><span class="p">),</span> <span class="p">(</span><span class="n">thresholded</span><span class="p">,</span> <span class="s2">"threshold"</span><span class="p">),</span>
+          <span class="p">(</span><span class="n">dithered</span><span class="p">,</span> <span class="s2">"Floyd-Steinberg"</span><span class="p">)]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">panels</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f70a2eed8ebfea36227f0d8d340205696563b6c33263c0f3af54aa4ffe1212b4.png" src="../_images/f70a2eed8ebfea36227f0d8d340205696563b6c33263c0f3af54aa4ffe1212b4.png" />
+</div>
+</div>
+<p>The threshold panel is a police sketch: face or no face. The Floyd-Steinberg panel, made of <em>exactly the same two values</em>, keeps the turban’s sheen, the cheek’s roundness, even the earring, carried entirely by dot spacing, like chapter 15’s stipples but grown from arithmetic instead of geometry. Zoom in (the book page lets you) and the gray dissolves into checkers and worms; step back and the girl reassembles. The error-diffusion grain became a period texture in its own right: fax machines, dot-matrix printouts, 1-bit Macintosh art, and its revival is a staple of today’s glitch and indie-game aesthetics.</p>
+<p><strong>Try it.</strong> In the Floyd-Steinberg cell, change <code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">*</span> <span class="pre">7</span> <span class="pre">/</span> <span class="pre">16</span></code> to <code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">*</span> <span class="pre">12</span> <span class="pre">/</span> <span class="pre">16</span></code> (and leave the rest): the bookkeeping now over-pays the right neighbor and the grain starts to smear into diagonal ropes. The exact sixteenths are not sacred; they are just unusually well chosen.</p>
+</section>
+<section id="two-colors-are-enough-duotone-and-halftone">
+<h2>Two colors are enough: duotone and halftone<a class="headerlink" href="#two-colors-are-enough-duotone-and-halftone" title="Link to this heading">#</a></h2>
+<p>Dressing the binary image is now easy: send ink pixels to one color and blank pixels to another. <code class="docutils literal notranslate"><span class="pre">np.where</span></code> (chapter 10) picks per pixel, and <code class="docutils literal notranslate"><span class="pre">np.kron</span></code> (chapter 13’s pixel-art enlarger) scales the result up with hard edges so the dither grain survives as crisp pixels rather than blur.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># duotone: the same 0/1 pixels wearing any two colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_rgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_artwork</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">duotone</span><span class="p">(</span><span class="n">binary</span><span class="p">,</span> <span class="n">dark</span><span class="o">=</span><span class="s2">"#14284B"</span><span class="p">,</span> <span class="n">light</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">upscale</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># [..., None] adds a channel axis, so each 0/1 can meet an RGB triple</span>
+    <span class="n">colored</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">binary</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">light</span><span class="p">),</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">dark</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">colored</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">upscale</span><span class="p">,</span> <span class="n">upscale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+<span class="n">inkings</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"#14284B"</span><span class="p">,</span> <span class="s2">"#F2EFE9"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"#701C1C"</span><span class="p">,</span> <span class="s2">"#FAF7F0"</span><span class="p">),</span>
+           <span class="p">(</span><span class="s2">"#1E1420"</span><span class="p">,</span> <span class="s2">"#D96C3F"</span><span class="p">)]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">dark</span><span class="p">,</span> <span class="n">light</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">inkings</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">duotone</span><span class="p">(</span><span class="n">dithered</span><span class="p">,</span> <span class="n">dark</span><span class="p">,</span> <span class="n">light</span><span class="p">,</span> <span class="n">upscale</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dark</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">light</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/06f77015843458dae0128b3a91d5eba37a0e529e06bed6fb7630800f087077a0.png" src="../_images/06f77015843458dae0128b3a91d5eba37a0e529e06bed6fb7630800f087077a0.png" />
+</div>
+</div>
+<p>And for the full Lichtenstein: <strong>halftone</strong>. Instead of diffusing error pixel by pixel, classic printing averages a whole cell of the image and prints <em>one dot whose size matches the cell’s darkness</em>. We already know every ingredient: slice the image into cells, take each cell’s mean, draw circles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># halftone: one dot per cell, its width following the cell's mean darkness</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">halftone</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">dot_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">paper</span><span class="o">=</span><span class="n">PAPER</span><span class="p">,</span>
+             <span class="n">figsize</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">gray</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">sizes</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">gray</span><span class="p">[</span><span class="n">row</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="n">cell</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span><span class="n">col</span> <span class="o">+</span> <span class="n">cell</span><span class="p">]</span>
+            <span class="n">darkness</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">block</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="n">cell</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="n">cell</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># the 2.6 converts cell units to scatter's point units</span>
+            <span class="n">sizes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">darkness</span> <span class="o">*</span> <span class="n">cell</span> <span class="o">*</span> <span class="n">dot_scale</span> <span class="o">*</span> <span class="mf">2.6</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">*</span> <span class="n">height</span> <span class="o">/</span> <span class="n">width</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">sizes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">art_benday</span> <span class="o">=</span> <span class="n">halftone</span><span class="p">(</span><span class="n">vermeer</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a2e430e6ff7f9ff12d13adc0d6cc0f8cb8cc1291f7e6a7395632adc2daeb15d9.png" src="../_images/a2e430e6ff7f9ff12d13adc0d6cc0f8cb8cc1291f7e6a7395632adc2daeb15d9.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Three renderings of tone with two inks each: Floyd-Steinberg’s organic grain, the halftone’s marching dots, the threshold’s blunt silhouette. Which one says “machine” loudest? Most people answer the halftone, yet it is the <em>oldest</em> of the three, etched onto printing plates through photographic screens before electricity was common in homes <a class="cite" href="#ref-mirseyedi2017">(Mirseyedi 2017)</a>. And which would Lichtenstein have chosen? He <em>did</em> choose: the visible, regular, unapologetic dot. The grain of Floyd-Steinberg hides its algorithm; the halftone dot performs it.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Dither or halftone, any image, any two colors (chapter 6’s extracted palettes are full of good pairs; try the darkest and lightest swatch of one painting applied to another). Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: choose the technique and two colors, replace 'yourname'</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">duotone</span><span class="p">(</span><span class="n">dithered</span><span class="p">,</span> <span class="s2">"#14284B"</span><span class="p">,</span> <span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">upscale</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/405aeac46d7ad8b8efef600289fa3a52237c5e87af89880ff4e1af8b03f4629e.png" src="../_images/405aeac46d7ad8b8efef600289fa3a52237c5e87af89880ff4e1af8b03f4629e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch16_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: nine numbers of your own.</strong> Invent a 3 x 3 kernel, <em>write down your prediction</em> of what it will do to the wave, then run it. Suggested experiments: all zeros with a lone 2 somewhere off-center (where does the image go?); a kernel with weights summing to 0 (why does everything turn mid-gray except edges?); the sharpen kernel with its center raised to 9. The discipline of predicting before running is the whole exercise.</p>
+<p><strong>(b) Code modification: ordered dithering.</strong> Before error diffusion, printers used <strong>Bayer matrices</strong> <a class="cite" href="#ref-bayer1973">(Bryce Bayer, 1973)</a>: a fixed 4 x 4 pattern of thresholds, tiled across the image, each pixel compared against its own local threshold. No error is passed anywhere, so the texture is perfectly regular, crosshatch instead of grain. Implement it with the classic matrix and compare its texture to Floyd-Steinberg on the same Vermeer.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bayer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span> <span class="o">/</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">32</span>   <span class="c1"># thresholds spread over 0..1</span>
+
+<span class="n">tiled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">bayer</span><span class="p">,</span> <span class="p">(</span><span class="n">v_h</span> <span class="o">//</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v_w</span> <span class="o">//</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="n">v_h</span><span class="p">,</span> <span class="p">:</span><span class="n">v_w</span><span class="p">]</span>
+<span class="n">ordered</span> <span class="o">=</span> <span class="p">(</span><span class="n">vermeer</span> <span class="o">&gt;</span> <span class="n">tiled</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ordered</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"ordered (Bayer)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dithered</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Floyd-Steinberg"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">np.tile</span></code> repeats the little matrix like a wallpaper stamp (chapter 14 tiled its <span class="math notranslate nohighlight">\(f\)</span> ramp the same way), and the whole dither is then a single comparison, no loop at all: that regularity is why ordered dithering was fast enough for early hardware, and its woven, textile-like texture (visible in the turban) is why pixel artists still choose it deliberately today.</p>
+</details>
+<p><strong>(c) Creative challenge: the pipeline.</strong> Chain the chapters: take the Gabor response at your favorite orientation (or the gradient magnitude), threshold it into a mask of the wave’s strongest strokes, and use the mask’s dark pixels as the probability map for chapter 15’s <code class="docutils literal notranslate"><span class="pre">sample_by_map</span></code>, then render stipples or a Voronoi mosaic seeded on pure orientation energy. You are now three transformations away from Hokusai and each one is defensible: generator, filter, renderer. Name the piece honestly (<em>Wave, 60 degrees, relaxed</em>) and bring it to the gallery.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Walter Benjamin, “The Work of Art in the Age of Its Technological Reproducibility” (1935/36): the essay; short, dense, endlessly arguable.</p></li>
+<li><p>Margaret Livingstone, <em>Vision and Art: The Biology of Seeing</em> (2002): what Hubel and Wiesel’s cortex does with paintings, written for artists by a neuroscientist from that very lab.</p></li>
+<li><p>Robert Ulichney, <em>Digital Halftoning</em> (MIT Press, 1987): the standard monograph on dithering, where the blue noise of chapter 15 reappears in printing.</p></li>
+<li><p>Rosa Menkman, <em>The Glitch Moment(um)</em> (Institute of Network Cultures, 2011), free PDF online: the manifesto of the aesthetics of error.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-bayer1973"></span>Bayer, B. E. (1973). An optimum method for two-level rendition of continuous-tone pictures. <em>Conference Record, IEEE 1973 International Conference on Communications</em>, pp. 26-11 to 26-15. Proves the optimality of the threshold matrix in exercise (b).</p></li>
+<li><p><span id="ref-benjamin1936"></span>Benjamin, W. (1935/36). Das Kunstwerk im Zeitalter seiner technischen Reproduzierbarkeit. First published in French translation by P. Klossowski in <em>Zeitschrift für Sozialforschung</em>, 5 (1936); German text, Suhrkamp, 1963. The aura essay itself; short, dense, endlessly arguable.</p></li>
+<li><p><span id="ref-day1879"></span>Day, B. (1879). Improvement in printing-films. U.S. Patent 214,493, granted 22 April 1879. <a class="reference external" href="https://patents.google.com/patent/US214493A/en">Google Patents</a>. The shading-medium patent behind the Ben-Day dot.</p></li>
+<li><p><span id="ref-floyd1976"></span>Floyd, R. W., and Steinberg, L. (1976). An adaptive algorithm for spatial greyscale. <em>Proceedings of the Society for Information Display</em>, 17(2), 75–77. Three pages; the whole algorithm.</p></li>
+<li><p><span id="ref-hubel1959"></span>Hubel, D. H., and Wiesel, T. N. (1959). Receptive fields of single neurones in the cat’s striate cortex. <em>The Journal of Physiology</em>, 148(3), 574–591. <a class="reference external" href="https://doi.org/10.1113/jphysiol.1959.sp006308">doi:10.1113/jphysiol.1959.sp006308</a>. The discovery of the oriented-edge neurons.</p></li>
+<li><p><span id="ref-jones1987"></span>Jones, J. P., and Palmer, L. A. (1987). An evaluation of the two-dimensional Gabor filter model of simple receptive fields in cat striate cortex. <em>Journal of Neurophysiology</em>, 58(6), 1233–1258. <a class="reference external" href="https://doi.org/10.1152/jn.1987.58.6.1233">doi:10.1152/jn.1987.58.6.1233</a>. The fit between Gabor functions and measured cortical fields.</p></li>
+<li><p><span id="ref-menkman2011"></span>Menkman, R. (2011). <em>The Glitch Moment(um)</em>. Network Notebooks 04. Institute of Network Cultures. <a class="reference external" href="https://networkcultures.org/blog/publication/no-04-the-glitch-momentum-rosa-menkman/">Free PDF</a>. The theory of the aesthetics of error; chapter 17 returns to it.</p></li>
+<li><p><span id="ref-mirseyedi2017"></span>Mirseyedi, S. (2017). Side by Side: The Halftone’s Visual Culture of Pragmatism. <em>History of Photography</em>, 41(3), 286–310. <a class="reference external" href="https://doi.org/10.1080/03087298.2017.1353208">doi:10.1080/03087298.2017.1353208</a>. The photographic halftone screen and its arrival in the late nineteenth-century press.</p></li>
+<li><p><span id="ref-nga"></span>National Gallery of Art, Washington. <em>Look Mickey</em>, Roy Lichtenstein, 1961. <a class="reference external" href="https://www.nga.gov/artworks/71479-look-mickey">Collection entry</a>.</p></li>
+<li><p><span id="ref-nobel1981"></span>Nobel Foundation (1981). The Nobel Prize in Physiology or Medicine 1981. <a class="reference external" href="https://www.nobelprize.org/prizes/medicine/1981/">nobelprize.org</a>. Hubel and Wiesel’s share, for discoveries concerning information processing in the visual system.</p></li>
+<li><p><span id="ref-tate"></span>Tate, London. <em>Whaam!</em>, Roy Lichtenstein, 1963 (T00897). <a class="reference external" href="https://www.tate.org.uk/art/artworks/lichtenstein-whaam-t00897">Collection entry</a>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook: half a million pixels, each politely handing its rounding error onward, in pure Python; give it a few seconds. Raise <code class="docutils literal notranslate"><span class="pre">big_w</span></code> at home for a poster-sized print. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the dithered Vermeer, navy on cream</span>
+<span class="n">big_w</span> <span class="o">=</span> <span class="mi">700</span>
+<span class="n">big_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vermeer_image</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">big_w</span> <span class="o">/</span> <span class="n">vermeer_image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vermeer_image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">big_w</span><span class="p">,</span> <span class="n">big_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">duotone</span><span class="p">(</span><span class="n">floyd_steinberg</span><span class="p">(</span><span class="n">big</span><span class="p">),</span> <span class="s2">"#14284B"</span><span class="p">,</span> <span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">upscale</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">showpiece</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/41a168ab3872ca8256d1493e8cdd2827c7ce2f5790757ed9105ab493eb9a475a.png" src="../_images/41a168ab3872ca8256d1493e8cdd2827c7ce2f5790757ed9105ab493eb9a475a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch16_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="15-voronoi-and-stippling.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">15. Voronoi, Delaunay, and Stippling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="17-pixel-sorting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">17. Pixel Sorting: The Aesthetics of the Glitch</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-dot-that-conquered-the-image">Context: the dot that conquered the image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-finally-opened">Convolution, finally opened</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filter-in-your-cortex">The filter in your cortex</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dithering-continuous-tone-from-binary-ink">Dithering: continuous tone from binary ink</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-colors-are-enough-duotone-and-halftone">Two colors are enough: duotone and halftone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>14. Reaction-Diffusion: Turing Patterns &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/14-reaction-diffusion';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15. Voronoi, Delaunay, and Stippling" href="15-voronoi-and-stippling.html" />
+    <link rel="prev" title="13. Cellular Automata and Emergence" href="13-cellular-automata.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>14. Reaction-Diffusion: Turing Patterns</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-mathematician-and-the-leopard">Context: the mathematician and the leopard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-is-local-averaging">Diffusion is local averaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reaction-joins-diffusion">Reaction joins diffusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-map-of-species">The map of species</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#style-pass-chemistry-in-course-colors">Style pass: chemistry in course colors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reaction-diffusion-turing-patterns">
+<h1>14. Reaction-Diffusion: Turing Patterns<a class="headerlink" href="#reaction-diffusion-turing-patterns" title="Link to this heading">#</a></h1>
+<p>In 1952 Alan Turing proposed that two chemicals, doing nothing but reacting and spreading, could paint the leopard. Today we simulate his idea in numpy, grow spots, stripes, corals and labyrinths from a single seed, and ask what it means for ornament that nature turns out to compute its patterns.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A labyrinth grown, not drawn: the Gray-Scott reaction-diffusion system in its maze regime, run from one square seed until walls fill the canvas. No line in this image was placed by anyone; the chemistry negotiated every turn. By the end of today you can grow six different pattern species from the same five lines of update code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch14_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8defbcb2cb0562bb9491c8b2f878ef4d1917c96fd1bebaf19ea7485c3e483813.png" src="../_images/8defbcb2cb0562bb9491c8b2f878ef4d1917c96fd1bebaf19ea7485c3e483813.png" />
+</div>
+</div>
+</section>
+<section id="context-the-mathematician-and-the-leopard">
+<h2>Context: the mathematician and the leopard<a class="headerlink" href="#context-the-mathematician-and-the-leopard" title="Link to this heading">#</a></h2>
+<p><strong>Alan Turing</strong> published “The Chemical Basis of Morphogenesis” in 1952 <a class="cite" href="#ref-turing1952">(Turing 1952)</a>, two years before his death, and it reads like nothing else he wrote: a founder of computer science proposing, with full differential-equation seriousness, an explanation for the patterns on animals. His idea needs only two interacting substances he called <strong>morphogens</strong>: one that activates pattern locally, one that inhibits it over a longer range, both diffusing through tissue. Uniform gray, Turing showed, can be <em>unstable</em>: the slightest unevenness gets amplified into regular spots or stripes whose spacing is set by the chemistry, not by any blueprint. The paper was decades ahead of its evidence; experimental support arrived slowly, from the stripes of the angelfish <em>Pomacanthus</em> <a class="cite" href="#ref-kondo1995">(Kondo and Asai 1995)</a> to the ridged pattern of the mouse palate <a class="cite" href="#ref-economou2012">(Economou et al. 2012)</a>, and pattern-formation theory is now a standard part of developmental biology. The science writer <strong>Philip Ball</strong>’s trilogy <em>Nature’s Patterns</em> <a class="cite" href="#ref-ball2009">(2009)</a> is the grand tour of this world, and its recurring hero is Turing.</p>
+<p>We simulate the <strong>Gray-Scott model</strong>, a two-chemical reactor system from the 1980s <a class="cite" href="#ref-gray1984">(Gray and Scott 1984)</a> whose computational behavior <strong>John Pearson</strong> surveyed in a famous 1993 <em>Science</em> paper <a class="cite" href="#ref-pearson1993">(Pearson 1993)</a>: sweeping just two dials, a <em>feed</em> rate <span class="math notranslate nohighlight">\(f\)</span> and a <em>kill</em> rate <span class="math notranslate nohighlight">\(k\)</span>, he mapped out a dozen regimes of spots, stripes, waves and chaos. (Pearson labeled them with Greek letters; the nicknames we use, coral, mitosis, worms, come from the online communities that adopted the model, starting with <a class="cite" href="#ref-munafo">Robert Munafo’s Xmorphia catalogue</a>.)</p>
+<p>Why does this belong in an art history course? Because ornament has always shadowed nature’s patterns, and reaction-diffusion sharpens an old question. <strong>William Morris</strong> drew <em>Willow Bough</em> (1887) from willows he could see <a class="cite" href="#ref-vam">(Victoria and Albert Museum, collection entry)</a>; <strong>Hermann Obrist</strong>’s whiplash embroidery (c. 1895) abstracted plant energy into Jugendstil’s signature curve <a class="cite" href="#ref-stadtmuseum">(Münchner Stadtmuseum, collection entry)</a>; and <strong>Owen Jones</strong>, back in chapter 3, had already insisted that good ornament follows nature’s <em>principles</em> rather than copying her surfaces <a class="cite" href="#ref-jones1856">(Jones 1856)</a>. Turing hands us the sharpest version of that program: not imitating nature’s forms, and not even her principles of arrangement, but running her <em>process</em>. When today’s showpiece looks like coral, no one imitated coral; pattern and reef share an algorithm. Whether that makes the result more natural or less, more designed or less, is a genuinely open question, and it is yours to argue about in the gallery.</p>
+</section>
+<section id="diffusion-is-local-averaging">
+<h2>Diffusion is local averaging<a class="headerlink" href="#diffusion-is-local-averaging" title="Link to this heading">#</a></h2>
+<p>Two ingredients build the whole simulation, and the first is <strong>diffusion</strong> (Diffusion): stuff spreads. On a pixel grid, spreading means every cell drifts toward the average of its neighborhood, and the operator that measures “how far below my neighbors’ average am I” is the <strong>discrete Laplacian</strong>, a 3x3 convolution kernel:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla^2 \approx \begin{pmatrix} 0.05 &amp; 0.2 &amp; 0.05 \\ 0.2 &amp; -1 &amp; 0.2 \\ 0.05 &amp; 0.2 &amp; 0.05 \end{pmatrix}\end{split}\]</div>
+<p>The weights sum to zero: a flat region gets zero change, a lonely peak gets pulled down, a hole gets filled. This is chapter 13’s <code class="docutils literal notranslate"><span class="pre">convolve</span></code> doing all the work again, as promised. Watch pure diffusion erase a square:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># diffusion alone: a square spot melting under the Laplacian</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
+
+<span class="n">LAPLACIAN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]])</span>
+
+<span class="n">spot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
+<span class="n">spot</span><span class="p">[</span><span class="mi">30</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">))</span>
+<span class="n">snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">1500</span><span class="p">]</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">spot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">snapshots</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">step</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">LAPLACIAN</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c90d0d75753b26c80c8e51a7543c4453c102c12c773808a7f8ba08a7c2cbd2c7.png" src="../_images/c90d0d75753b26c80c8e51a7543c4453c102c12c773808a7f8ba08a7c2cbd2c7.png" />
+</div>
+</div>
+<p>Left alone, diffusion ends in uniform gray soup: pure entropy, no pattern.</p>
+<p><strong>Try it.</strong> Reshape the spot in the cell above (<code class="docutils literal notranslate"><span class="pre">spot[30:50,</span> <span class="pre">30:50]</span></code>): a thin bar, two separate squares, your initial. Diffusion has no opinion about shape; everything melts, only faster or slower.</p>
+<p>The second ingredient fights back.</p>
+</section>
+<section id="reaction-joins-diffusion">
+<h2>Reaction joins diffusion<a class="headerlink" href="#reaction-joins-diffusion" title="Link to this heading">#</a></h2>
+<p>The <strong>Gray-Scott system</strong> tracks two chemicals on the same grid: <span class="math notranslate nohighlight">\(u\)</span> (the <em>feedstock</em>, everywhere initially) and <span class="math notranslate nohighlight">\(v\)</span> (the <em>pattern-maker</em>, seeded in one patch). Three things happen at once: the reaction <span class="math notranslate nohighlight">\(u + 2v \to 3v\)</span>, in which <span class="math notranslate nohighlight">\(v\)</span> eats <span class="math notranslate nohighlight">\(u\)</span> to make more <span class="math notranslate nohighlight">\(v\)</span>; a <strong>feed</strong> that tops <span class="math notranslate nohighlight">\(u\)</span> back up toward 1 at rate <span class="math notranslate nohighlight">\(f\)</span>; and a <strong>kill</strong> that drains <span class="math notranslate nohighlight">\(v\)</span> away at rate <span class="math notranslate nohighlight">\(k\)</span>. With diffusion added (and <span class="math notranslate nohighlight">\(u\)</span> spreading twice as fast as <span class="math notranslate nohighlight">\(v\)</span>), the update equations are:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t} = D_u \nabla^2 u \; - \; uv^2 \; + \; f\,(1 - u)\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial v}{\partial t} = D_v \nabla^2 v \; + \; uv^2 \; - \; (f + k)\,v\]</div>
+<p>The left-hand sides just say “how this chemical changes per tick” (<span class="math notranslate nohighlight">\(\partial u/\partial t\)</span> is calculus shorthand for exactly that), and <span class="math notranslate nohighlight">\(\nabla^2\)</span>, spoken “the Laplacian”, is the neighbor-comparing kernel we just built. Term by term, in words: <em>spread, get eaten, get refilled</em> for <span class="math notranslate nohighlight">\(u\)</span>; <em>spread, grow by eating, die off</em> for <span class="math notranslate nohighlight">\(v\)</span>. (Look closely: <span class="math notranslate nohighlight">\(v\)</span>’s die-off runs at <span class="math notranslate nohighlight">\(f + k\)</span>, not <span class="math notranslate nohighlight">\(k\)</span> alone, because the same inflow that feeds <span class="math notranslate nohighlight">\(u\)</span> also flushes <span class="math notranslate nohighlight">\(v\)</span> out of the reactor.) That is the entire model. The activator-inhibitor tension Turing asked for hides in the rates: <span class="math notranslate nohighlight">\(v\)</span> promotes itself (autocatalysis) but its food diffuses in faster than it does, so growth saturates and spaces itself out. Patterns are the negotiation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one Gray-Scott step, and a seeded starting state</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gray_scott_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="n">lap_u</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">LAPLACIAN</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+    <span class="n">lap_v</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">LAPLACIAN</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+    <span class="n">reaction</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v</span> <span class="o">*</span> <span class="n">v</span>                     <span class="c1"># the u + 2v -&gt; 3v encounter rate</span>
+    <span class="n">u_next</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="n">du</span> <span class="o">*</span> <span class="n">lap_u</span> <span class="o">-</span> <span class="n">reaction</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span>
+    <span class="n">v_next</span> <span class="o">=</span> <span class="n">v</span> <span class="o">+</span> <span class="n">dv</span> <span class="o">*</span> <span class="n">lap_v</span> <span class="o">+</span> <span class="n">reaction</span> <span class="o">-</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">u_next</span><span class="p">,</span> <span class="n">v_next</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">seeded_state</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">patch</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">patch</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">patch</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">u</span><span class="p">[</span><span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">,</span> <span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">,</span> <span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># a whisper of unevenness</span>
+    <span class="n">v</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># (Turing's instability needs it)</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run the maze regime from the center seed; snapshot every thousand steps</span>
+<span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">seeded_state</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">gray_scott_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">0.029</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.057</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">snapshots</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">step</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ac39a735e5d63887da7901000a29c1bea19bfdfd07a193234c59f061da562228.png" src="../_images/ac39a735e5d63887da7901000a29c1bea19bfdfd07a193234c59f061da562228.png" />
+</div>
+</div>
+<p>The seed erupts, fingers reach out, fingers negotiate spacing, and a labyrinth crystallizes outward with a preferred wall thickness that no parameter states directly; it <em>emerges</em> from the race between feeding and killing (chapter 13’s word, now in continuous form). Five thousand steps of pure local arithmetic; nothing in the code knows what a maze is.</p>
+<p><strong>Try it.</strong> In the running cell, nudge <code class="docutils literal notranslate"><span class="pre">k</span></code> to <code class="docutils literal notranslate"><span class="pre">0.061</span></code> and rerun: same seed, entirely different species. Millimeters matter in the <span class="math notranslate nohighlight">\((f, k)\)</span> plane, which is exactly why Pearson drew a map of it.</p>
+</section>
+<section id="the-map-of-species">
+<h2>The map of species<a class="headerlink" href="#the-map-of-species" title="Link to this heading">#</a></h2>
+<p>Our six chosen settlements on Pearson’s map, each named for what you will see. The diagram (axes on: this is a map, not an artwork) shows where they sit; the gallery below actually grows each one. All six run the identical <code class="docutils literal notranslate"><span class="pre">gray_scott_step</span></code>; only <span class="math notranslate nohighlight">\((f, k)\)</span> changes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># six (f, k) presets, located on the feed-kill plane</span>
+<span class="n">PRESETS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"coral"</span><span class="p">:</span>     <span class="p">(</span><span class="mf">0.0545</span><span class="p">,</span> <span class="mf">0.062</span><span class="p">),</span>
+    <span class="s2">"mitosis"</span><span class="p">:</span>   <span class="p">(</span><span class="mf">0.0367</span><span class="p">,</span> <span class="mf">0.0649</span><span class="p">),</span>
+    <span class="s2">"maze"</span><span class="p">:</span>      <span class="p">(</span><span class="mf">0.029</span><span class="p">,</span> <span class="mf">0.057</span><span class="p">),</span>
+    <span class="s2">"solitons"</span><span class="p">:</span>  <span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.062</span><span class="p">),</span>
+    <span class="s2">"worms"</span><span class="p">:</span>     <span class="p">(</span><span class="mf">0.046</span><span class="p">,</span> <span class="mf">0.063</span><span class="p">),</span>
+    <span class="s2">"drifting spots"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">0.054</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">PRESETS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"kill rate k"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"feed rate f"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"six settlements in Gray-Scott parameter space"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+          <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f8d9a68b447b06cef6d4eec3c5949832dd628480f2866b6139b71887243c7852.png" src="../_images/f8d9a68b447b06cef6d4eec3c5949832dd628480f2866b6139b71887243c7852.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># grow all six: same code, same seed shape, six species (about half a minute)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grow</span><span class="p">(</span><span class="n">preset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">PRESETS</span><span class="p">[</span><span class="n">preset</span><span class="p">]</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">seeded_state</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">gray_scott_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">PRESETS</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grow</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cfe84857320f1a71fbd584cbbb69599403e779be6a1fd9ce954dc175ead9f67c.png" src="../_images/cfe84857320f1a71fbd584cbbb69599403e779be6a1fd9ce954dc175ead9f67c.png" />
+</div>
+</div>
+<p>Six patterns, one law. <em>Mitosis</em> earns its name in motion: its dots grow, pinch, and divide like cells (rerun with <code class="docutils literal notranslate"><span class="pre">steps=2000</span></code> to catch them mid-split). <em>Drifting spots</em> never settles at all; what you see is one frame of a perpetual migration. And <em>coral</em> at this point is still growing; give it 10000 steps and it fills the frame. The deep lesson sits in the pairing of <em>maze</em> and <em>solitons</em>: their parameters differ by a few thousandths, their outputs belong to different worlds. Developmental biologists suspect exactly such knife-edges separate the leopard from the cheetah <a class="cite" href="#ref-murray1988">(Murray 1988)</a>.</p>
+<p><strong>Try it.</strong> Found a settlement of your own: add an entry to <code class="docutils literal notranslate"><span class="pre">PRESETS</span></code> with an <span class="math notranslate nohighlight">\((f, k)\)</span> picked between two of ours, then grow it alone with <code class="docutils literal notranslate"><span class="pre">plt.imshow(grow(&quot;your</span> <span class="pre">name&quot;),</span> <span class="pre">cmap=&quot;magma&quot;)</span></code> (about fifteen seconds). Which species claims your coordinates?</p>
+</section>
+<section id="style-pass-chemistry-in-course-colors">
+<h2>Style pass: chemistry in course colors<a class="headerlink" href="#style-pass-chemistry-in-course-colors" title="Link to this heading">#</a></h2>
+<p>Grayscale-plus-colormap is the diagnostic view. For artwork we map the <span class="math notranslate nohighlight">\(v\)</span> concentration onto a two-color gradient of our own, chapter 6’s lesson that the palette <em>is</em> the picture. <code class="docutils literal notranslate"><span class="pre">LinearSegmentedColormap.from_list</span></code> builds a colormap from any two hex colors, and suddenly the same chemistry prints as indigo porcelain, riso poster, or moss on limestone.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator: a preset, two colors, print-ready chemistry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">turing_art</span><span class="p">(</span><span class="n">preset</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">220</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span>
+               <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">preset</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">colormap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">"duo"</span><span class="p">,</span> <span class="p">[</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="n">figsize</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"bilinear"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">turing_art</span><span class="p">(</span><span class="s2">"coral"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#D96C3F"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c847f6a37683d9f53dc6977b1fbf566d11bd0a9c80aadd8f4f8b4fc320189c96.png" src="../_images/c847f6a37683d9f53dc6977b1fbf566d11bd0a9c80aadd8f4f8b4fc320189c96.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 2 and 3: dividing cells in Bauhaus red, worms in deep moss</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">turing_art</span><span class="p">(</span><span class="s2">"mitosis"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">3500</span><span class="p">)</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">turing_art</span><span class="p">(</span><span class="s2">"worms"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#0E1A12"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#8FBC6D"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b7e506904ee7fd2d9df83f71da1303c7ddd3ceee8d5f1beb382b677297122125.png" src="../_images/b7e506904ee7fd2d9df83f71da1303c7ddd3ceee8d5f1beb382b677297122125.png" />
+<img alt="../_images/f43567f11427e99036afbd4044263b9205b4a952e5aa0cd851dd88c474fc3fdc.png" src="../_images/f43567f11427e99036afbd4044263b9205b4a952e5aa0cd851dd88c474fc3fdc.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The coral in ember orange reads as organic, almost wet; the same coral in gray reads as an X-ray. Which two-color pairing makes the <em>mitosis</em> dots most unsettling, and is the discomfort in the pattern or in the palette? William Morris insisted a wallpaper needed “order” behind its nature <a class="cite" href="#ref-morris1881">(Morris 1881)</a>; rank the three panels by how wallpaper-able they are, and try to name the property that disqualifies the losers.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Choose a species, choose two colors, grow yours. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>. (Patience beats resolution: doubling <code class="docutils literal notranslate"><span class="pre">size</span></code> quadruples the work <em>and</em> the pattern needs proportionally more steps to fill the frame.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust preset, colors, steps, replace 'yourname', run</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">turing_art</span><span class="p">(</span><span class="s2">"maze"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#701C1C"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2026</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0cc86c2cbc6329b31abc1a4604333d23697fb85bd0b0f0c89284d144e8a0f1b3.png" src="../_images/0cc86c2cbc6329b31abc1a4604333d23697fb85bd0b0f0c89284d144e8a0f1b3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch14_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: rain instead of one seed.</strong> Replace the center-patch seeding in <code class="docutils literal notranslate"><span class="pre">seeded_state</span></code> with several small patches at random positions (a loop over <code class="docutils literal notranslate"><span class="pre">rng.integers</span></code> corner coordinates works). Grow the maze preset from 1, 5, and 20 seeds. Where colonies meet, sutures form: compare the texture of a one-seed maze with a twenty-seed one. Which reads more like coral reef, and which like brain?</p>
+<p><strong>(b) Code modification: a climate gradient.</strong> Because our update is elementwise, <span class="math notranslate nohighlight">\(f\)</span> need not be one number: hand it a whole <em>array</em> and every column can live under a different feed rate. Build an <span class="math notranslate nohighlight">\(f\)</span> that ramps linearly from 0.014 on the left edge to 0.062 on the right (at fixed <span class="math notranslate nohighlight">\(k = 0.058\)</span>), run 8000 steps on a wide grid, and watch the pattern <em>species</em> morph across one image, drifting spots on one coast, solid ground on the other. One line changes; broadcasting does the rest.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">f_ramp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">0.062</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>     <span class="c1"># one f per column</span>
+<span class="n">f_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">f_ramp</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>             <span class="c1"># same ramp in every row</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">size</span><span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">size</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>                           <span class="c1"># a few seeds along the strip</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">column</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">u</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="mi">6</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">column</span> <span class="o">-</span> <span class="mi">6</span><span class="p">:</span><span class="n">column</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="mi">6</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">column</span> <span class="o">-</span> <span class="mi">6</span><span class="p">:</span><span class="n">column</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">u</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8000</span><span class="p">):</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">gray_scott_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f_field</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.058</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"bilinear"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"feed rate rising left to right; k fixed"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+          <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gray_scott_step</span></code> never asked whether <code class="docutils literal notranslate"><span class="pre">f</span></code> was a scalar; <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">u)</span></code> broadcasts either way. That free generality of array code is worth savoring, and the resulting image, one continuous chemistry crossing several pattern species, has no hand-drawn equivalent.</p>
+</details>
+<p><strong>(c) Creative challenge: pattern wearing a painting.</strong> Seed the system not with a square but with an artwork’s silhouette: load an image (chapter 6 shows how), threshold its dark regions, and set the <span class="math notranslate nohighlight">\(v\)</span> patch there. Run a preset that will not fully erase the seed (short maze runs work; so does coral). The result hovers between the original image and pure chemistry; stop the simulation at the step where that tension is best, and defend your stopping point in one gallery sentence. Turner meets Turing.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Alan Turing, “The Chemical Basis of Morphogenesis”, <em>Philosophical Transactions of the Royal Society B</em> 237 (1952): the historic original; skim the prose sections, which are unexpectedly gentle.</p></li>
+<li><p>Philip Ball, <em>Nature’s Patterns: A Tapestry in Three Parts</em> (2009), especially the volume <em>Shapes</em>: the best guided tour of pattern formation for non-specialists.</p></li>
+<li><p>John E. Pearson, “Complex Patterns in a Simple System”, <em>Science</em> 261 (1993): one page of equations, one page of pictures, and the map our presets came from.</p></li>
+<li><p>Karl Sims, <a class="reference external" href="https://www.karlsims.com/rd.html">Reaction-Diffusion Tutorial</a>: an interactive Gray-Scott explorer by a pioneer of artificial-life art; sweep <span class="math notranslate nohighlight">\((f, k)\)</span> live and find species we did not name.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-ball2009"></span>Ball, P. (2009). <em>Nature’s Patterns: A Tapestry in Three Parts</em>. Oxford University Press. Three volumes (<em>Shapes</em>, <em>Flow</em>, <em>Branches</em>); the guided tour of pattern formation recommended above.</p></li>
+<li><p><span id="ref-economou2012"></span>Economou, A. D., Ohazama, A., Porntaveetus, T., Sharpe, P. T., Kondo, S., Basson, M. A., Gritli-Linde, A., Cobourne, M. T., and Green, J. B. A. (2012). Periodic stripe formation by a Turing mechanism operating at growth zones in the mammalian palate. <em>Nature Genetics</em>, 44(3), 348–351. <a class="reference external" href="https://doi.org/10.1038/ng.1090">doi:10.1038/ng.1090</a>. The mouse-palate evidence: an identified activator-inhibitor pair patterning the ridges of the palate.</p></li>
+<li><p><span id="ref-gray1984"></span>Gray, P., and Scott, S. K. (1984). Autocatalytic reactions in the isothermal, continuous stirred tank reactor: oscillations and instabilities in the system A + 2B → 3B; B → C. <em>Chemical Engineering Science</em>, 39(6), 1087–1097. <a class="reference external" href="https://doi.org/10.1016/0009-2509(84)87017-7">doi:10.1016/0009-2509(84)87017-7</a>. The reactor study the Gray-Scott model and its name come from.</p></li>
+<li><p><span id="ref-jones1856"></span>Jones, O. (1856). <em>The Grammar of Ornament</em>. Day and Son. Proposition 13 demands conventional representations founded on natural objects rather than imitations of them.</p></li>
+<li><p><span id="ref-kondo1995"></span>Kondo, S., and Asai, R. (1995). A reaction–diffusion wave on the skin of the marine angelfish <em>Pomacanthus</em>. <em>Nature</em>, 376, 765–768. <a class="reference external" href="https://doi.org/10.1038/376765a0">doi:10.1038/376765a0</a>. The angelfish stripes: the first strong evidence that Turing dynamics run on a living animal.</p></li>
+<li><p><span id="ref-morris1881"></span>Morris, W. (1881). Some Hints on Pattern-Designing. Lecture at the Working Men’s College, London, 10 December 1881; published as a pamphlet by Longmans and Co., 1899. <a class="reference external" href="https://www.marxists.org/archive/morris/works/1881/hints.htm">Text at the Marxists Internet Archive</a>. Source of the demand quoted above: pattern-work “must possess three qualities: beauty, imagination, and order”.</p></li>
+<li><p><span id="ref-munafo"></span>Munafo, R. Reaction-Diffusion by the Gray-Scott Model: Pearson’s Parametrization (<em>Xmorphia</em>). <a class="reference external" href="https://mrob.com/pub/comp/xmorphia/">mrob.com/pub/comp/xmorphia</a>. The community catalogue that named the pattern species.</p></li>
+<li><p><span id="ref-stadtmuseum"></span>Münchner Stadtmuseum. Großer Wandbehang mit Seidenstickerei (“Peitschenhieb”), c. 1895. <a class="reference external" href="https://sammlungonline.muenchner-stadtmuseum.de/objekt/grosser-wandbehang-mit-seidenstickerei-peitschenhieb-10035267">Collection entry</a>. Obrist’s whiplash embroidery, in the museum that holds it.</p></li>
+<li><p><span id="ref-murray1988"></span>Murray, J. D. (1988). How the leopard gets its spots. <em>Scientific American</em>, 258(3), 80–87. <a class="reference external" href="https://doi.org/10.1038/scientificamerican0388-80">doi:10.1038/scientificamerican0388-80</a>. One reaction-diffusion mechanism, varied parameters, the whole zoo of mammalian coats.</p></li>
+<li><p><span id="ref-pearson1993"></span>Pearson, J. E. (1993). Complex patterns in a simple system. <em>Science</em>, 261(5118), 189–192. <a class="reference external" href="https://doi.org/10.1126/science.261.5118.189">doi:10.1126/science.261.5118.189</a>. The numerical survey whose <span class="math notranslate nohighlight">\((f, k)\)</span> map our presets settle on.</p></li>
+<li><p><span id="ref-turing1952"></span>Turing, A. M. (1952). The chemical basis of morphogenesis. <em>Philosophical Transactions of the Royal Society of London. Series B</em>, 237(641), 37–72. <a class="reference external" href="https://doi.org/10.1098/rstb.1952.0012">doi:10.1098/rstb.1952.0012</a>. The founding paper, morphogens and all.</p></li>
+<li><p><span id="ref-vam"></span>Victoria and Albert Museum. Willow Bough, wallpaper designed by William Morris, 1887. <a class="reference external" href="https://collections.vam.ac.uk/item/O78227/willow-bough-wallpaper-morris-william/">Collection entry</a>. Confirms the design and its date.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook: the maze regime grown large. It takes about half a minute; raise <code class="docutils literal notranslate"><span class="pre">size</span></code> (and <code class="docutils literal notranslate"><span class="pre">steps</span></code> with it) at home for a poster-sized labyrinth. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the grown labyrinth, indigo on paper</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">turing_art</span><span class="p">(</span><span class="s2">"maze"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span>
+                       <span class="n">size</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">11000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/153ddef24eeedebfcea33aa1b7bd74ac128a2800007e3fa47e2b73a993a3c4d6.png" src="../_images/153ddef24eeedebfcea33aa1b7bd74ac128a2800007e3fa47e2b73a993a3c4d6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch14_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="13-cellular-automata.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">13. Cellular Automata and Emergence</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="15-voronoi-and-stippling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">15. Voronoi, Delaunay, and Stippling</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-mathematician-and-the-leopard">Context: the mathematician and the leopard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-is-local-averaging">Diffusion is local averaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reaction-joins-diffusion">Reaction joins diffusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-map-of-species">The map of species</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#style-pass-chemistry-in-course-colors">Style pass: chemistry in course colors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

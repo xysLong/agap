@@ -1,0 +1,1280 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>0. Warming Up: Python and Mathematics from Zero &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/00-warming-up';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Random Walks: The First Generative System" href="01-random-walks.html" />
+    <link rel="prev" title="Algorithmic Generative Art with Python" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>0. Warming Up: Python and Mathematics from Zero</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-stripe-art-s-simplest-instruction">Context: the stripe, art’s simplest instruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-notebook-is-your-studio">The notebook is your studio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#values-and-names">Values and names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-an-error-message">Reading an error message</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#many-things-at-once-lists">Many things at once: lists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repetition-the-for-loop">Repetition: the for-loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-clock-trick-modulo">The clock trick: modulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisions-if-elif-else">Decisions: if, elif, else</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipes-with-a-name-functions">Recipes with a name: functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-mathematics">Reading mathematics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-light-matplotlib">First light: matplotlib</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-bits-of-math-you-already-own">Two bits of math you already own</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-the-stripe-painting">Build-up: the stripe painting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="warming-up-python-and-mathematics-from-zero">
+<h1>0. Warming Up: Python and Mathematics from Zero<a class="headerlink" href="#warming-up-python-and-mathematics-from-zero" title="Link to this heading">#</a></h1>
+<p>Before the first generative system, we learn the language it will be written in: enough Python to turn a list of colors and a rhythm of widths into a stripe painting, and enough mathematical notation to read the formulas ahead without flinching.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>By the end of this chapter you will have generated the stripe composition below yourself, from almost nothing: a list of colors, a list of widths, and one rule (“repeat across the canvas”). Along the way you will have met every basic move of the Python language that the rest of this book stands on. No experience of any kind is assumed; if you have never written a line of code, you are exactly the reader this chapter was written for.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch00_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3309d7d3dc3ce559379ecbf60853859812bf398ce387f28ddd12a9e1b472c0a7.png" src="../_images/3309d7d3dc3ce559379ecbf60853859812bf398ce387f28ddd12a9e1b472c0a7.png" />
+</div>
+</div>
+</section>
+<section id="context-the-stripe-art-s-simplest-instruction">
+<h2>Context: the stripe, art’s simplest instruction<a class="headerlink" href="#context-the-stripe-art-s-simplest-instruction" title="Link to this heading">#</a></h2>
+<p>Every art school begins with a warm-up. The Bauhaus called its version the <strong>Vorkurs</strong>, the preliminary course every student passed through before touching a loom or a brush in earnest <a class="cite" href="#ref-bauhaus">(Bauhaus Kooperation)</a>; chapter 6 will meet its most famous color teachers. This chapter is the book’s own Vorkurs. Before we can hand instructions to a machine, we need a shared language with the machine, and we will learn it by building the simplest kind of painting there is: stripes.</p>
+<p>Do not let the simplicity fool you; some of the most serious painting of the twentieth century is made of nothing else. Beginning in 1958, <strong>Frank Stella</strong> painted the Black Paintings, among them <em>Die Fahne hoch!</em> (1959): nothing but parallel bands of black enamel house paint, separated by thin lines of raw canvas, following the shape of the canvas itself <a class="cite" href="#ref-whitney">(Whitney Museum, collection entry)</a>. Pressed a few years later, in a 1964 radio interview <a class="cite" href="#ref-glaser1966">(Glaser 1966)</a>, about what such painting could possibly express, Stella gave the era its bluntest artist statement: “What you see is what you see.” From 1958, <strong>Gene Davis</strong>, soon a central figure of what became known as the Washington Color School, filled canvases edge to edge with vertical stripes of flat color; Davis advised viewers not to glance at the whole painting but to “select a specific color… and take the time to see how it operates across the painting”, following its rhythm the way one listens to music (he liked to compare himself to a jazz musician who plays by ear; <a class="cite" href="#ref-saam">Smithsonian American Art Museum, artist entry</a>). His <em>Franklin’s Footpath</em> (1972; <a class="cite" href="#ref-philamuseum">Philadelphia Museum of Art, collection entry</a>), 414 feet of stripes painted on the roadway in front of the Philadelphia Museum of Art, was billed at the time as the largest painting in the world. In Europe, <strong>Bridget Riley</strong> moved from her dizzying black-and-white optical works to color stripe paintings in 1967, with works such as <em>Chant 2</em> (1967) and <em>Late Morning</em> (1967–68) <a class="cite" href="#ref-ycba2022">(Yale Center for British Art 2022)</a>; she works out each composition in precise studies which studio assistants then execute <a class="cite" href="#ref-williamson2019">(Williamson 2019)</a>, an artist of instructions if there ever was one. And <strong>Daniel Buren</strong> has built his entire practice, since 1965, on one module: alternating white and colored vertical stripes exactly 8.7 cm wide, his “visual tool” (<em>outil visuel</em>) <a class="cite" href="#ref-pompidou">(Centre Pompidou, collection entry)</a>, deployed on walls, flags, and monuments.</p>
+<p>Here is the point for us: a stripe painting is a small amount of data plus a rule. The data: a list of colors and a list of widths. The rule: repeat across the canvas. That is precisely the shape of a program, and by the end of this chapter you will have written it as one: your own list of colors, your own rhythm of widths, executed by Python. One thing our stripes will <em>not</em> yet have is chance. Nothing today is left to the system; every stripe is exactly where you put it. Turning instructions loose, so that the system surprises its own author, is where chapter 1 begins, and it is what will make the art “generative”.</p>
+</section>
+<section id="the-notebook-is-your-studio">
+<h2>The notebook is your studio<a class="headerlink" href="#the-notebook-is-your-studio" title="Link to this heading">#</a></h2>
+<p>This document is a <strong>Jupyter notebook</strong>, the format of every chapter in this book. It is a chain of <strong>cells</strong>, and cells come in two kinds: text cells like this one, and <strong>code cells</strong>, gray boxes that Python can execute. You run a cell by clicking it and pressing <code class="docutils literal notranslate"><span class="pre">Shift+Enter</span></code>; the result appears directly beneath it.</p>
+<p>Three habits from day one:</p>
+<ol class="arabic simple">
+<li><p><strong>Run in order.</strong> Cells build on earlier cells, so a freshly opened notebook wants to be run from the top down.</p></li>
+<li><p><strong>Nothing can break.</strong> Change anything, run it, see what happens. The menu command <em>Kernel → Restart &amp; Run All</em> wipes the slate and re-runs everything in order; it is the reset button, and every chapter of this book is written so that it always works.</p></li>
+<li><p><strong>Errors are information, not accidents.</strong> We will produce some on purpose in a moment.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your first code cell: click it, then press Shift+Enter</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello! I am Python, and I follow instructions."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello! I am Python, and I follow instructions.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="values-and-names">
+<h2>Values and names<a class="headerlink" href="#values-and-names" title="Link to this heading">#</a></h2>
+<p>Python knows several kinds of value; for art we mostly need <strong>numbers</strong> (whole ones like <code class="docutils literal notranslate"><span class="pre">12</span></code>, decimal ones like <code class="docutils literal notranslate"><span class="pre">2.5</span></code>) and <strong>text</strong> (a <em>string</em>, Zeichenkette, always inside quotes). A <strong>variable</strong> stores a value under a name of your choosing: after <code class="docutils literal notranslate"><span class="pre">width</span> <span class="pre">=</span> <span class="pre">2.5</span></code>, the name <code class="docutils literal notranslate"><span class="pre">width</span></code> means that value until you assign a new one. <code class="docutils literal notranslate"><span class="pre">print(...)</span></code> shows values beneath the cell, and anything after a <code class="docutils literal notranslate"><span class="pre">#</span></code> is a <strong>comment</strong>: a note for humans that Python ignores.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># variables store values under names; print() shows them</span>
+<span class="n">stripes</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="s2">"Gene Davis"</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="s2">"paints"</span><span class="p">,</span> <span class="n">stripes</span><span class="p">,</span> <span class="s2">"stripes"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"total width:"</span><span class="p">,</span> <span class="n">stripes</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gene Davis paints 12 stripes
+total width: 30.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># an f-string builds text from values: an f before the quote, values in {}</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s2">"red"</span>
+<span class="n">share</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">share</span><span class="si">}</span><span class="s2"> of the stripes are </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"rounded to two decimals: </span><span class="si">{</span><span class="n">share</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>   <span class="c1"># :.2f rounds the display</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3333333333333333 of the stripes are red
+rounded to two decimals: 0.33
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-an-error-message">
+<h2>Reading an error message<a class="headerlink" href="#reading-an-error-message" title="Link to this heading">#</a></h2>
+<p>Sooner or later today, a cell will answer you with a wall of red text: a <strong>traceback</strong>. Rule one, worth the price of this whole chapter: <strong>read the last line first.</strong> It names the type of the problem and usually the exact word Python stumbled over. The two errors you will meet most often:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NameError:</span> <span class="pre">name</span> <span class="pre">'artis'</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">defined</span></code>: you used a name Python has never heard of. Nine times out of ten it is a typo, or the cell that defines the name has not been run yet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SyntaxError</span></code>: the line is not legal Python; look for a missing quote, bracket, or colon at (or just before) the marked spot.</p></li>
+</ul>
+<p>The cell below is broken on purpose. Remove the <code class="docutils literal notranslate"><span class="pre">#</span></code> in front of <strong>one</strong> commented line, run the cell, read the last line of the red answer, then put the <code class="docutils literal notranslate"><span class="pre">#</span></code> back (so the notebook still runs cleanly from top to bottom) and try the other one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># broken on purpose: uncomment ONE line at a time, run, read the red answer,</span>
+<span class="c1"># then restore the # so the notebook stays runnable top to bottom</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>                        <span class="c1"># this line works: artist exists</span>
+<span class="c1"># print(artis)                       # NameError: a typo, no such name</span>
+<span class="c1"># print("the quote never ends)      # SyntaxError: Python cannot parse this</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gene Davis
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="many-things-at-once-lists">
+<h2>Many things at once: lists<a class="headerlink" href="#many-things-at-once-lists" title="Link to this heading">#</a></h2>
+<p>A <strong>list</strong> (Liste) holds many values in one name, in order. Positions count <strong>from 0</strong>: think “how many steps from the start”, so the first element is <code class="docutils literal notranslate"><span class="pre">colors[0]</span></code>. Negative positions count from the end, <code class="docutils literal notranslate"><span class="pre">len(...)</span></code> reports the length, <code class="docutils literal notranslate"><span class="pre">.append(...)</span></code> grows the list, and a <strong>slice</strong> like <code class="docutils literal notranslate"><span class="pre">[1:3]</span></code> cuts out a range (from position 1 up to, not including, 3).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a list holds values in order; counting starts at 0</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"red"</span><span class="p">,</span> <span class="s2">"blue"</span><span class="p">,</span> <span class="s2">"yellow"</span><span class="p">,</span> <span class="s2">"black"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"first:"</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"last:"</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>            <span class="c1"># negative positions count from the end</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"middle two:"</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>     <span class="c1"># a slice: position 1 up to (not incl.) 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"how many:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">))</span>
+<span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"cream"</span><span class="p">)</span>                <span class="c1"># grow the list at the end</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"after append:"</span><span class="p">,</span> <span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>first: red
+last: black
+middle two: ['blue', 'yellow']
+how many: 4
+after append: ['red', 'blue', 'yellow', 'black', 'cream']
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two siblings of the list. A <strong>tuple</strong> is a small fixed bundle in round brackets, like a point <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">5)</span></code> on the canvas; write two names on the left of the <code class="docutils literal notranslate"><span class="pre">=</span></code> and Python <strong>unpacks</strong> it into both at once. A <strong>dictionary</strong> (dict) is a drawer cabinet: values are filed under <em>names</em> instead of positions. Both are everywhere in this book: every coordinate is a tuple, and the course’s color palettes live in one shared dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a tuple bundles values; an assignment with two names unpacks it</span>
+<span class="n">point</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">point</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"x ="</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">" y ="</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># a dictionary files values under names instead of positions</span>
+<span class="n">moods</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"calm"</span><span class="p">:</span> <span class="s2">"lightsteelblue"</span><span class="p">,</span> <span class="s2">"loud"</span><span class="p">:</span> <span class="s2">"crimson"</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"loud -&gt;"</span><span class="p">,</span> <span class="n">moods</span><span class="p">[</span><span class="s2">"loud"</span><span class="p">])</span>
+<span class="n">moods</span><span class="p">[</span><span class="s2">"new"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"gold"</span>                 <span class="c1"># a dict can always take one more entry</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">moods</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x = 3  y = 5
+loud -&gt; crimson
+{'calm': 'lightsteelblue', 'loud': 'crimson', 'new': 'gold'}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="repetition-the-for-loop">
+<h2>Repetition: the for-loop<a class="headerlink" href="#repetition-the-for-loop" title="Link to this heading">#</a></h2>
+<p>Art is repetition with variation, and repetition is the one thing computers do tirelessly. A <strong>for-loop</strong> (Schleife) repeats its indented lines once per element; <code class="docutils literal notranslate"><span class="pre">range(5)</span></code> supplies the counting numbers 0, 1, 2, 3, 4. The indentation is not decoration: it is how Python knows which lines belong to the loop.</p>
+<p><strong>Try it:</strong> change <code class="docutils literal notranslate"><span class="pre">range(5)</span></code> and the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">i</span></code> formula, and run the cell again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a loop repeats its indented lines; range(5) counts 0 to 4</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"stripe number"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">"gets width"</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>stripe number 0 gets width 1
+stripe number 1 gets width 2
+stripe number 2 gets width 3
+stripe number 3 gets width 4
+stripe number 4 gets width 5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a loop inside a loop visits every row/column combination -- remember this</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span> <span class="o">+</span> <span class="s2">"# "</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"row"</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="s2">":"</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>row 0 : # # # # # # 
+row 1 : # # # # # # 
+row 2 : # # # # # #
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-clock-trick-modulo">
+<h2>The clock trick: modulo<a class="headerlink" href="#the-clock-trick-modulo" title="Link to this heading">#</a></h2>
+<p>One small operator carries astonishing weight in this book: <code class="docutils literal notranslate"><span class="pre">%</span></code>, <strong>modulo</strong>, the <em>remainder</em> after whole-number division; <code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">%</span> <span class="pre">4</span></code> is 3. Its magic appears when a counter climbs: as <code class="docutils literal notranslate"><span class="pre">i</span></code> runs 0, 1, 2, 3, 4, 5, …, the value <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">%</span> <span class="pre">4</span></code> cycles 0, 1, 2, 3, 0, 1, …: a clock with four hours. That is how four colors can paint any number of stripes: stripe <code class="docutils literal notranslate"><span class="pre">i</span></code> gets <code class="docutils literal notranslate"><span class="pre">colors[i</span> <span class="pre">%</span> <span class="pre">len(colors)]</span></code>, around and around, forever. In a few minutes you will see this as color.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># i % 4 cycles like a clock: watch the middle column repeat</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"red"</span><span class="p">,</span> <span class="s2">"blue"</span><span class="p">,</span> <span class="s2">"yellow"</span><span class="p">,</span> <span class="s2">"black"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"stripe"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">" clock"</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">" color"</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>stripe 0  clock 0  color red
+stripe 1  clock 1  color blue
+stripe 2  clock 2  color yellow
+stripe 3  clock 3  color black
+stripe 4  clock 0  color red
+stripe 5  clock 1  color blue
+stripe 6  clock 2  color yellow
+stripe 7  clock 3  color black
+stripe 8  clock 0  color red
+stripe 9  clock 1  color blue
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="decisions-if-elif-else">
+<h2>Decisions: if, elif, else<a class="headerlink" href="#decisions-if-elif-else" title="Link to this heading">#</a></h2>
+<p>Programs branch. <code class="docutils literal notranslate"><span class="pre">if</span></code> runs its indented lines only when a condition holds, <code class="docutils literal notranslate"><span class="pre">elif</span></code> (“else if”) offers a next test, <code class="docutils literal notranslate"><span class="pre">else</span></code> catches everything left over. Conditions compare values: <code class="docutils literal notranslate"><span class="pre">==</span></code> asks “equal?” (one <code class="docutils literal notranslate"><span class="pre">=</span></code> assigns, two ask), and <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> work as in school.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">while</span></code> loop is <code class="docutils literal notranslate"><span class="pre">if</span></code>’s repeating cousin: it repeats its lines <em>as long as</em> the condition holds. We will use it rarely, but you should recognize it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if / elif / else pick exactly one branch; == compares, = assigns</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="k">if</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"a broad, calm stripe"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">width</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"a medium stripe"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"a narrow accent stripe"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a medium stripe
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># while repeats as long as its condition holds:</span>
+<span class="c1"># keep adding stripes until the canvas (20 units wide) is full</span>
+<span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">filled</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">filled</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+    <span class="n">filled</span> <span class="o">=</span> <span class="n">filled</span> <span class="o">+</span> <span class="n">widths</span><span class="p">[</span><span class="n">count</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>   <span class="c1"># the clock trick again</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="s2">"stripes fill the canvas; total width:"</span><span class="p">,</span> <span class="n">filled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10 stripes fill the canvas; total width: 21.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="recipes-with-a-name-functions">
+<h2>Recipes with a name: functions<a class="headerlink" href="#recipes-with-a-name-functions" title="Link to this heading">#</a></h2>
+<p>A <strong>function</strong> (Funktion) wraps lines of code under a name, with <strong>parameters</strong> as its dials: <code class="docutils literal notranslate"><span class="pre">def</span></code> opens the recipe, <code class="docutils literal notranslate"><span class="pre">return</span></code> hands the result back. Two conveniences appear in every chapter of this book. A parameter can carry a <strong>default value</strong> (<code class="docutils literal notranslate"><span class="pre">repeat=3</span></code> in the <code class="docutils literal notranslate"><span class="pre">def</span></code> line), used whenever the caller stays silent; and callers can <em>name</em> their arguments (<code class="docutils literal notranslate"><span class="pre">rhythm(widths,</span> <span class="pre">repeat=2)</span></code>), which keeps calls readable once a function has many dials. One idiom to recognize on sight: a default of <code class="docutils literal notranslate"><span class="pre">None</span></code> plus a line <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">widths</span> <span class="pre">is</span> <span class="pre">None:</span></code> inside means “if the caller gave nothing, build the standard one”.</p>
+<p><strong>Try it:</strong> call <code class="docutils literal notranslate"><span class="pre">rhythm</span></code> with your own widths, and with and without <code class="docutils literal notranslate"><span class="pre">repeat=</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># def wraps a recipe under a name; parameters are its dials</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rhythm</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">repeat</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">widths</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">rhythm</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rhythm</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>    <span class="c1"># naming the argument at the call</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3, 1, 2, 3, 1, 2, 3, 1, 2]
+[3, 1, 2, 3, 1, 2]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-mathematics">
+<h2>Reading mathematics<a class="headerlink" href="#reading-mathematics" title="Link to this heading">#</a></h2>
+<p>The rest of this book teaches every mathematical idea it uses, always with a picture, at the moment it is needed. What it cannot teach in passing is <em>notation</em>: the compact costume mathematics wears. This section is a phrasebook, not a course. Skim it now, and come back whenever a formula stares at you.</p>
+<p><strong>Greek letters are just names.</strong> When formulas run out of ordinary letters they reach for Greek ones. A Greek letter carries no hidden operation; it is a variable name, exactly like <code class="docutils literal notranslate"><span class="pre">width</span></code> above, and each chapter says what its letters stand for. The cast you will actually meet:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Letter</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Typical role in this book</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></td>
+<td><p>alpha</p></td>
+<td><p>an angle, or an opacity</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\theta\)</span></p></td>
+<td><p>theta</p></td>
+<td><p>an angle</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\pi\)</span></p></td>
+<td><p>pi</p></td>
+<td><p>the circle number, roughly 3.14159</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\sigma\)</span></p></td>
+<td><p>sigma</p></td>
+<td><p>a width or a spread</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\mu\)</span></p></td>
+<td><p>mu</p></td>
+<td><p>a middle</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\lambda\)</span></p></td>
+<td><p>lambda</p></td>
+<td><p>a spacing</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\Delta\)</span></p></td>
+<td><p>delta</p></td>
+<td><p>a difference (<span class="math notranslate nohighlight">\(\Delta x\)</span>: “the change in x”)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\Sigma\)</span></p></td>
+<td><p>capital sigma</p></td>
+<td><p>“add them all up” (below)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Subscripts are labels, not arithmetic.</strong> <span class="math notranslate nohighlight">\(p_x\)</span> reads “the x part of the point <span class="math notranslate nohighlight">\(p\)</span>”; <span class="math notranslate nohighlight">\(x_i\)</span> reads “the i-th of the x values”; in this book a small dash as in <span class="math notranslate nohighlight">\(g'\)</span> (“g prime”) just means “a second, related g”. None of these marks ask you to compute anything.</p>
+<p><strong>Powers and roots.</strong> <span class="math notranslate nohighlight">\(x^2\)</span> (“x squared”, a Potenz) is <code class="docutils literal notranslate"><span class="pre">x**2</span></code> in Python: x times itself. Roots undo powers, and the square root <span class="math notranslate nohighlight">\(\sqrt{x}\)</span> is <code class="docutils literal notranslate"><span class="pre">x**0.5</span></code>. One more thing school never dwelt on: a power <em>between</em> 0 and 1 bends values rather than exploding them, and for numbers between 0 and 1 the bend reverses: squaring pushes them down, a root lifts them up. The book will use exactly this bending, many times, to shape brightness and ink.</p>
+<p><strong>Try it:</strong> add your own values between 0 and 1 to the list in the next cell, and predict for each, before running, whether squaring pushes it down.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># powers in code: the ** operator; watch a power bend values in 0..1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"3**2 ="</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"   2**10 ="</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span> <span class="s2">"   81**0.5 ="</span><span class="p">,</span> <span class="mi">81</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x = </span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">   squared: </span><span class="si">{</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">   square root: </span><span class="si">{</span><span class="n">x</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3**2 = 9    2**10 = 1024    81**0.5 = 9.0
+
+x = 0.00   squared: 0.00   square root: 0.00
+x = 0.25   squared: 0.06   square root: 0.50
+x = 0.50   squared: 0.25   square root: 0.71
+x = 0.75   squared: 0.56   square root: 0.87
+x = 1.00   squared: 1.00   square root: 1.00
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Angles: degrees and radians.</strong> School measures angles in degrees: a full turn is 360°. Mathematics and Python prefer <strong>radians</strong> (Bogenmaß): the distance walked along a circle of radius 1, so a full turn is <span class="math notranslate nohighlight">\(2\pi \approx 6.283\)</span>, a half turn is <span class="math notranslate nohighlight">\(\pi\)</span>, and a quarter turn (“straight up”) is <span class="math notranslate nohighlight">\(\pi/2\)</span>. Same angles, different unit, like centimeters and inches; <code class="docutils literal notranslate"><span class="pre">math.radians(...)</span></code> converts. This cell also introduces the <code class="docutils literal notranslate"><span class="pre">import</span></code> move properly (the showpiece cell at the very top already ran three imports on trust): <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">math</span></code> fetches Python’s arithmetic toolbox, whose tools then answer to <code class="docutils literal notranslate"><span class="pre">math.something</span></code>. The plotting section below fetches the course toolbox the same way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import fetches a toolbox; math is Python's arithmetic toolbox</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a full turn:    360 degrees = </span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> radians (2 pi)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a half turn:    180 degrees = </span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> radians (pi)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a quarter turn:  90 degrees = </span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> radians (pi/2)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a full turn:    360 degrees = 6.283 radians (2 pi)
+a half turn:    180 degrees = 3.142 radians (pi)
+a quarter turn:  90 degrees = 1.571 radians (pi/2)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The sum sign is a loop.</strong> <span class="math notranslate nohighlight">\(\sum_i x_i\)</span> (“sum over i”) means: add them all up, one term per item. You already know it under another name:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># capital sigma, translated: a for-loop with a running total</span>
+<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">v</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"the sum of"</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="s2">"is"</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Python ships this loop ready-made:"</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the sum of [3, 1, 2] is 6
+Python ships this loop ready-made: 6
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>A logarithm counts doublings.</strong> <span class="math notranslate nohighlight">\(\log_2(32) = 5\)</span> because five doublings lead from 1 to 32; the logarithm answers “how many times?”, and so undoes the power, since <span class="math notranslate nohighlight">\(2^5 = 32\)</span>. That is the whole idea. Chapters 8, 9 and 20 will lean on it for well-marked moments, chapter 25 for a whole singing section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># how many doublings lead from 1 to 32? that count is the logarithm</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"1 doubles to 32 in"</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="s2">"steps, so log2 of 32 is"</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"the toolbox agrees:"</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 doubles to 32 in 5 steps, so log2 of 32 is 5
+the toolbox agrees: 5.0
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Very large, very small: the <code class="docutils literal notranslate"><span class="pre">e</span></code> shorthand.</strong> Python writes big and tiny numbers as <code class="docutils literal notranslate"><span class="pre">1e6</span></code> (a 1 followed by six zeros: one million) and <code class="docutils literal notranslate"><span class="pre">1e-9</span></code> (a 1 nine places behind the decimal point: a billionth). When <code class="docutils literal notranslate"><span class="pre">1e-9</span></code> appears in this book’s code it is almost always a harmless guard: a number too small to see, there to keep some division safe.</p>
+<p><strong>Mixing two numbers.</strong> The pattern <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">-</span> <span class="pre">t)</span> <span class="pre">*</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">t</span> <span class="pre">*</span> <span class="pre">b</span></code> slides smoothly from <code class="docutils literal notranslate"><span class="pre">a</span></code> (at <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">0</span></code>) to <code class="docutils literal notranslate"><span class="pre">b</span></code> (at <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">1</span></code>); at <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">0.5</span></code> it sits exactly in the middle. The book mixes colors, positions and widths with this one-liner constantly.</p>
+<p><strong>Try it:</strong> set <code class="docutils literal notranslate"><span class="pre">a,</span> <span class="pre">b</span> <span class="pre">=</span> <span class="pre">255,</span> <span class="pre">0</span></code> in the cell below and run it again; the same one-liner mixes any two numbers, colors included.</p>
+<p>That is the whole phrasebook. Now, at last, to the canvas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the e shorthand, and the mixing pattern, in action</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"1e6  ="</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s2">"   2.5e-3 ="</span><span class="p">,</span> <span class="mf">2.5e-3</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]:</span>
+    <span class="n">mixed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"t = </span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">  -&gt;  mixed = </span><span class="si">{</span><span class="n">mixed</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1e6  = 1000000.0    2.5e-3 = 0.0025
+t = 0.00  -&gt;  mixed = 0.0
+t = 0.25  -&gt;  mixed = 2.5
+t = 0.50  -&gt;  mixed = 5.0
+t = 0.75  -&gt;  mixed = 7.5
+t = 1.00  -&gt;  mixed = 10.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="first-light-matplotlib">
+<h2>First light: matplotlib<a class="headerlink" href="#first-light-matplotlib" title="Link to this heading">#</a></h2>
+<p><strong>Matplotlib</strong> is the drawing library of this whole book, and its ritual is always the same: <code class="docutils literal notranslate"><span class="pre">fig,</span> <span class="pre">ax</span> <span class="pre">=</span> <span class="pre">plt.subplots(...)</span></code> hands us a <strong>figure</strong> (the sheet of paper) and an <strong>axes</strong> object <code class="docutils literal notranslate"><span class="pre">ax</span></code> (the drawing area on that sheet); we place shapes and lines onto <code class="docutils literal notranslate"><span class="pre">ax</span></code>; <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code> displays the result. You will also meet the shorthand style <code class="docutils literal notranslate"><span class="pre">plt.plot(...)</span></code>, which quietly draws on the current axes; both styles appear in this book and drive the same machinery.</p>
+<p>One course convention from day one: when a plot is a <strong>diagram</strong>, the axis lines and numbers stay visible, because they carry information. When a plot is an <strong>artwork</strong>, we switch them off with <code class="docutils literal notranslate"><span class="pre">ax.axis(&quot;off&quot;)</span></code>: a painting does not need a ruler. Artworks also sit on a warm paper-white ground instead of harsh screen white, like plates in a printed book; the course package provides that tone as <code class="docutils literal notranslate"><span class="pre">PAPER</span></code>, and it provides shared color <strong>palettes</strong>, filed in a dictionary, as promised. The package sits one folder above the notebooks, so two lines first tell Python where to look. One vocabulary note for the palettes you are about to see: a screen color has three channels, red, green and blue, each running 0 to 255, and a string like <code class="docutils literal notranslate"><span class="pre">#E4572E</span></code> packs those three numbers in base-16 shorthand; dividing such values by 255, when you meet it later, just squeezes them into the range 0 to 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the course toolbox: palettes and the paper ground, used in every chapter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"palettes:"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"kelly ="</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"kelly"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>palettes: ['bauhaus', 'rothko_dark', 'pastel', 'monochrome', 'viridis', 'magma', 'kelly']
+kelly = ['#E4572E', '#F3A712', '#F5E960', '#76B041', '#17BEBB', '#3B28CC', '#9B5DE5', '#F15BB5']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a first drawing: two rectangles on an axes -- axes ON, a diagram for now</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">))</span>   <span class="c1"># corner (x, y), width, height</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fa3b7181561e4a768d356b59441741bfbbddb9d798f0f6aa0474d2cff8d4ccee.png" src="../_images/fa3b7181561e4a768d356b59441741bfbbddb9d798f0f6aa0474d2cff8d4ccee.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Rectangle((x,</span> <span class="pre">y),</span> <span class="pre">width,</span> <span class="pre">height)</span></code> takes the lower-left corner as a tuple, then the size: four numbers, one box. Everything you will draw today is made of these.</p>
+</section>
+<section id="two-bits-of-math-you-already-own">
+<h2>Two bits of math you already own<a class="headerlink" href="#two-bits-of-math-you-already-own" title="Link to this heading">#</a></h2>
+<p><strong>Normalization.</strong> Any counter can be squeezed into the range 0 to 1: divide it by the largest value it reaches. In a loop over <code class="docutils literal notranslate"><span class="pre">n</span></code> stripes, <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">/</span> <span class="pre">(n</span> <span class="pre">-</span> <span class="pre">1)</span></code> runs from 0.0 (first stripe) to exactly 1.0 (last stripe). This tiny trick powers half the book: “how far down the canvas are we?”, “how far through the rainbow?”, always a number between 0 and 1. It has a visual today because matplotlib accepts a gray value written as text: <code class="docutils literal notranslate"><span class="pre">&quot;0.0&quot;</span></code> is black, <code class="docutils literal notranslate"><span class="pre">&quot;1.0&quot;</span></code> is white, so normalization <em>is</em> a gradient waiting to happen.</p>
+<p><strong>The mean</strong> (Mittelwert): the balance point of a set of numbers, their sum divided by their count. Chapter 2 leans on it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># i / (n - 1) runs from 0 to 1 -- made visible as a gray gradient</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>                <span class="c1"># 0.0 for the first stripe, 1.0 for the last</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">gray</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"mean width:"</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e6f7e5a98bb32c3a44b4d69826cb5e7fa1fdfec50788f2685faeafbf42966b2.png" src="../_images/6e6f7e5a98bb32c3a44b4d69826cb5e7fa1fdfec50788f2685faeafbf42966b2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean width: 2.4
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-up-the-stripe-painting">
+<h2>Build-up: the stripe painting<a class="headerlink" href="#build-up-the-stripe-painting" title="Link to this heading">#</a></h2>
+<p>Time to assemble the chapter’s machine, in three steps: equal stripes from a cycling palette, then a width rhythm, then the finished generator with every decision as a parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># step 1: equal stripes, colors cycling through the palette (the clock trick)</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"kelly"</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">24</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">15.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>                        <span class="c1"># an artwork now, not a diagram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b9719884eaa7cab68bcf466613e17ce52fa67efe45a84c58200e58aad64f8464.png" src="../_images/b9719884eaa7cab68bcf466613e17ce52fa67efe45a84c58200e58aad64f8464.png" />
+</div>
+</div>
+<p>Equal widths read as wallpaper: pleasant, and a little dead. A <strong>rhythm</strong> of widths brings the surface to life, especially when it cycles at a different period than the colors: five widths against eight colors, and the same pairing of width and color only returns after 40 stripes. Musicians call this a polyrhythm; weavers have used it forever.</p>
+<p><strong>Try it:</strong> run the cell, then change the <code class="docutils literal notranslate"><span class="pre">widths</span></code> list or the palette name and run it again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># step 2: a width rhythm -- x accumulates, each stripe starts where the last ended</span>
+<span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"kelly"</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">widths</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" src="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" />
+</div>
+</div>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>The finished generator: the build-up wrapped into one function whose parameters are all in one place. Note the <code class="docutils literal notranslate"><span class="pre">widths=None</span></code> idiom from the functions section, in the wild for the first time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator: a stripe painting from a palette and a width rhythm</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                    <span class="n">height</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">widths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                <span class="c1"># no rhythm given? use the house rhythm</span>
+        <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_stripes</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">widths</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">total</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)),</span>
+                           <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_stripes</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">widths</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span> <span class="n">total</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 1 and 2: the full spectrum rhythm vs dark fields with thin accents</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">)</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"rothko_dark"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" src="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" />
+<img alt="../_images/3792f49867000b6cf2db9c3182ca6b6454a32ee6d72a05e464795ece51edde04.png" src="../_images/3792f49867000b6cf2db9c3182ca6b6454a32ee6d72a05e464795ece51edde04.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 3 and 4: a quiet gray polyrhythm vs broad Bauhaus banners</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"monochrome"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">art_4</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4286d035d48a442124201d8ee224daece2131fdbdce07cb79940866b4ceae237.png" src="../_images/4286d035d48a442124201d8ee224daece2131fdbdce07cb79940866b4ceae237.png" />
+<img alt="../_images/5cd1e1ddb02666c55eccc025af11999054a8a025d2ba023f85150429443c9704.png" src="../_images/5cd1e1ddb02666c55eccc025af11999054a8a025d2ba023f85150429443c9704.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Four rhythms, four temperaments. Which feels calmest, which most nervous, and is the palette or the width rhythm doing more of the work? <code class="docutils literal notranslate"><span class="pre">art_3</span></code> uses only two widths and six grays, yet its pattern takes twelve stripes to come back around: cover part of it and try to point at the repeat. And carry one question into chapter 1: not a single number in these four pictures is random; every stripe is exactly where the lists put it. Would a stranger at the gallery believe that?</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Every chapter of this book ends at this ritual: tune the parameters until the piece feels like yours, replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> with your name, and run the cell. A print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>, which becomes your personal gallery over the course of the book (the <code class="docutils literal notranslate"><span class="pre">save_artwork</span></code> helper takes care of size and resolution).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" src="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch00_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: find your rhythm.</strong> Run <code class="docutils literal notranslate"><span class="pre">stripe_painting</span></code> with widths of <code class="docutils literal notranslate"><span class="pre">[1]</span></code>, <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">4]</span></code>, <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">8]</span></code>, and <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">3,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1]</span></code>. Which feels calm, which marches, which stumbles? Somewhere in your experiments the painting will stop feeling composed and start feeling arbitrary, even though no chance is involved anywhere. Note where that happened; chapter 1 picks the thought up.</p>
+<p><strong>(b) Code modification: rotate the canvas.</strong> Make the stripes run <strong>horizontally</strong>. In <code class="docutils literal notranslate"><span class="pre">stripe_painting</span></code>, every stripe is <code class="docutils literal notranslate"><span class="pre">Rectangle((x,</span> <span class="pre">0),</span> <span class="pre">w,</span> <span class="pre">height)</span></code>: a box whose corner walks to the right. Let the corner walk <em>upward</em> instead: the width becomes the full canvas width, the walking coordinate becomes y, and the two <code class="docutils literal notranslate"><span class="pre">set_xlim</span></code>/<code class="docutils literal notranslate"><span class="pre">set_ylim</span></code> calls trade contents.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">stripe_painting_horizontal</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                               <span class="n">width</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">widths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_stripes</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">widths</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="n">total</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)),</span>
+                           <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_stripes</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">widths</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span> <span class="n">width</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span> <span class="n">total</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">stripe_painting_horizontal</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The corner now walks in y, and the figure’s width-to-height ratio flips along: the wide format turns tall. The same rhythm reads differently on its side; horizontals settle like strata, verticals stand like figures.</p>
+</details>
+<p><strong>(c) Creative challenge: your name as a painting.</strong> Encode your first name as a width rhythm: <code class="docutils literal notranslate"><span class="pre">a</span></code> is 1, <code class="docutils literal notranslate"><span class="pre">b</span></code> is 2, … <code class="docutils literal notranslate"><span class="pre">z</span></code> is 26. The snippet below translates the letters; feed the result to <code class="docutils literal notranslate"><span class="pre">stripe_painting</span></code>, choose the palette that suits you, and give the piece a title worthy of a gallery wall.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alphabet</span> <span class="o">=</span> <span class="s2">"abcdefghijklmnopqrstuvwxyz"</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">"vera"</span>
+<span class="n">widths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+    <span class="n">widths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alphabet</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The official Python tutorial, chapter 3, <a class="reference external" href="https://docs.python.org/3/tutorial/introduction.html">“An Informal Introduction to Python”</a>: numbers, strings, and lists straight from the source; read it after this chapter, not before.</p></li>
+<li><p>Allen B. Downey, <a class="reference external" href="https://allendowney.github.io/ThinkPython/"><em>Think Python</em>, 3rd edition</a> (2024, free online): the gentlest thorough introduction to the language; its first chapters cover today’s ground at walking pace.</p></li>
+<li><p><em>Bridget Riley: The Stripe Paintings 1961–2014</em> (David Zwirner Books, 2014): what stripes alone can carry, across five decades; the <a class="reference external" href="https://www.tate.org.uk/art/artists/bridget-riley-1845">Tate artist page</a> is the free companion.</p></li>
+<li><p><a class="reference external" href="https://americanart.si.edu/artist/gene-davis-1147">Gene Davis at the Smithsonian American Art Museum</a>: biography, quotes, and the museum’s major Davis holdings, including his advice on how to look at a stripe painting.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-bauhaus"></span>Bauhaus Kooperation Berlin Dessau Weimar. Vorkurs / Preliminary Course. <a class="reference external" href="https://bauhauskooperation.de/en/knowledge/the-bauhaus/training/preliminary-course/">bauhauskooperation.de</a>. The course that opened Bauhaus training, taught in turn by Itten, Moholy-Nagy, and Albers.</p></li>
+<li><p><span id="ref-pompidou"></span>Centre Pompidou. Daniel Buren, <em>Peinture, Manifestation III</em>, 1967, collection entry. <a class="reference external" href="https://www.centrepompidou.fr/en/ressources/oeuvre/cpgXGyq">centrepompidou.fr</a>. Documents the roughly 8.7 cm stripes used since 1965 and the term <em>outil visuel</em>.</p></li>
+<li><p><span id="ref-glaser1966"></span>Glaser, B. (1966). Questions to Stella and Judd (ed. L. R. Lippard). <em>ARTnews</em>, 65(5), 55–61. The 1964 WBAI radio interview in print; reprinted in G. Battcock (ed.), <em>Minimal Art: A Critical Anthology</em>.</p></li>
+<li><p><span id="ref-philamuseum"></span>Philadelphia Museum of Art. Gene Davis, <em>Study for Franklin’s Footpath</em>, 1971, collection entry. <a class="reference external" href="https://www.philamuseum.org/objects/68258">philamuseum.org/objects/68258</a>. The museum holds Davis’s study for the 1972 street painting.</p></li>
+<li><p><span id="ref-saam"></span>Smithsonian American Art Museum. Gene Davis, artist entry. <a class="reference external" href="https://americanart.si.edu/artist/gene-davis-1147">americanart.si.edu/artist/gene-davis-1147</a>. Carries the color-watching advice and the jazz comparison.</p></li>
+<li><p><span id="ref-whitney"></span>Whitney Museum of American Art. Frank Stella, <em>Die Fahne hoch!</em>, 1959, collection entry. <a class="reference external" href="https://whitney.org/collection/works/2964">whitney.org/collection/works/2964</a>.</p></li>
+<li><p><span id="ref-williamson2019"></span>Williamson, B. (2019). Bridget Riley. <em>Studio International</em>, 5 November 2019. <a class="reference external" href="https://www.studiointernational.com/index.php/bridget-riley-exhibition-review-hayward-gallery-london">studiointernational.com</a>. On the 1967 turn to color and the studio assistants who execute the paintings.</p></li>
+<li><p><span id="ref-ycba2022"></span>Yale Center for British Art (2022). Late Morning. Catalogue entry in <em>Bridget Riley: Perceptual Abstraction</em>. <a class="reference external" href="https://bridget-riley.publications.britishart.yale.edu/catalogue/30/">britishart.yale.edu</a>. Dates the Late Morning series as Riley’s earliest color paintings.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the kelly polyrhythm</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">stripe_painting</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">n_stripes</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" src="../_images/8a98ff5757940dc6bd6be41987bbc148b97fe79e5ba9ea67b6f4828be3218cfe.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch00_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Algorithmic Generative Art with Python</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-random-walks.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1. Random Walks: The First Generative System</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-stripe-art-s-simplest-instruction">Context: the stripe, art’s simplest instruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-notebook-is-your-studio">The notebook is your studio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#values-and-names">Values and names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-an-error-message">Reading an error message</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#many-things-at-once-lists">Many things at once: lists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repetition-the-for-loop">Repetition: the for-loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-clock-trick-modulo">The clock trick: modulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisions-if-elif-else">Decisions: if, elif, else</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipes-with-a-name-functions">Recipes with a name: functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-mathematics">Reading mathematics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-light-matplotlib">First light: matplotlib</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-bits-of-math-you-already-own">Two bits of math you already own</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-the-stripe-painting">Build-up: the stripe painting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

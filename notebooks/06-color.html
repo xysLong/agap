@@ -1,0 +1,1092 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. Color: Spaces, Palettes, Extraction &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/06-color';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. L-Systems and Botanical Form" href="07-l-systems.html" />
+    <link rel="prev" title="5. Recursion and Subdivision" href="05-recursion-and-subdivision.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6. Color: Spaces, Palettes, Extraction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-color-as-an-empirical-problem">Context: color as an empirical problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#albers-reconstructed">Albers, reconstructed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-painting-is-a-cloud-of-points">A painting is a cloud of points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hue-and-the-trouble-with-cubes">Hue, and the trouble with cubes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perceptual-distance-cielab">Perceptual distance: CIELAB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-palette-k-means">Finding “the” palette: k-means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-painting-quantized-to-itself">The painting, quantized to itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#palette-transfer-monet-recolors-our-machines">Palette transfer: Monet recolors our machines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="color-spaces-palettes-extraction">
+<h1>6. Color: Spaces, Palettes, Extraction<a class="headerlink" href="#color-spaces-palettes-extraction" title="Link to this heading">#</a></h1>
+<p>Today we treat color as data. We watch a painting scatter into a cube of numbers, teach the computer to distill a palette from it, and then let Monet recolor everything we have built so far.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A triptych: three generators from the previous chapters (random walks, a chance grid, a subdivision composition), all painted with a palette that no one designed. It was <em>extracted</em>, by a clustering algorithm, from Claude Monet’s water lilies. By the end of this chapter you can harvest a palette from any image and hand it to any of your systems.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch06_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/98aa9ce08d08518cbd3d69fb28dc846a801a99980ba1d289a14501f5c9564f68.png" src="../_images/98aa9ce08d08518cbd3d69fb28dc846a801a99980ba1d289a14501f5c9564f68.png" />
+</div>
+</div>
+</section>
+<section id="context-color-as-an-empirical-problem">
+<h2>Context: color as an empirical problem<a class="headerlink" href="#context-color-as-an-empirical-problem" title="Link to this heading">#</a></h2>
+<p>At the Bauhaus, <strong>Johannes Itten</strong> made color one of the pillars of his legendary preliminary course (the Vorkurs you met in chapter 0): his twelve-part color wheel and his seven kinds of color contrast (hue, light-dark, warm-cold, complementary, simultaneous, saturation, extension), fully codified only decades later in <a class="cite" href="#ref-itten1961"><em>Kunst der Farbe</em> (1961)</a>, gave a generation of artists a <em>system</em> for talking about something that had long been treated as ineffable taste. His student and successor in the Vorkurs, <strong>Josef Albers</strong>, went further and turned color theory into experiment. The premise of his <a class="cite" href="#ref-albers1963"><em>Interaction of Color</em> (1963)</a> is that color is never seen alone: “In visual perception a color is almost never seen as it really is, as it physically is.” The book’s famous plates prove it: the same physical color, laid on two different grounds, refuses to look like the same color. We will reconstruct that demonstration in code in a moment, and you will not believe your own eyes, which is precisely Albers’ point.</p>
+<p>Painters had exploited this long before it was theorized. The Impressionists scandalized critics by painting shadows violet and blue <a class="cite" href="#ref-reutersvard1950">(Reutersvärd 1950)</a>: not because pigment fashion changed, but because they looked harder. A shadow on sunlit snow really is bluish (it is lit by the sky, not the sun), and the warm-cold vibration between sunlight and shadow does more optical work than any amount of gray. <strong>Claude Monet</strong>, whose water lilies provide today’s raw data, built entire late paintings out of such interactions, and <strong>Mark Rothko</strong>’s stacked fields live almost entirely on the slow hum between two large adjacent colors.</p>
+<p>For us the practical consequence is this: if color is <em>relational</em>, then the numbers we store colors in matter. The RGB numbers a screen wants are physically convenient and perceptually wrong: two color pairs can be equally far apart in RGB while one pair looks nearly identical and the other obviously different. Color science’s answer is <strong>CIELAB</strong>, a color space bent so that numeric distance approximates perceived difference <a class="cite" href="#ref-cie2019">(CIE 2019)</a>. Today we meet both spaces, and we put LAB to work: a clustering algorithm that groups a painting’s pixels finds “the” palette of the painting, but only if it measures distance the way an eye would.</p>
+</section>
+<section id="albers-reconstructed">
+<h2>Albers, reconstructed<a class="headerlink" href="#albers-reconstructed" title="Link to this heading">#</a></h2>
+<p>Two panels, each with a small rectangle sitting on a large ground. Look at the two small rectangles: which one is lighter, the left or the right?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the same inner color on two grounds -- which small rectangle is lighter?</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+
+<span class="n">inner_color</span> <span class="o">=</span> <span class="s2">"#A08556"</span>                       <span class="c1"># one single color, used twice</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">ground</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"#2E3A87"</span><span class="p">),</span> <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">"#E8C468"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ground</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">inner_color</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8cc8fb7803ec3dc9994721233d6356c59c15f3f49c44f1d3f6dd9253770adc8f.png" src="../_images/8cc8fb7803ec3dc9994721233d6356c59c15f3f49c44f1d3f6dd9253770adc8f.png" />
+</div>
+</div>
+<p>Most people see the left rectangle as lighter and warmer, and the right one as darker and duller. The code above tells the truth: both are <code class="docutils literal notranslate"><span class="pre">&quot;#A08556&quot;</span></code>, byte for byte. Your visual system computes color <em>relative to its surround</em> (simultaneous contrast, Simultankontrast); the dark blue ground pushes its tenant toward light, the sandy ground pushes it toward dark. Albers built a whole pedagogy on such plates <a class="cite" href="#ref-albers1963">(Albers 1963)</a>, and his deeper lesson is ours too: <strong>the artist controls relations, not pixels.</strong> If you doubt the trick, the cell below pulls both rectangles out of their grounds and lets them touch.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># proof: the two inner rectangles, side by side with no grounds</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">inner_color</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">inner_color</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"left and right inner color, touching: one color"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/534eb69a261d2be6e4414fb9d06681072a1a9534c3230ba445136f1a8ddaf4a4.png" src="../_images/534eb69a261d2be6e4414fb9d06681072a1a9534c3230ba445136f1a8ddaf4a4.png" />
+</div>
+</div>
+</section>
+<section id="a-painting-is-a-cloud-of-points">
+<h2>A painting is a cloud of points<a class="headerlink" href="#a-painting-is-a-cloud-of-points" title="Link to this heading">#</a></h2>
+<p>Time for the data view. From chapter 2 you know that a digital image is an array of shape <code class="docutils literal notranslate"><span class="pre">(rows,</span> <span class="pre">cols,</span> <span class="pre">3)</span></code>: one red, green, and blue value per pixel. Flip that around: every pixel is a point <span class="math notranslate nohighlight">\((r, g, b)\)</span> in a three-dimensional <strong>RGB cube</strong>. A painting is a cloud of a few million such points, and the <em>shape</em> of that cloud is the painting’s color identity.</p>
+<p>We load Monet’s <em>Water Lilies</em> from the course image folder. (If the file is missing, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">assets/images/get_images.py</span></code> once in a terminal, from the book’s main folder, the one that contains <code class="docutils literal notranslate"><span class="pre">assets/</span></code>; it fetches public-domain paintings from Wikimedia Commons, or builds synthetic stand-ins when offline.)</p>
+<p>Three numpy moves appear in the next cells, worth naming once. <code class="docutils literal notranslate"><span class="pre">reshape(-1,</span> <span class="pre">3)</span></code> re-pours the same numbers into a new shape (the <code class="docutils literal notranslate"><span class="pre">-1</span></code> means “however many rows it takes”); <code class="docutils literal notranslate"><span class="pre">pixels[chosen]</span></code> picks whole rows out by their index numbers; <code class="docutils literal notranslate"><span class="pre">sample[:,</span> <span class="pre">0]</span></code> takes one column. That is most of the numpy indexing you will ever need.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the Monet and downscale it -- all analysis runs on the small version</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">"../assets/images/monet_waterlilies.jpg"</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">360</span>                                    <span class="c1"># small is plenty for statistics</span>
+<span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="n">original</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">painting</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">painting</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"array shape:"</span><span class="p">,</span> <span class="n">painting</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/08752d9fef21090235809616c0a3152dd75a3a62ebce644dc822cf100c4e11fb.png" src="../_images/08752d9fef21090235809616c0a3152dd75a3a62ebce644dc822cf100c4e11fb.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array shape: (345, 360, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># every pixel is a point in the RGB cube -- scatter a few thousand of them</span>
+<span class="n">pixels</span> <span class="o">=</span> <span class="n">painting</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>               <span class="c1"># flatten to a list of pixels</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">chosen</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pixels</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">pixels</span><span class="p">[</span><span class="n">chosen</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">"3d"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sample</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">sample</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"red"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"green"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">"blue"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3912e1ded64014974cc7984b8d4bb6fbaca58657a8bebb96fcf41325e7a3c216.png" src="../_images/3912e1ded64014974cc7984b8d4bb6fbaca58657a8bebb96fcf41325e7a3c216.png" />
+</div>
+</div>
+<p>Each dot is drawn in its own color, so you are looking at the painting’s palette as a cloud: Monet’s greens and blues form a dense diagonal ridge, with sparse runners toward the pinks of the blossoms. Rotate this plot in your head (or re-run with a different <code class="docutils literal notranslate"><span class="pre">seed</span></code> in <code class="docutils literal notranslate"><span class="pre">rng</span></code>): no histogram tells you as much about a painting’s color as this one scatter.</p>
+</section>
+<section id="hue-and-the-trouble-with-cubes">
+<h2>Hue, and the trouble with cubes<a class="headerlink" href="#hue-and-the-trouble-with-cubes" title="Link to this heading">#</a></h2>
+<p>RGB describes what the <em>screen</em> does (three lamps at some brightness), not what <em>we</em> see. Humans reach more naturally for hue (Farbton: which color?), saturation (how vivid?), and value (how light?): the <strong>HSV</strong> re-coordinates of the same cube. You met hue in chapter 2, when the Kelly spectrum drifted it across a grid and wrapped it with <code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">1.0</span></code>; here is the whole system at a glance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HSV at a glance: vary one coordinate, hold the other two</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">colorsys</span>
+
+<span class="n">strip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+    <span class="n">strip</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="mi">256</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>   <span class="c1"># hue varies</span>
+    <span class="n">strip</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">256</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>  <span class="c1"># saturation varies</span>
+    <span class="n">strip</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">256</span><span class="p">)</span>   <span class="c1"># value varies</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"hue"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"saturation"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">)]:</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">strip</span><span class="p">[</span><span class="n">row</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ed4a2cd89d4c152117506c3ca69bbd5aaed6cc05ab72ceaddf2a27aa757ea95d.png" src="../_images/ed4a2cd89d4c152117506c3ca69bbd5aaed6cc05ab72ceaddf2a27aa757ea95d.png" />
+</div>
+</div>
+</section>
+<section id="perceptual-distance-cielab">
+<h2>Perceptual distance: CIELAB<a class="headerlink" href="#perceptual-distance-cielab" title="Link to this heading">#</a></h2>
+<p>HSV is friendlier than RGB, but neither measures <strong>difference</strong> the way an eye does. The demonstration below shows two pairs of colors. Within each pair, the two colors are exactly equally far apart in RGB (a distance of 60 units in both cases). Yet the left pair looks obviously different, while the right pair looks far more alike.</p>
+<p><strong>CIELAB</strong> (or LAB) fixes this: it re-bends the color cube using measurements of human vision, into a lightness axis <span class="math notranslate nohighlight">\(L^*\)</span> and two opponent axes <span class="math notranslate nohighlight">\(a^*\)</span> (green–red) and <span class="math notranslate nohighlight">\(b^*\)</span> (blue–yellow). Straight-line distance in LAB, called <span class="math notranslate nohighlight">\(\Delta E\)</span>, approximates perceived difference: <span class="math notranslate nohighlight">\(\Delta E \approx 2\)</span> sits at the threshold of visibility <a class="cite" href="#ref-mahy1994">(Mahy et al. 1994)</a>, and the larger the value, the clearer the difference. The cell computes <span class="math notranslate nohighlight">\(\Delta E\)</span> for both pairs: equally far apart in RGB, yet more than twice as far apart to the eye.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two pairs, equally far apart in RGB -- but not to your eyes, and not in LAB</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">rgb2lab</span>
+
+<span class="n">pair_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">150</span><span class="p">]])</span> <span class="o">/</span> <span class="mi">255</span>    <span class="c1"># two blues</span>
+<span class="n">pair_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">230</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">230</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">100</span><span class="p">]])</span> <span class="o">/</span> <span class="mi">255</span>  <span class="c1"># two yellows</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pair_left</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pair_right</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pair</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"left "</span><span class="p">,</span> <span class="n">pair_left</span><span class="p">),</span> <span class="p">(</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">pair_right</span><span class="p">)]:</span>
+    <span class="c1"># np.linalg.norm: straight-line distance between the two color points</span>
+    <span class="n">rgb_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="n">lab_pair</span> <span class="o">=</span> <span class="n">rgb2lab</span><span class="p">(</span><span class="n">pair</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">delta_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">lab_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">lab_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> pair: RGB distance </span><span class="si">{</span><span class="n">rgb_distance</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, LAB distance </span><span class="si">{</span><span class="n">delta_e</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b30815b8986e73667f6600a58ed29c3dfdc1ee2124fdb30c810cad3b408018dc.png" src="../_images/b30815b8986e73667f6600a58ed29c3dfdc1ee2124fdb30c810cad3b408018dc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>left  pair: RGB distance 60, LAB distance 47
+right pair: RGB distance 60, LAB distance 22
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="finding-the-palette-k-means">
+<h2>Finding “the” palette: k-means<a class="headerlink" href="#finding-the-palette-k-means" title="Link to this heading">#</a></h2>
+<p>Now the harvest. We want the six colors that best summarize the painting: six points in color space such that every pixel is close to one of them. The classic algorithm is <strong>k-means clustering</strong> <a class="cite" href="#ref-macqueen1967">(MacQueen 1967)</a>, and its whole idea fits in three lines:</p>
+<ol class="arabic simple">
+<li><p>Guess <span class="math notranslate nohighlight">\(k\)</span> cluster centers.</p></li>
+<li><p><strong>Assign</strong> every pixel to its nearest center.</p></li>
+<li><p><strong>Average</strong> each cluster’s pixels to get a better center. Repeat 2 and 3 until nothing moves.</p></li>
+</ol>
+<p>The averaging is why the color space matters: run k-means in RGB and the “nearest center” step uses the distance we just discredited. We run it in LAB, on the downscaled painting, using scikit-learn’s implementation (the algorithm is not today’s lesson; the space it runs in is).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># k-means in LAB: six clusters summarize the painting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+
+<span class="n">painting_lab</span> <span class="o">=</span> <span class="n">rgb2lab</span><span class="p">(</span><span class="n">painting</span><span class="p">)</span>               <span class="c1"># convert the whole small image</span>
+<span class="n">pixels_lab</span> <span class="o">=</span> <span class="n">painting_lab</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">pixels_lab</span><span class="p">)</span>        <span class="c1"># cluster number of every pixel</span>
+<span class="n">centers_lab</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"cluster sizes:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cluster sizes: [11177 24615 29274  7985 28387 22762]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the six centers, converted back to RGB and sorted dark to light</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">lab2rgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_hex</span>
+
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">centers_lab</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>   <span class="c1"># argsort: the order that would sort</span>
+                                        <span class="c1"># by column 0 of LAB, the lightness</span>
+<span class="n">centers_rgb</span> <span class="o">=</span> <span class="n">lab2rgb</span><span class="p">(</span><span class="n">centers_lab</span><span class="p">[</span><span class="n">order</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">monet_palette</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">centers_rgb</span><span class="p">:</span>
+    <span class="n">monet_palette</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_hex</span><span class="p">(</span><span class="n">center</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"extracted palette:"</span><span class="p">,</span> <span class="n">monet_palette</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">centers_rgb</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"the Monet palette, by k-means"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>extracted palette: ['#4e6a8a', '#4b7475', '#5e7888', '#5d8c70', '#5d88a8', '#90a2a0']
+</pre></div>
+</div>
+<img alt="../_images/652d936439eda34b2e27c439fd60d095673fad097ff8a1f374b37cd003788881.png" src="../_images/652d936439eda34b2e27c439fd60d095673fad097ff8a1f374b37cd003788881.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># where the clusters live: the painting's pixels on the a*-b* plane</span>
+<span class="n">sample_lab</span> <span class="o">=</span> <span class="n">pixels_lab</span><span class="p">[</span><span class="n">chosen</span><span class="p">]</span>                <span class="c1"># same 4000 pixels as before</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sample_lab</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">sample_lab</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centers_lab</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">centers_lab</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"X"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"a*  (green to red)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"b*  (blue to yellow)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"pixels and their six k-means centers"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a04a0e19e361768c4c79914f17a380a374c3833707b0c54372ac57bd5e1b09a6.png" src="../_images/a04a0e19e361768c4c79914f17a380a374c3833707b0c54372ac57bd5e1b09a6.png" />
+</div>
+</div>
+<p>The black crosses are the six centers: each sits in the middle of a dense region of pixels, exactly as “assign, average, repeat” promises.</p>
+</section>
+<section id="the-painting-quantized-to-itself">
+<h2>The painting, quantized to itself<a class="headerlink" href="#the-painting-quantized-to-itself" title="Link to this heading">#</a></h2>
+<p>A quick test of how well six colors summarize the painting: repaint every pixel with its cluster’s center color. This is <strong>quantization</strong> (chapter 16 will push it much further, down to one bit).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># repaint every pixel with its cluster center: the painting in six colors</span>
+<span class="n">centers_rgb_unsorted</span> <span class="o">=</span> <span class="n">lab2rgb</span><span class="p">(</span><span class="n">centers_lab</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1"># labels holds each pixel's cluster number; indexing the center list with it</span>
+<span class="c1"># swaps every pixel for its center in one stroke</span>
+<span class="n">quantized</span> <span class="o">=</span> <span class="n">centers_rgb_unsorted</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">painting</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">painting</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Monet, ~124,000 pixels"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">quantized</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Monet, 6 colors"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/30e1de7c02c076ffe1bf0e14e8ac2cbd7e4d8aa2e6a103129f1c31f03845e1d2.png" src="../_images/30e1de7c02c076ffe1bf0e14e8ac2cbd7e4d8aa2e6a103129f1c31f03845e1d2.png" />
+</div>
+</div>
+</section>
+<section id="palette-transfer-monet-recolors-our-machines">
+<h2>Palette transfer: Monet recolors our machines<a class="headerlink" href="#palette-transfer-monet-recolors-our-machines" title="Link to this heading">#</a></h2>
+<p>Here is the payoff. Our course palettes live in the dictionary <code class="docutils literal notranslate"><span class="pre">agap.PALETTES</span></code>, and a dictionary can always take one more entry: we register the extracted palette under the name <code class="docutils literal notranslate"><span class="pre">&quot;monet&quot;</span></code>, and every generator we have built can use it by name, instantly.</p>
+<p>To put three generators side by side, we bring back one function from each of chapters 1, 2, and 5, condensed, with one small change: each draws onto an axis <code class="docutils literal notranslate"><span class="pre">ax</span></code> that we hand it, instead of making its own figure (the trick behind chapter 5’s six-panel sheet). Copying your own functions forward like this is honest reuse; in chapter 27 it becomes the official recipe for combined artworks. (One archaism travels along: chapter 1 was written before our numpy convention, so its condensed panel still rolls its dice with the old <code class="docutils literal notranslate"><span class="pre">random</span></code> module, the only such exception in the book.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># register the extracted palette as a course palette</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">PALETTES</span><span class="p">[</span><span class="s2">"monet"</span><span class="p">]</span> <span class="o">=</span> <span class="n">monet_palette</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"palettes now:"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>palettes now: ['bauhaus', 'rothko_dark', 'pastel', 'monochrome', 'viridis', 'magma', 'kelly', 'monet']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 1's random walks, condensed: draws onto a given axis</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">walk_panel</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">n_walkers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">walker</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_walkers</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+            <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">directions</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+            <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">walker</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 2's chance grid, condensed: weights favor the darker colors</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grid_panel</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>   <span class="c1"># dark common, light rare</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 5's recursive splitter (same logic, condensed line breaks)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span>
+              <span class="n">min_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">calm_area</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+    <span class="n">finished</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="n">min_size</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">min_size</span>
+    <span class="n">may_rest</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">calm_area</span>
+    <span class="k">if</span> <span class="n">finished</span> <span class="ow">or</span> <span class="p">(</span><span class="n">may_rest</span> <span class="ow">and</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">stop_chance</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)]</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="n">height</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">),</span> <span class="n">height</span><span class="p">,</span>
+                            <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">),</span>
+                        <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 5's mondrian panel: lightest color as ground, darkest as line color</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mondrian_panel</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                   <span class="n">accent_chance</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="ow">in</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                       <span class="c1"># the lightest color as ground</span>
+        <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">accent_chance</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                               <span class="n">edgecolor</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">border</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>(One detail worth noticing in <code class="docutils literal notranslate"><span class="pre">mondrian_panel</span></code>: the “black” border lines now use the <em>darkest extracted color</em> <code class="docutils literal notranslate"><span class="pre">palette[0]</span></code> instead of true black, and the ground uses the lightest <code class="docutils literal notranslate"><span class="pre">palette[-1]</span></code> instead of white. This is why we sorted the palette by lightness: position in the palette now <em>means</em> something, and any palette with a dark end and a light end will work.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the triptych: three chapters, one extracted palette</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">palette_triptych</span><span class="p">(</span><span class="n">palette_name</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">walk_panel</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">grid_panel</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">mondrian_panel</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">palette_name</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">palette_triptych</span><span class="p">(</span><span class="s2">"monet"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" src="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" />
+</div>
+</div>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>To make the whole pipeline reusable, <code class="docutils literal notranslate"><span class="pre">extract_palette</span></code> wraps today’s build-up into one function: image in, palette out. Then we let two more paintings from the course folder recolor the same three machines. (All seeds are fixed, as always; change them freely. <strong>Try it:</strong> <code class="docutils literal notranslate"><span class="pre">n_colors=3</span></code> versus <code class="docutils literal notranslate"><span class="pre">n_colors=12</span></code> on the Monet changes the triptych’s whole climate.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the whole pipeline in one function: image in, hex palette out</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_palette</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">small</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">lab</span> <span class="o">=</span> <span class="n">rgb2lab</span><span class="p">(</span><span class="n">small</span><span class="p">)</span>          <span class="c1"># convert("RGB") tames grayscale and RGBA files</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_colors</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">lab</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>              <span class="c1"># dark to light</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">lab2rgb</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="n">order</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_colors</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_colors</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">:</span>
+        <span class="n">palette</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_hex</span><span class="p">(</span><span class="n">center</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">palette</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Vermeer and Hokusai recolor the same three machines</span>
+<span class="n">PALETTES</span><span class="p">[</span><span class="s2">"vermeer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_palette</span><span class="p">(</span><span class="s2">"../assets/images/vermeer_pearl_earring.jpg"</span><span class="p">)</span>
+<span class="n">PALETTES</span><span class="p">[</span><span class="s2">"hokusai"</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_palette</span><span class="p">(</span><span class="s2">"../assets/images/hokusai_wave.jpg"</span><span class="p">)</span>
+
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">palette_triptych</span><span class="p">(</span><span class="s2">"vermeer"</span><span class="p">)</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">palette_triptych</span><span class="p">(</span><span class="s2">"hokusai"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1cbf1a216688601d1b95859ed49cc65499e4e3697b2c1ebdbf0e8453915b0940.png" src="../_images/1cbf1a216688601d1b95859ed49cc65499e4e3697b2c1ebdbf0e8453915b0940.png" />
+<img alt="../_images/edff6760b64b2c1f32dafe0d4975643260b4b2d68ddb6cc427b08f96956b29a2.png" src="../_images/edff6760b64b2c1f32dafe0d4975643260b4b2d68ddb6cc427b08f96956b29a2.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Three palettes, identical seeds: the compositions are the same, stroke for stroke and field for field, only the colors changed. Which triptych feels calmest, and is that a property of the source painting or of its palette alone? Does the Hokusai version remind you of the wave at all, and if it does not, what did the palette fail to carry: the hues, the proportions, or the <em>placement</em> of color? (That last one is the deep question: a palette is a list, a painting is an arrangement.)</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Extract a palette from any image you like (drop a file into <code class="docutils literal notranslate"><span class="pre">assets/images/</span></code>, or reuse the course paintings), pick your favorite generator or the whole triptych, replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code>, and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">palette_triptych</span><span class="p">(</span><span class="s2">"monet"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" src="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch06_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: what is “the” palette of a painting?</strong> Run <code class="docutils literal notranslate"><span class="pre">extract_palette</span></code> on the Monet with <code class="docutils literal notranslate"><span class="pre">n_colors=3</span></code> and <code class="docutils literal notranslate"><span class="pre">n_colors=12</span></code> and display the results (the swatch code from the build-up works). At <span class="math notranslate nohighlight">\(k=3\)</span>, which aspects of the painting survive? At <span class="math notranslate nohighlight">\(k=12\)</span>, do the extra colors add identity or noise? There is no correct <span class="math notranslate nohighlight">\(k\)</span>; write one sentence defending your favorite, and note what that implies about the phrase “the palette of a painting”.</p>
+<p><strong>(b) Code modification: sort by hue.</strong> Our palettes are sorted by lightness. Write <code class="docutils literal notranslate"><span class="pre">sort_palette_by_hue(palette)</span></code> that re-orders a list of hex colors by their hue instead, using <code class="docutils literal notranslate"><span class="pre">colorsys.rgb_to_hsv</span></code> (and <code class="docutils literal notranslate"><span class="pre">matplotlib.colors.to_rgb</span></code> to parse the hex strings). Show the Monet palette both ways. One subtlety: hue lives on a wheel (remember <code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">1.0</span></code> from chapter 2), so “sorted by hue” depends on where you cut the wheel; where does your sort cut it?</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_rgb</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sort_palette_by_hue</span><span class="p">(</span><span class="n">palette</span><span class="p">):</span>
+    <span class="n">hues</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">hex_color</span> <span class="ow">in</span> <span class="n">palette</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">hex_color</span><span class="p">)</span>
+        <span class="n">hue</span><span class="p">,</span> <span class="n">saturation</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">rgb_to_hsv</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">hues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hue</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">hues</span><span class="p">)</span>
+    <span class="n">sorted_palette</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+        <span class="n">sorted_palette</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">sorted_palette</span>
+
+<span class="n">by_hue</span> <span class="o">=</span> <span class="n">sort_palette_by_hue</span><span class="p">(</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"monet"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">by_hue</span><span class="p">)</span>
+
+<span class="n">swatch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">by_hue</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">by_hue</span><span class="p">)):</span>
+    <span class="n">swatch</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">by_hue</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">swatch</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"the Monet palette, sorted by hue"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The sort cuts the wheel at hue 0, which is red: colors just below pure red (a warm pink at hue 0.97) land at the <em>end</em> while near-identical reds at hue 0.02 land at the <em>start</em>. A fancier version subtracts an offset before sorting to cut the wheel at its emptiest point.</p>
+</details>
+<p><strong>(c) Creative challenge: your personal palette.</strong> Photograph something whose colors feel like yours (a bookshelf, a jacket, a street corner), extract its palette, register it in <code class="docutils literal notranslate"><span class="pre">PALETTES</span></code> under your name, and recolor one generator from any previous chapter with it. Keep the palette; the course galleries ahead (flow fields in chapter 10 above all) will make far heavier use of it than today’s triptych.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Josef Albers, <em>Interaction of Color</em> (1963; Yale 50th-anniversary edition 2013): short chapters, revolutionary plates; the <a class="reference external" href="https://interactionofcolor.com/">companion app</a> lets you re-run his experiments interactively.</p></li>
+<li><p>Johannes Itten, <em>The Art of Color</em> (<em>Kunst der Farbe</em>, 1961): the Bauhaus color system, contrasts and all; skim plate-first.</p></li>
+<li><p>John Gage, <em>Colour and Culture: Practice and Meaning from Antiquity to Abstraction</em> (1993): the standard art-historical survey of color’s shifting meanings.</p></li>
+<li><p>Bartosz Ciechanowski, <a class="reference external" href="https://ciechanow.ski/color-spaces/">“Color Spaces”</a>: a superb interactive essay walking from RGB to perceptual spaces; the best hour you can spend on this chapter’s math.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-albers1963"></span>Albers, J. (1963). <em>Interaction of Color</em>. Yale University Press, New Haven. The experimental color pedagogy reconstructed in this chapter; the opening line is quoted in the context section.</p></li>
+<li><p><span id="ref-cie2019"></span>CIE (2019). ISO/CIE 11664-4:2019 Colorimetry, Part 4: CIE 1976 L*a*b* colour space. International Commission on Illumination, Vienna. <a class="reference external" href="https://cie.co.at/publications/colorimetry-part-4-cie-1976-lab-colour-space-1">cie.co.at/publications</a>. The standard definition of the CIELAB space, first recommended by the CIE in 1976.</p></li>
+<li><p><span id="ref-itten1961"></span>Itten, J. (1961). <em>Kunst der Farbe: Subjektives Erleben und objektives Erkennen als Wege zur Kunst</em>. Otto Maier Verlag, Ravensburg. The Bauhaus color system: the twelve-part wheel and the seven contrasts.</p></li>
+<li><p><span id="ref-macqueen1967"></span>MacQueen, J. (1967). Some methods for classification and analysis of multivariate observations. <em>Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability</em>, vol. 1, 281–297. University of California Press. <a class="reference external" href="https://projecteuclid.org/ebooks/berkeley-symposium-on-mathematical-statistics-and-probability/Proceedings-of-the-Fifth-Berkeley-Symposium-on-Mathematical-Statistics-and/chapter/Some-methods-for-classification-and-analysis-of-multivariate-observations/bsmsp/1200512992">projecteuclid.org</a>. The paper that named the k-means procedure.</p></li>
+<li><p><span id="ref-mahy1994"></span>Mahy, M., Van Eycken, L., and Oosterlinck, A. (1994). Evaluation of uniform color spaces developed after the adoption of CIELAB and CIELUV. <em>Color Research &amp; Application</em>, 19(2), 105–121. <a class="reference external" href="https://doi.org/10.1111/j.1520-6378.1994.tb00070.x">doi:10.1111/j.1520-6378.1994.tb00070.x</a>. Measures the just-noticeable difference in CIELAB at about <span class="math notranslate nohighlight">\(\Delta E = 2.3\)</span>.</p></li>
+<li><p><span id="ref-reutersvard1950"></span>Reutersvärd, O. (1950). The “violettomania” of the Impressionists. <em>The Journal of Aesthetics and Art Criticism</em>, 9(2), 106–110. <a class="reference external" href="https://doi.org/10.2307/426328">doi:10.2307/426328</a>. Documents the critics’ campaign against Impressionist violet and blue shadows.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the Monet triptych</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">palette_triptych</span><span class="p">(</span><span class="s2">"monet"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" src="../_images/6e986dcd363745ec015247ba8cd0f511e1c01efec6575d4e2cddf4259135ce27.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch06_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-recursion-and-subdivision.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5. Recursion and Subdivision</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-l-systems.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">7. L-Systems and Botanical Form</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-color-as-an-empirical-problem">Context: color as an empirical problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#albers-reconstructed">Albers, reconstructed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-painting-is-a-cloud-of-points">A painting is a cloud of points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hue-and-the-trouble-with-cubes">Hue, and the trouble with cubes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perceptual-distance-cielab">Perceptual distance: CIELAB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-palette-k-means">Finding “the” palette: k-means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-painting-quantized-to-itself">The painting, quantized to itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#palette-transfer-monet-recolors-our-machines">Palette transfer: Monet recolors our machines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

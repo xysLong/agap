@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4. Truchet Tiles: Chance on a Grid &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-truchet-tiles';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Recursion and Subdivision" href="05-recursion-and-subdivision.html" />
+    <link rel="prev" title="3. Geometric Patterns and Symmetry" href="03-geometric-patterns.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>4. Truchet Tiles: Chance on a Grid</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-a-priest-a-metallurgist-and-one-line-of-basic">Context: a priest, a metallurgist, and one line of BASIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-of-a-tile">The mathematics of a tile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-10-print-maze">The 10 PRINT maze</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-smith-tile-and-the-midpoint-contract">The Smith tile and the midpoint contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-weather">Weighted weather</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bigger-vocabulary-the-crossing-and-the-blank">A bigger vocabulary: the crossing and the blank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#style-passes-the-pen-and-the-palette">Style passes: the pen and the palette</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground-four-temperaments">Playground: four temperaments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="truchet-tiles-chance-on-a-grid">
+<h1>4. Truchet Tiles: Chance on a Grid<a class="headerlink" href="#truchet-tiles-chance-on-a-grid" title="Link to this heading">#</a></h1>
+<p>Chapter 3 built pattern out of perfect obedience; chapter 2 taught dice to behave. Today the two meet: a rigid grid where every cell flips a coin, and out of pure local chance grow paths, loops and currents that nobody drew.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A field of more than two and a half thousand tiles, each carrying the same two quarter-circle arcs, each rotated by the flip of a weighted coin. Ink on paper, nothing else. Look longer and the maze starts to flow: a soft diagonal current runs through it, put there not by any drawn line but by a lean in the coin: 62 to 38 instead of fifty-fifty. By the end of today you can tile fields like this from any vocabulary of tiles you invent, and steer their weather.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch04_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bb652c3f66ccbeeb76b4ceab978d4f6e67127240873120df90bee40b468b87a2.png" src="../_images/bb652c3f66ccbeeb76b4ceab978d4f6e67127240873120df90bee40b468b87a2.png" />
+</div>
+</div>
+</section>
+<section id="context-a-priest-a-metallurgist-and-one-line-of-basic">
+<h2>Context: a priest, a metallurgist, and one line of BASIC<a class="headerlink" href="#context-a-priest-a-metallurgist-and-one-line-of-basic" title="Link to this heading">#</a></h2>
+<p>In 1704 the Académie Royale des Sciences in Paris printed a short memoir with an unassuming title, <em>Mémoire sur les combinaisons</em> <a class="cite" href="#ref-truchet1704">(Truchet 1704)</a>, by <strong>Sébastien Truchet</strong> (1657-1729), a Discalced Carmelite priest and honorary member of the Académie. Truchet was the kind of practical polymath the age produced: he invented the first typographic point system, ancestor of the unit in which type is still measured, and helped construct the mathematically gridded Romain du Roi typeface for the royal press <a class="cite" href="#ref-andre1999">(André and Girou 1999)</a>. On a canal-engineering assignment near Orléans he came across a stack of ceramic tiles, each square split along the diagonal into two colors, and asked a combinatorial question no tiler had bothered to write down: a single such tile can sit in <strong>four orientations</strong>; what patterns can repeated copies make? His memoir catalogues the answers in careful engraved plates <a class="cite" href="#ref-smith1987">(Smith 1987)</a>. Note what he did <em>not</em> do: he did not invent the tile. He found one, and invented a way of thinking about it.</p>
+<p>In 1722 a fellow Carmelite, <strong>Dominique Douat</strong>, expanded the memoir into a book-length treatise whose enumeration of arrangements runs far past Truchet’s <a class="cite" href="#ref-douat1722">(Douat 1722)</a>; the art historian Ernst Gombrich called it the earliest treatise on the theory of design <a class="cite" href="#ref-gombrich1979">(Gombrich 1979)</a>. Then the idea slept for two and a half centuries, until the MIT metallurgist <strong>Cyril Stanley Smith</strong> reprinted Truchet in the art-and-science journal <em>Leonardo</em> in 1987 (with Pauline Boucher’s English translation of the memoir) and added a quiet variation of his own: replace the two colored triangles with <strong>two quarter-circle arcs</strong> joining the midpoints of adjacent edges <a class="cite" href="#ref-smith1987">(Smith 1987)</a>. Nearly every “Truchet tiling” you will find today uses Smith’s arc tile, drawn 283 years after its name.</p>
+<p>The idea has a second, stranger monument. On a Commodore 64, the one-line program <code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">PRINT</span> <span class="pre">CHR$(205.5+RND(1));</span> <span class="pre">:</span> <span class="pre">GOTO</span> <span class="pre">10</span></code> prints one of the machine’s two diagonal-line characters at random, forever, and the screen fills with an endless maze. In 2012, ten authors (Nick Montfort, Casey Reas and eight others) published an entire MIT Press book about that single line <a class="cite" href="#ref-montfort2012">(Montfort et al. 2012)</a>. A whole monograph about one line of generative code: this book’s thesis in miniature.</p>
+<p>Chapter 3’s patterns came from symmetry, every tile placed by law. Today the grid stays rigid but the law becomes a coin flip (chapter 2’s oldest tool), and something new happens: arcs join across tile edges into paths and loops that no cell decided. Hold onto that sensation of structure appearing above the rules; it is the book’s first taste of what chapter 13 will formally call emergence.</p>
+</section>
+<section id="the-mathematics-of-a-tile">
+<h2>The mathematics of a tile<a class="headerlink" href="#the-mathematics-of-a-tile" title="Link to this heading">#</a></h2>
+<p>A Truchet system needs only two decisions:</p>
+<ul class="simple">
+<li><p><strong>A unit cell</strong> (Elementarzelle): one square tile design, drawn so it can sit in <span class="math notranslate nohighlight">\(k\)</span> distinguishable orientations. Truchet’s split square has <span class="math notranslate nohighlight">\(k = 4\)</span>; the 10 PRINT diagonal and Smith’s arc tile each have <span class="math notranslate nohighlight">\(k = 2\)</span> (rotating them twice gives the same picture back).</p></li>
+<li><p><strong>A choice rule</strong>: for every cell of an <span class="math notranslate nohighlight">\(n \times m\)</span> grid, pick one orientation, independently, by chance.</p></li>
+</ul>
+<p>Because every cell chooses on its own, even tiny grids multiply into spaces of pictures no museum could hang; we will count one such space in a moment, and every run of this notebook hangs one picture from it on your screen.</p>
+</section>
+<section id="the-10-print-maze">
+<h2>The 10 PRINT maze<a class="headerlink" href="#the-10-print-maze" title="Link to this heading">#</a></h2>
+<p>The Commodore’s two characters are two diagonals of a square: one rising, one falling. Here they are as coordinate pairs, our first two tiles. Each is a single line segment from one corner of the cell to the opposite one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the two 10 PRINT tiles: a rising and a falling diagonal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">5.6</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"rising: (0,0) to (1,1)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"falling: (0,1) to (1,0)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a00079cf6f41de0cea3319d00122d5c41e79e0be1031238550139e0845d87dbd.png" src="../_images/a00079cf6f41de0cea3319d00122d5c41e79e0be1031238550139e0845d87dbd.png" />
+</div>
+</div>
+<p>Now the maze: two nested loops visit every cell of the grid (chapter 0’s row-and-column pattern, the same double loop that drew <em>Schotter</em> in chapter 1), and in each cell a seeded coin flip (chapter 2) places one diagonal or the other. Collecting all the segments and handing them to matplotlib in one bundle is the job of a <strong><code class="docutils literal notranslate"><span class="pre">LineCollection</span></code></strong>: one object holding thousands of little lines, drawn in a single stroke, hundreds of times faster than a thousand separate <code class="docutils literal notranslate"><span class="pre">plot</span></code> calls. It will draw nearly everything in this chapter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the 10 PRINT maze: one coin flip per cell, one diagonal per flip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineCollection</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>                       <span class="c1"># make the course package importable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ten_print</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">p_rising</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">p_rising</span><span class="p">:</span>
+                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">)])</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">ten_print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d90bbb80b6129265a9c3dbe3520f9a12f8d6e5e6a11b03cc84e8fa072173a212.png" src="../_images/d90bbb80b6129265a9c3dbe3520f9a12f8d6e5e6a11b03cc84e8fa072173a212.png" />
+</div>
+</div>
+<p>There it is: the Commodore screen, in three honest ingredients (a double loop, a coin, a bundle of segments). Nobody planned the corridors, yet your eye finds them instantly, along with staircases, diamonds and little closed rooms. The maze exists entirely in your reading of it; the program only ever thought about one cell at a time.</p>
+<p><strong>Try it.</strong> Re-run with a different <code class="docutils literal notranslate"><span class="pre">seed</span></code>: a fresh maze every time, one picture drawn from an unthinkably large deck. How large? Independent choices multiply: an <span class="math notranslate nohighlight">\(n \times m\)</span> grid of <span class="math notranslate nohighlight">\(k\)</span>-orientation tiles offers</p>
+<div class="math notranslate nohighlight">
+\[k^{\,n \cdot m}\]</div>
+<p>pictures, read aloud: <em>k multiplied by itself, once per cell</em> (chapter 0 taught powers as repeated multiplication). Ask Python:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># how many different mazes can this grid show?</span>
+<span class="n">cells_in_grid</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="mi">26</span>
+<span class="n">mazes</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">cells_in_grid</span>          <span class="c1"># two choices per cell, independent</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grid cells:  </span><span class="si">{</span><span class="n">cells_in_grid</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"possible mazes: a number with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mazes</span><span class="p">))</span><span class="si">}</span><span class="s2"> digits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"for comparison, a 5 by 5 grid alone allows </span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">25</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> mazes"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grid cells:  1040
+possible mazes: a number with 314 digits
+for comparison, a 5 by 5 grid alone allows 33,554,432 mazes
+</pre></div>
+</div>
+</div>
+</div>
+<p>A number with 314 digits. (Physicists estimate the atoms in the observable universe with about 80 digits.) This is the everyday arithmetic of generative art: even the smallest system multiplies into a space of pictures no one will ever exhaust, and a seed is simply a bookmark in that space (chapter 2’s contract, still holding).</p>
+</section>
+<section id="the-smith-tile-and-the-midpoint-contract">
+<h2>The Smith tile and the midpoint contract<a class="headerlink" href="#the-smith-tile-and-the-midpoint-contract" title="Link to this heading">#</a></h2>
+<p>Smith’s 1987 variation replaces the diagonal with <strong>two quarter-circle arcs</strong>. Each arc is centered on a corner of the cell with radius one half, so it begins and ends exactly at the <strong>midpoints of the cell’s edges</strong>. We build the arcs ourselves from chapter 3’s unit circle (a point at angle <span class="math notranslate nohighlight">\(\theta\)</span> on a circle of radius <span class="math notranslate nohighlight">\(r\)</span> around a center sits at <span class="math notranslate nohighlight">\(x = c_x + r\cos\theta\)</span>, <span class="math notranslate nohighlight">\(y = c_y + r\sin\theta\)</span>); no ready-made patch, just trigonometry sampled along <code class="docutils literal notranslate"><span class="pre">np.linspace</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one quarter-circle arc, sampled as 24 short segments of trigonometry</span>
+<span class="n">QUARTER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>   <span class="c1"># a quarter turn, finely sliced</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">arc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">start_angle</span><span class="p">):</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">start_angle</span> <span class="o">+</span> <span class="n">QUARTER</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span>
+                            <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">orientation</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>      <span class="c1"># arcs hugging the lower-left and upper-right corners</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">arc</span><span class="p">((</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span> <span class="n">arc</span><span class="p">((</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>                     <span class="c1"># the same tile, rotated a quarter turn</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">arc</span><span class="p">((</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">arc</span><span class="p">((</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the two orientations, with every edge midpoint marked</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="n">smith_tile</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">orientation</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stroke</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">stroke</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">))</span>
+    <span class="n">midpoints</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span> <span class="ow">in</span> <span class="n">midpoints</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"orientation </span><span class="si">{</span><span class="n">orientation</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e356f064c1c85f9d260c3835abc156f64ddf7a3d9dfe3812cc63e96e50027ba3.png" src="../_images/e356f064c1c85f9d260c3835abc156f64ddf7a3d9dfe3812cc63e96e50027ba3.png" />
+</div>
+</div>
+<p>The red dots are the proof, and it fits in one sentence. <strong>Both orientations touch each edge at exactly the same four points: the midpoints.</strong> When two tiles share an edge, they share that edge’s midpoint, so an arc ending there always finds an arc (from one orientation or the other) beginning there. Every stroke continues across every border, <em>no matter how any coin lands</em>. Truchet’s grid guarantees the meeting places; chance only decides what happens between them.</p>
+<p>That is why tiling this tile at random produces not scattered arcs but <strong>paths</strong>: connected ink routes that wander from tile to tile, and here and there close into loops. The paths are the first objects in this book that exist only at the scale of the whole picture; no tile knows it is part of one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tile the Smith tile at random: the classic Truchet field</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">truchet_arcs</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+                 <span class="n">ink</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">figwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">strokes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">orientation</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>   <span class="c1"># chapter 2's weighted choice</span>
+            <span class="n">strokes</span> <span class="o">+=</span> <span class="n">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figwidth</span><span class="p">,</span> <span class="n">figwidth</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">/</span> <span class="n">cols</span><span class="p">),</span>
+                           <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">strokes</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">truchet_arcs</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/be17ebff859fb01438a8d9d6c1e3db34c79d5bcc6b300a6b7fd2d745c4ebef78.png" src="../_images/be17ebff859fb01438a8d9d6c1e3db34c79d5bcc6b300a6b7fd2d745c4ebef78.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Put this beside the 10 PRINT maze. Same grid, same coin, same two-orientation logic, yet the temperament is opposite: the maze is all elbows and the arc field is all hips. Trace one line of ink with your eye until it exits the frame or bites its own tail. How many tiles did it cross? Nobody chose that number.</p>
+<p><strong>Try it.</strong> Two or three different seeds. The circles that appear where four arcs close: do they show up in every run? (They are two-tile loops, the shortest the grammar allows, and chance mints a steady supply of them.)</p>
+</section>
+<section id="weighted-weather">
+<h2>Weighted weather<a class="headerlink" href="#weighted-weather" title="Link to this heading">#</a></h2>
+<p>A fair coin has no mood. Chapter 2 taught the fix: hand <code class="docutils literal notranslate"><span class="pre">rng.choice</span></code> uneven weights and randomness acquires a temperament. Biasing one orientation makes its diagonal direction pile up into long runs, and a <em>current</em> begins to flow through the maze; the grain is statistical, visible everywhere and locatable nowhere.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one dial, three climates: bias the orientation coin</span>
+<span class="k">for</span> <span class="n">p_first</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">"fair coin"</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.72</span><span class="p">,</span> <span class="s2">"leaning"</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="s2">"streaming"</span><span class="p">)]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"weights (</span><span class="si">{</span><span class="n">p_first</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p_first</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">truchet_arcs</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="n">p_first</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p_first</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                 <span class="n">lw</span><span class="o">=</span><span class="mf">1.9</span><span class="p">,</span> <span class="n">figwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>weights (0.50, 0.50): fair coin
+weights (0.72, 0.28): leaning
+weights (0.92, 0.08): streaming
+</pre></div>
+</div>
+<img alt="../_images/b3f3ed35c09ef560acc3eee64ea40c5870148212e1da655a8e59483108b23955.png" src="../_images/b3f3ed35c09ef560acc3eee64ea40c5870148212e1da655a8e59483108b23955.png" />
+<img alt="../_images/e1b62b65990b58e35096379902aa59e6809ea45aaa5c7a5479898978d782ccbd.png" src="../_images/e1b62b65990b58e35096379902aa59e6809ea45aaa5c7a5479898978d782ccbd.png" />
+<img alt="../_images/0b0fa25a63760389ab9e0362f41899e5868284fc20e33552f250b34d40ecf378.png" src="../_images/0b0fa25a63760389ab9e0362f41899e5868284fc20e33552f250b34d40ecf378.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Somewhere between 0.72 and 0.92 the picture stops being a maze with a mood and becomes a <em>flow</em> interrupted by knots. Where exactly is that boundary for your eye? Hold the question; it is exercise (a), and it has no wrong answer, only your answer.</p>
+</section>
+<section id="a-bigger-vocabulary-the-crossing-and-the-blank">
+<h2>A bigger vocabulary: the crossing and the blank<a class="headerlink" href="#a-bigger-vocabulary-the-crossing-and-the-blank" title="Link to this heading">#</a></h2>
+<p>Nothing limits a tile set to one design in two poses. Any tile that <strong>honors the midpoint contract</strong> (touch edges only at midpoints) can join the deck, and the choice of deck changes the pattern’s whole grammar. We add two: a <strong>crossing</strong> (straight lines joining opposite midpoints) and a <strong>blank</strong> (no ink at all). The blank deliberately breaks the contract’s promise of continuation: arcs arriving at its border simply stop. Used sparingly, that is not a bug but breathing room, the rests between the notes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four tile functions, one dictionary: the deck we will draw from</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">arc0_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">arc1_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cross_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">col</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)])]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">blank_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+<span class="n">TILES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"arc0"</span><span class="p">:</span> <span class="n">arc0_tile</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">:</span> <span class="n">arc1_tile</span><span class="p">,</span>
+         <span class="s2">"cross"</span><span class="p">:</span> <span class="n">cross_tile</span><span class="p">,</span> <span class="s2">"blank"</span><span class="p">:</span> <span class="n">blank_tile</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the vocabulary so far: four tiles, one contract</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">TILES</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="n">TILES</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stroke</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">stroke</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b04b9a8be7269a4086aeb5372d611c3f6f18e74dd278b76de08d9fc9e33100ed.png" src="../_images/b04b9a8be7269a4086aeb5372d611c3f6f18e74dd278b76de08d9fc9e33100ed.png" />
+</div>
+</div>
+<p>(One new habit in that cell: <code class="docutils literal notranslate"><span class="pre">TILES</span></code> stores <em>functions</em> as its values. A function is a thing in Python, storable like any number or string, and the dictionary hands us the right one by name, chapter 0’s lookup-by-key with drawing recipes inside. The tiler below never needs to know which tiles exist; it just asks the dictionary.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the general tiler: any tile names, any weights</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">truchet_field</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">),</span>
+                  <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span>
+                  <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">strokes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">tiles</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tiles</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)]</span>
+            <span class="n">strokes</span> <span class="o">+=</span> <span class="n">TILES</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figwidth</span><span class="p">,</span> <span class="n">figwidth</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">/</span> <span class="n">cols</span><span class="p">),</span>
+                               <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">strokes</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+
+<span class="n">truchet_field</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">,</span> <span class="s2">"cross"</span><span class="p">,</span> <span class="s2">"blank"</span><span class="p">),</span>
+              <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.42</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6805764553f95006f58be2250f51917227a15e181167461d1db7479c2ed246d1.png" src="../_images/6805764553f95006f58be2250f51917227a15e181167461d1db7479c2ed246d1.png" />
+</div>
+</div>
+<p>An opinionated weight vector: mostly arcs, a tenth crossings, a pinch of silence. The crossings do something arcs never could: they let two ink paths <em>intersect</em>, which the pure arc grammar forbids (arcs only ever meet end to end). The blanks punch quiet holes where lines end mid-field. Small numbers, big grammar shifts.</p>
+<p><strong>Try it.</strong> Set the blank weight to 0.3: the pattern disintegrates into archipelagos. At what weight does it stop reading as a <em>fabric</em> and start reading as <em>islands on a ground</em>?</p>
+</section>
+<section id="style-passes-the-pen-and-the-palette">
+<h2>Style passes: the pen and the palette<a class="headerlink" href="#style-passes-the-pen-and-the-palette" title="Link to this heading">#</a></h2>
+<p>Two finishing moves, both borrowed. First, <strong>line-width rhythm</strong>: instead of one pen, let each tile draw with a randomly chosen thick or thin stroke (a second, independent weighted choice per cell). Second, <strong>color</strong>: hand each tile a color from one of our palettes (<code class="docutils literal notranslate"><span class="pre">agap.PALETTES</span></code>, in service since chapter 2). Both choices ride on the same machinery as the orientation coin.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a styled tiler: per-tile pen width and palette color</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+                   <span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">"#1A1A1A"</span><span class="p">,),</span> <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+                   <span class="n">seed</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ground</span><span class="o">=</span><span class="n">PAPER</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">strokes</span><span class="p">,</span> <span class="n">stroke_colors</span><span class="p">,</span> <span class="n">stroke_widths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">tiles</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tiles</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)]</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))]</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">widths</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">thick_share</span> <span class="k">else</span> <span class="n">widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="n">TILES</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+                <span class="n">strokes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+                <span class="n">stroke_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+                <span class="n">stroke_widths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figwidth</span><span class="p">,</span> <span class="n">figwidth</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">/</span> <span class="n">cols</span><span class="p">),</span>
+                               <span class="n">facecolor</span><span class="o">=</span><span class="n">ground</span><span class="p">)</span>
+    <span class="c1"># paint the ground ourselves: axis("off") hides the axes' own background</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">),</span> <span class="n">cols</span> <span class="o">+</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mf">0.4</span><span class="p">,</span>
+                               <span class="n">color</span><span class="o">=</span><span class="n">ground</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">strokes</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">stroke_colors</span><span class="p">,</span>
+                                     <span class="n">linewidths</span><span class="o">=</span><span class="n">stroke_widths</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two dress rehearsals: Bauhaus primaries, and thick-and-thin ink</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">))</span>
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">][:</span><span class="mi">4</span><span class="p">],</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+               <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">"#1A1A1A"</span><span class="p">,),</span> <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span>
+               <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dea13310caef3ea9b83118aebc1cc339e47896c439603647fa99516e5d80191a.png" src="../_images/dea13310caef3ea9b83118aebc1cc339e47896c439603647fa99516e5d80191a.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The Bauhaus version reads as textile, the thick-and-thin version as calligraphy. Yet the geometry is identical (same seed, same orientations). This is chapter 6’s lesson arriving early: what a system <em>is</em> and what it <em>wears</em> are separate decisions, and the wearing is yours.</p>
+</section>
+<section id="playground-four-temperaments">
+<h2>Playground: four temperaments<a class="headerlink" href="#playground-four-temperaments" title="Link to this heading">#</a></h2>
+<p>The finished instrument, played four ways. Grid density, tile set, weights, pen, palette: five dials, four studies.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four studies from one machine</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">PAPER</span><span class="p">)</span>
+
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+               <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"fair coin, fine pen"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">),</span>
+               <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"streaming current"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">,</span> <span class="s2">"cross"</span><span class="p">),</span>
+               <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.34</span><span class="p">),</span> <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"rothko_dark"</span><span class="p">][:</span><span class="mi">4</span><span class="p">],</span>
+               <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">ground</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">,</span>
+               <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"woven, Rothko dark"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">,</span> <span class="s2">"blank"</span><span class="p">),</span>
+               <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.42</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">),</span> <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+               <span class="n">seed</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"breathing room, two pens"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ddd82388fcba0027faf2e3b4dc13efc71aa9c1274bbe79d3e882ac2d036fc433.png" src="../_images/ddd82388fcba0027faf2e3b4dc13efc71aa9c1274bbe79d3e882ac2d036fc433.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Which of the four feels calmest, and which parameter is responsible? (Candidates: the weights, the tile set, the pen.) Notice that the two upper studies differ <em>only</em> in weights, and the two lower ones share their weights almost exactly but not their vocabulary.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Your turn: pick a tile set, weights, palette, pens, seed. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> with your name and run; the tiling lands in the course gallery folder at print quality.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR tiling: tune the dials, replace 'yourname'</span>
+<span class="n">my_artwork</span><span class="p">,</span> <span class="n">my_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">,</span> <span class="s2">"cross"</span><span class="p">),</span>
+               <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.46</span><span class="p">,</span> <span class="mf">0.46</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">),</span> <span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">"#1A1A1A"</span><span class="p">,),</span>
+               <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.18</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">my_ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/85c144b2fd19713309cc3a40617429e1e8a20bc505cb39c86dea401368a97d81.png" src="../_images/85c144b2fd19713309cc3a40617429e1e8a20bc505cb39c86dea401368a97d81.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch04_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: where the maze becomes a river.</strong> Tile the arc pair at weights 0.5, 0.6, 0.7, 0.8, 0.9 and 0.95 (same seed throughout). Find the weight at which the picture stops reading as <em>maze</em> and starts reading as <em>flow</em>, and write one sentence defending your threshold. Then check whether your threshold survives a change of seed.</p>
+<p><strong>(b) Code modification: a third voice for the arc duet.</strong> The random set in <code class="docutils literal notranslate"><span class="pre">truchet_arcs</span></code> knows only the two arc orientations. Give the <em>general</em> tiler a new tile of your own making: a <strong>double tile</strong> that draws all four arcs at once (both orientations in one cell), so paths can weave through it in two layers. Add it to <code class="docutils literal notranslate"><span class="pre">TILES</span></code> as a plain function (no shortcuts) and re-tile with weights <code class="docutils literal notranslate"><span class="pre">(0.4,</span> <span class="pre">0.4,</span> <span class="pre">0.2)</span></code>.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">double_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">smith_tile</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">TILES</span><span class="p">[</span><span class="s2">"double"</span><span class="p">]</span> <span class="o">=</span> <span class="n">double_tile</span>
+<span class="n">truchet_field</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">,</span> <span class="s2">"double"</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+              <span class="n">seed</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The double tile honors the midpoint contract twice over: all four midpoints are used, so every neighbor connects on every side. Where it lands, the field visibly thickens into a knot; at weight 0.2 the knots chain into ropes.</p>
+</details>
+<p><strong>(c) Creative challenge: sign the contract yourself.</strong> Design a tile nobody has shown you, with one rule: it may touch its edges <strong>only at the midpoints</strong>. (Ideas: a single arc plus one straight segment; a U-turn that enters and leaves on the same side; a spiral that dead-ends in the middle, contract be damned, and see what dead ends do at scale.) Add it to <code class="docutils literal notranslate"><span class="pre">TILES</span></code>, tile a large field, and give the resulting pattern a name, as Truchet’s engravers numbered their plates. Prove your contract holds by looking: does every line continue across every border?</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Cyril Stanley Smith, with a translation by Pauline Boucher, “The Tiling Patterns of Sebastien Truchet and the Topology of Structural Hierarchy”, <em>Leonardo</em> 20, no. 4 (1987): 373-385: the revival itself, with Truchet’s 1704 memoir in English; Smith reads the tiles as a lesson in how structure lives at more than one scale.</p></li>
+<li><p>Nick Montfort, Patsy Baudoin, John Bell, Ian Bogost, Jeremy Douglass, Mark C. Marino, Michael Mateas, Casey Reas, Mark Sample and Noah Vawter, <em>10 PRINT CHR$(205.5+RND(1)); : GOTO 10</em> (MIT Press, 2012): ten authors, one line of BASIC; freely available as a PDF at <a class="reference external" href="http://10print.org">10print.org</a>.</p></li>
+<li><p>Christopher Carlson, “Multi-Scale Truchet Patterns”, <em>Bridges Conference Proceedings</em> (2018), 39-44: Smith’s arc tiles generalized across nested scales; the paper’s figures are a gallery in themselves.</p></li>
+<li><p>Truchet’s original <em>Mémoire sur les combinaisons</em> (1704) is on the Bibliothèque nationale’s Gallica portal, plates included, for readers who want to see the engravings.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-andre1999"></span>André, J., and Girou, D. (1999). Father Truchet, the typographic point, the Romain du roi, and tilings. <em>TUGboat</em>, 20(1), 8–14. <a class="reference external" href="https://www.tug.org/TUGboat/tb20-1/tb62andr.pdf">tug.org/TUGboat/tb20-1/tb62andr.pdf</a>. Truchet as inventor of the typographic point and designer of the Romain du Roi.</p></li>
+<li><p><span id="ref-douat1722"></span>Douat, D. (1722). <em>Methode pour faire une infinité de desseins differens avec des carreaux mi-partis de deux couleurs par une ligne diagonale</em>. Paris. <a class="reference external" href="https://gallica.bnf.fr/ark:/12148/bpt6k5823204r">gallica.bnf.fr</a>. The book-length expansion of Truchet’s memoir, digitized by the Bibliothèque nationale.</p></li>
+<li><p><span id="ref-gombrich1979"></span>Gombrich, E. H. (1979). <em>The Sense of Order: A Study in the Psychology of Decorative Art</em>. Phaidon. Calls Douat’s treatise “the earliest (and perhaps the rarest) treatise on the theory of design” (p. 70).</p></li>
+<li><p><span id="ref-montfort2012"></span>Montfort, N., Baudoin, P., Bell, J., Bogost, I., Douglass, J., Marino, M. C., Mateas, M., Reas, C., Sample, M., and Vawter, N. (2012). <em>10 PRINT CHR$(205.5+RND(1)); : GOTO 10</em>. MIT Press. <a class="reference external" href="https://10print.org/">10print.org</a>.</p></li>
+<li><p><span id="ref-smith1987"></span>Smith, C. S. (1987). The Tiling Patterns of Sebastien Truchet and the Topology of Structural Hierarchy (with a translation of Truchet’s memoir by P. Boucher). <em>Leonardo</em>, 20(4), 373–385. <a class="reference external" href="https://doi.org/10.2307/1578535">doi:10.2307/1578535</a>. The 1987 revival, the canal-tiles origin story, and the arc tile.</p></li>
+<li><p><span id="ref-truchet1704"></span>Truchet, S. (1704). Mémoire sur les combinaisons. <em>Mémoires de l’Académie Royale des Sciences</em>, 363–372. <a class="reference external" href="https://gallica.bnf.fr/ark:/12148/bpt6k3486m">gallica.bnf.fr</a>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image at the top of the notebook: 64 by 42 tiles of the Smith pair, weights 0.62 to 0.38 (the gentle lean that makes the current), one ink, two pens, seed 1704 in the inventor’s honor. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the leaning field</span>
+<span class="n">showpiece</span><span class="p">,</span> <span class="n">sp_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">8.6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">truchet_styled</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="p">(</span><span class="s2">"arc0"</span><span class="p">,</span> <span class="s2">"arc1"</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.62</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">),</span>
+               <span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">"#1A1A1A"</span><span class="p">,),</span> <span class="n">widths</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">),</span> <span class="n">thick_share</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
+               <span class="n">seed</span><span class="o">=</span><span class="mi">1704</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">sp_ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3238a92e3b29bba00fee578c71fb1d5458bf67dcdaa225b0114b780244718181.png" src="../_images/3238a92e3b29bba00fee578c71fb1d5458bf67dcdaa225b0114b780244718181.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch04_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-geometric-patterns.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3. Geometric Patterns and Symmetry</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-recursion-and-subdivision.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5. Recursion and Subdivision</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-a-priest-a-metallurgist-and-one-line-of-basic">Context: a priest, a metallurgist, and one line of BASIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-of-a-tile">The mathematics of a tile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-10-print-maze">The 10 PRINT maze</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-smith-tile-and-the-midpoint-contract">The Smith tile and the midpoint contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-weather">Weighted weather</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bigger-vocabulary-the-crossing-and-the-blank">A bigger vocabulary: the crossing and the blank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#style-passes-the-pen-and-the-palette">Style passes: the pen and the palette</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground-four-temperaments">Playground: four temperaments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

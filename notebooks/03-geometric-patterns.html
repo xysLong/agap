@@ -1,0 +1,1091 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. Geometric Patterns and Symmetry &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"10b849944c5b4ab2806e31720cb35ec3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "2dd2beec68cb4662b552779eb6338d50": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "k", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_9490ab0387ed49e48c946714c0145e42", "max": 8, "min": 1, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_36b5d593ec7540bfacd07db6b034189c", "tabbable": null, "tooltip": null, "value": 3}}, "36482ceea30846699be3ee2fb990e72d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "VBoxModel", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_793e1228ec0f44d6af980644d5b357c3", "IPY_MODEL_2dd2beec68cb4662b552779eb6338d50", "IPY_MODEL_c46ae2c6c9ff4456b1660c4f20f0a0f4", "IPY_MODEL_801b0829be454ea1863b38a1baee6100"], "layout": "IPY_MODEL_64955f6696de437fa756ef7326a918fe", "tabbable": null, "tooltip": null}}, "36b5d593ec7540bfacd07db6b034189c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "4c6abaa8feae41b29e39cbcdbe175446": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "64955f6696de437fa756ef7326a918fe": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "793e1228ec0f44d6af980644d5b357c3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "n", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_7d62531d030d41a98f3d2e32e76a8be1", "max": 16, "min": 3, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_10b849944c5b4ab2806e31720cb35ec3", "tabbable": null, "tooltip": null, "value": 8}}, "7d62531d030d41a98f3d2e32e76a8be1": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "801b0829be454ea1863b38a1baee6100": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_bcd6d491eee44194ba553ced49917c25", "msg_id": "", "outputs": [{"data": {"image/png": "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", "text/plain": "<Figure size 500x500 with 1 Axes>"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "92e699a403fe44cf8deaeffdf7f269e9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "9490ab0387ed49e48c946714c0145e42": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bcd6d491eee44194ba553ced49917c25": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c46ae2c6c9ff4456b1660c4f20f0a0f4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "FloatSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "FloatSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "rotation", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_4c6abaa8feae41b29e39cbcdbe175446", "max": 6.3, "min": 0.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_92e699a403fe44cf8deaeffdf7f269e9", "tabbable": null, "tooltip": null, "value": 0.0}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03-geometric-patterns';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Truchet Tiles: Chance on a Grid" href="04-truchet-tiles.html" />
+    <link rel="prev" title="2. Chance Operations and Controlled Randomness" href="02-chance-and-randomness.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Geometric Patterns and Symmetry</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-ornament-as-calculated-beauty">Context: ornament as calculated beauty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-circle-sine-and-cosine">The circle: sine and cosine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-polygons">Regular polygons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#star-polygons">Star polygons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-and-reflection">Rotation and reflection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-rosettes">Build-up: rosettes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-tiling-the-plane">Build-up: tiling the plane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hexagonal-lattice">The hexagonal lattice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-by-position">Color by position</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-showpiece-stars-and-hexagons-filled">The showpiece: stars and hexagons, filled</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="geometric-patterns-and-symmetry">
+<h1>3. Geometric Patterns and Symmetry<a class="headerlink" href="#geometric-patterns-and-symmetry" title="Link to this heading">#</a></h1>
+<p>Today the dice rest. We build ornament from pure rule: sine and cosine place points on circles, rotation and reflection multiply a motif, and two nested loops repeat it across the plane until it becomes a pattern.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A full-page star-and-hexagon tiling in the tradition of Islamic geometric ornament: six-pointed stars, each nested among hexagons, repeating without end. Everything in it is built from one humble function that places the corners of a polygon on a circle, and you will write that function yourself in the next half hour.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch03_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b7c56360f19e794ca92eaa9e8a935ce3778bbc40d2f3f40898dbadfc84bedd0b.png" src="../_images/b7c56360f19e794ca92eaa9e8a935ce3778bbc40d2f3f40898dbadfc84bedd0b.png" />
+</div>
+</div>
+</section>
+<section id="context-ornament-as-calculated-beauty">
+<h2>Context: ornament as calculated beauty<a class="headerlink" href="#context-ornament-as-calculated-beauty" title="Link to this heading">#</a></h2>
+<p>Walk through the <strong>Alhambra</strong> in Granada, the palace complex the Nasrid dynasty built in the 13th and 14th centuries <a class="cite" href="#ref-unesco">(UNESCO, World Heritage List entry)</a>, and you walk through mathematics: walls of glazed <em>zellij</em> tilework where stars, crosses, and interlacing bands repeat with perfect regularity in every direction. The craftsmen who designed them worked with compass and straightedge, not equations, yet they explored planar symmetry so thoroughly that mathematicians still argue about how many of its possible types the Alhambra realizes <a class="cite" href="#ref-grunbaum2006">(Grünbaum 2006)</a>. In much of Islamic religious art, figurative images were avoided; geometry was not a limitation but the chosen path, ornament (Ornament) elevated to the highest art <a class="cite" href="#ref-met2001">(Metropolitan Museum of Art 2001)</a>.</p>
+<p>How were such patterns designed and transmitted? A rare surviving clue is the <strong>Topkapı scroll</strong> (late 15th or early 16th century, Timurid-Turkmen Iran), nearly thirty meters of construction drawings for star patterns and vaults <a class="cite" href="#ref-necipoglu1995">(Necipoğlu 1995)</a>: a pattern <em>cookbook</em>, instructions rather than pictures, which should remind you of Sol LeWitt from chapter 1. In 2007 the physicists <a class="cite" href="#ref-lu2007">Peter Lu and Paul Steinhardt</a> argued in <em>Science</em> that medieval designers worked with a set of five puzzle-piece tiles, the so-called <em>girih</em> tiles, and that one 15th-century shrine facade uses them in a quasi-periodic arrangement of a kind mathematics only formalized with Roger Penrose in the 1970s. The claim remains debated <a class="cite" href="#ref-makovicky2007">(Makovicky 2007)</a>, but the lesson stands: this craft tradition encoded serious geometry centuries before the theory existed.</p>
+<p>Europe studied this tradition closely. The architect <strong>Owen Jones</strong> measured the Alhambra in the 1830s <a class="cite" href="#ref-goury1842">(Goury and Jones 1842–1845)</a> and distilled what he learned into <em>The Grammar of Ornament</em> (1856), a chromolithographed atlas of pattern from nineteen historical styles, prefaced by 37 general “propositions”: rules for good ornament <a class="cite" href="#ref-jones1856">(Jones 1856)</a>. A grammar of form, stated as rules: Jones was writing generative systems a century before computers. And in 1922 and again in 1936, a young Dutch graphic artist named <strong>M. C. Escher</strong> visited the Alhambra, copied its tilings into sketchbooks with his wife Jetta, and spent the rest of his career on what he called the <em>regular division of the plane</em>, trading letters with mathematicians along the way <a class="cite" href="#ref-schattschneider1990">(Schattschneider 1990)</a>.</p>
+<p>The mathematics underneath is beautiful and finite: combining rotations, reflections, translations, and glide reflections, there are exactly <strong>17</strong> possible symmetry types of wallpaper pattern (the wallpaper groups, Ornamentgruppen), no more, in any culture, on any planet <a class="cite" href="#ref-schattschneider1978">(Schattschneider 1978)</a>. We will not enumerate them; we will build machines that produce a few. Note what is missing today: chance. Like chapter 0’s stripes, and unlike everything in between, today’s systems are fully deterministic, and the beauty survives just fine.</p>
+</section>
+<section id="the-circle-sine-and-cosine">
+<h2>The circle: sine and cosine<a class="headerlink" href="#the-circle-sine-and-cosine" title="Link to this heading">#</a></h2>
+<p>All of today’s geometry stands on one formula. To place a point on a circle of radius <span class="math notranslate nohighlight">\(r\)</span> around a center <span class="math notranslate nohighlight">\((c_x, c_y)\)</span>, at an angle <span class="math notranslate nohighlight">\(\alpha\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[x = c_x + r\cos\alpha \qquad y = c_y + r\sin\alpha\]</div>
+<p>That is all sine and cosine will mean for us: <strong>cosine is the x-coordinate, sine is the y-coordinate of a point on a circle.</strong> Angles are measured counterclockwise from the positive x-axis, and Python’s <code class="docutils literal notranslate"><span class="pre">math</span></code> module wants them in <em>radians</em>; <code class="docutils literal notranslate"><span class="pre">math.radians(45)</span></code> converts from degrees. The diagram below shows the formula at work for three angles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># three points on the unit circle, at 0, 45 and 90 degrees -- axes ON, diagram</span>
+<span class="c1"># (np.cos works on a whole array at once; math.cos on a single number;</span>
+<span class="c1">#  np.linspace(a, b, n) makes n evenly spaced values from a to b)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">circle_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">circle_angles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">circle_angles</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">degrees</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">]:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.12</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.12</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">degrees</span><span class="si">}</span><span class="s2">°"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"x = cos(angle), y = sin(angle)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/705d7f44adb12ca86f9664658fd9229f9aedb9b83df66aac5b2c67e7f1d15500.png" src="../_images/705d7f44adb12ca86f9664658fd9229f9aedb9b83df66aac5b2c67e7f1d15500.png" />
+</div>
+</div>
+</section>
+<section id="regular-polygons">
+<h2>Regular polygons<a class="headerlink" href="#regular-polygons" title="Link to this heading">#</a></h2>
+<p>A regular polygon is just <span class="math notranslate nohighlight">\(n\)</span> points on a circle, evenly spaced: corner number <span class="math notranslate nohighlight">\(k\)</span> sits at the angle</p>
+<div class="math notranslate nohighlight">
+\[\alpha_k = \text{rotation} + \frac{2\pi k}{n}\]</div>
+<p>and we connect the corners in order. (Chapter 1’s <code class="docutils literal notranslate"><span class="pre">square_corners</span></code> was secretly doing exactly this, with <span class="math notranslate nohighlight">\(n = 4\)</span>; now the trick gets its proper name.) The function below is the workhorse of the whole chapter: it returns the corner coordinates of any regular polygon, anywhere, at any size and rotation. Note that it appends the first corner again at the end, so the outline closes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the corners of a regular n-gon on a circle -- the workhorse of this chapter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">polygon_points</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_sides</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>          <span class="c1"># n_sides + 1 closes the outline</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">rotation</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">/</span> <span class="n">n_sides</span>
+        <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span>
+
+<span class="c1"># a row of polygons, from triangle to twelve-gon</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">n_sides</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]:</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">polygon_points</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">2.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.45</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"n = </span><span class="si">{</span><span class="n">n_sides</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a4d49065f1742d14d3ad5da0b606c56cf9ac81c6fef1cc4598e7bb3ef9a1e656.png" src="../_images/a4d49065f1742d14d3ad5da0b606c56cf9ac81c6fef1cc4598e7bb3ef9a1e656.png" />
+</div>
+</div>
+</section>
+<section id="star-polygons">
+<h2>Star polygons<a class="headerlink" href="#star-polygons" title="Link to this heading">#</a></h2>
+<p>Now a small change with a large effect: place <span class="math notranslate nohighlight">\(n\)</span> points on the circle as before, but connect <strong>every k-th point</strong> instead of every neighbor. Geometers write this as <span class="math notranslate nohighlight">\(\{n/k\}\)</span>: the pentagram is <span class="math notranslate nohighlight">\(\{5/2\}\)</span>, five points connected two steps at a time. The drawing order jumps around the circle, and the crossings create the star.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a star polygon {n/k}: connect every k-th of n points on a circle</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">star_polygon_points</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>                <span class="c1"># visit n corners, then close</span>
+        <span class="n">corner</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>              <span class="c1"># jump k corners; % wraps around the clock</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">rotation</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">corner</span> <span class="o">/</span> <span class="n">n</span>
+        <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">star_polygon_points</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"{8/3}"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b5056f832e0827c3f8009ad2448aa2086fe3c0c9b3cd3407751123384f771317.png" src="../_images/b5056f832e0827c3f8009ad2448aa2086fe3c0c9b3cd3407751123384f771317.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a small zoo of star polygons</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]:</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">star_polygon_points</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="mf">2.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.45</span><span class="p">,</span> <span class="s2">"{"</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"}"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/986b8d9867ac71f53d9036cb0c1f4aa1ae71ed796334af3713c646710a8886b5.png" src="../_images/986b8d9867ac71f53d9036cb0c1f4aa1ae71ed796334af3713c646710a8886b5.png" />
+</div>
+</div>
+<p><strong>Try it.</strong> The slider cell below sweeps <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(k\)</span> live (where widgets do not run, plain calls to <code class="docutils literal notranslate"><span class="pre">star_explorer</span></code> do the same). Find a star the zoo missed, and note what happens when <span class="math notranslate nohighlight">\(k\)</span> divides <span class="math notranslate nohighlight">\(n\)</span>: a snag we will need in a moment.</p>
+<div class="cell tag_skip-execution docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># optional sliders -- everything they do, the plain function calls above do too</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">star_explorer</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">star_polygon_points</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"{"</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"}"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">interact</span>
+    <span class="n">interact</span><span class="p">(</span><span class="n">star_explorer</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">6.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"ipywidgets is not installed -- call star_explorer(n, k, rotation) directly"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "36482ceea30846699be3ee2fb990e72d", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="rotation-and-reflection">
+<h2>Rotation and reflection<a class="headerlink" href="#rotation-and-reflection" title="Link to this heading">#</a></h2>
+<p>To repeat a motif we need the four symmetry operations: <strong>translation</strong> (Verschiebung: just add to the coordinates), <strong>rotation</strong> (Drehung), <strong>reflection</strong> (Spiegelung), and the sneaky fourth one, <strong>glide reflection</strong> (Gleitspiegelung: mirror, then shift), which is waiting for you in the exercises.</p>
+<p>The official way to rotate a point <span class="math notranslate nohighlight">\((x, y)\)</span> by an angle <span class="math notranslate nohighlight">\(\alpha\)</span> around the origin is the rotation matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} \cos\alpha &amp; -\sin\alpha \\ \sin\alpha &amp; \cos\alpha \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}\end{split}\]</div>
+<p>(A <strong>matrix</strong> is a grid of numbers, and this one merely packages chapter 1’s four cos/sin products so the rotation reads as a single multiplication; admire the packaging, we will never compute with it.) You met those four products in chapter 1’s <code class="docutils literal notranslate"><span class="pre">square_corners</span></code>. But for points that we <em>build</em> from angles, there is a wonderful shortcut: <strong>to rotate, just add to the angle.</strong> That is what the <code class="docutils literal notranslate"><span class="pre">rotation</span></code> parameter of our two functions already does. Reflection is even cheaper: to mirror across the vertical axis, negate every x-coordinate. The cell below shows both operations at work on a star.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># left: rotation is adding to the angle; right: reflection is negating x</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">star_polygon_points</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">step</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">shade</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="mf">0.7</span> <span class="o">-</span> <span class="n">step</span> <span class="o">*</span> <span class="mf">0.35</span><span class="p">)</span>        <span class="c1"># light gray to black</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">shade</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"one star, rotated twice"</span><span class="p">)</span>
+
+<span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">star_polygon_points</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">mirrored_xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>
+    <span class="n">mirrored_xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span>                <span class="c1"># the mirror: negate every x</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mirrored_xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"a star and its mirror image"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0812a92c44d8b56e4a870ce871ea31b12196355bab74b22eab4a96de13020117.png" src="../_images/0812a92c44d8b56e4a870ce871ea31b12196355bab74b22eab4a96de13020117.png" />
+</div>
+</div>
+</section>
+<section id="build-up-rosettes">
+<h2>Build-up: rosettes<a class="headerlink" href="#build-up-rosettes" title="Link to this heading">#</a></h2>
+<p>Try <code class="docutils literal notranslate"><span class="pre">star_polygon_points</span></code> with <span class="math notranslate nohighlight">\(n = 6, k = 2\)</span> and you hit a snag: after three jumps (0, 2, 4) you are back at corner 0, and all you get is a triangle. The six-pointed star cannot be drawn in one stroke; whenever <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(k\)</span> share a divisor greater than 1, the path closes early.</p>
+<p>The fix is older than the notation: <strong>overlay rotated copies.</strong> Two triangles, one turned by 60°, make the hexagram. Two squares, one turned by 45°, make the eight-pointed star that Islamic art knows as <em>khatem suleimani</em>, Solomon’s seal <a class="cite" href="#ref-thalal2011">(Thalal et al. 2011)</a>, everywhere in the Alhambra. A motif made of rotated copies of a shape is called a <strong>rosette</strong>, and it is our first compound machine: <code class="docutils literal notranslate"><span class="pre">draw_rosette</span></code> calls <code class="docutils literal notranslate"><span class="pre">polygon_points</span></code> in a loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a rosette: n_copies copies of an n-gon, each rotated a step further</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">copy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_copies</span><span class="p">):</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_sides</span> <span class="o">/</span> <span class="n">n_copies</span> <span class="o">*</span> <span class="n">copy</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">polygon_points</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
+
+<span class="c1"># two triangles make the hexagram, two squares make the khatam</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">draw_rosette</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">draw_rosette</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"2 triangles"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"2 squares"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7e1d35a46d743e8e1d937bf8384b0cb2d4c4502793ce0d6bf56dc4c07f7d8500.png" src="../_images/7e1d35a46d743e8e1d937bf8384b0cb2d4c4502793ce0d6bf56dc4c07f7d8500.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># more copies, more lace: a row of rosettes</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">n_copies</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]:</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+    <span class="n">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_sides</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_copies</span><span class="si">}</span><span class="s2"> × </span><span class="si">{</span><span class="n">n_sides</span><span class="si">}</span><span class="s2">-gon"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d1acac295da5dc136b2c6296b5cb0b7c4d261881bbe85869e3c2c7dc57941143.png" src="../_images/d1acac295da5dc136b2c6296b5cb0b7c4d261881bbe85869e3c2c7dc57941143.png" />
+</div>
+</div>
+</section>
+<section id="build-up-tiling-the-plane">
+<h2>Build-up: tiling the plane<a class="headerlink" href="#build-up-tiling-the-plane" title="Link to this heading">#</a></h2>
+<p>A single rosette is a medallion; ornament begins when it <strong>repeats</strong>. The machinery is the nested row/column loop you already know from <em>Schotter</em> in chapter 1: for every row and every column, draw the motif at position (column × spacing, row × spacing). This is a <strong>rectangular lattice</strong> (Gitter): translation in two directions. From here on we also bring in the course package from chapter 1: the paper-white ground for artworks, and the palettes we will need shortly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the same rosette repeated on a rectangular lattice</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">spacing</span> <span class="o">=</span> <span class="mf">2.4</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span>
+                     <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/20b63aec6627f26539280bb6b0050110ac2194e212c091e715f3058e43fc2afc.png" src="../_images/20b63aec6627f26539280bb6b0050110ac2194e212c091e715f3058e43fc2afc.png" />
+</div>
+</div>
+</section>
+<section id="the-hexagonal-lattice">
+<h2>The hexagonal lattice<a class="headerlink" href="#the-hexagonal-lattice" title="Link to this heading">#</a></h2>
+<p>Rectangular repetition suits four-fold motifs, but sixes and threes ask for a different grid. In a <strong>hexagonal lattice</strong>, every second row shifts sideways by half the spacing, and the rows move closer together by a factor of <span class="math notranslate nohighlight">\(\sqrt{3}/2 \approx 0.866\)</span>, so that every motif sits at the same distance from six neighbors instead of four. It is the packing of honeycombs and pennies on a table, and Islamic six-pointed ornament lives on it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hexagonal lattice: odd rows shift by half a step, rows squeeze together</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mf">2.2</span>
+<span class="n">row_height</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">5.9</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">/</span> <span class="mi">2</span>        <span class="c1"># the sideways shift of odd rows</span>
+        <span class="n">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">row_height</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span>
+                     <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e2ff61f414f1519a792b2e5bc37da2468befe378acca767ac68bf4494c6ab6cc.png" src="../_images/e2ff61f414f1519a792b2e5bc37da2468befe378acca767ac68bf4494c6ab6cc.png" />
+</div>
+</div>
+</section>
+<section id="color-by-position">
+<h2>Color by position<a class="headerlink" href="#color-by-position" title="Link to this heading">#</a></h2>
+<p>The tilings so far are line drawings in one ink. Ornament traditions rarely stop there: color is assigned <strong>by symmetry position</strong>, so that the eye picks up larger rhythms across the pattern. The simplest recipe: give the motif at (row, col) the palette color number <code class="docutils literal notranslate"><span class="pre">(row</span> <span class="pre">+</span> <span class="pre">col)</span> <span class="pre">%</span> <span class="pre">len(palette)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># color each motif by its position in the lattice</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"viridis"</span><span class="p">]</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mf">2.2</span>
+<span class="n">row_height</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">5.9</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[(</span><span class="n">row</span> <span class="o">+</span> <span class="n">col</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]</span>
+        <span class="n">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">row_height</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a00c8b2b89e80ccfc2aa32116721521dd844252e49dfd5b8aa375186ee3a02d5.png" src="../_images/a00c8b2b89e80ccfc2aa32116721521dd844252e49dfd5b8aa375186ee3a02d5.png" />
+</div>
+</div>
+<p>Diagonal stripes of color emerge that no line of code asked for directly: <code class="docutils literal notranslate"><span class="pre">(row</span> <span class="pre">+</span> <span class="pre">col)</span></code> is constant along diagonals, so equal colors line up. Try <code class="docutils literal notranslate"><span class="pre">(row</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">col)</span></code> or <code class="docutils literal notranslate"><span class="pre">row</span> <span class="pre">%</span> <span class="pre">2</span></code> in the playground and watch the rhythm change.</p>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>Everything above, folded into one generator. You may notice something missing: there is no <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter. Like chapter 0’s stripes, a symmetry pattern contains no chance, so every run is identical; the parameters <em>are</em> the artwork. Chance returns next chapter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator: a rosette pattern on a square or hexagonal lattice</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rosette_tiling</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_copies</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">motif_radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                   <span class="n">spacing</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">"hex"</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+                   <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">lattice</span> <span class="o">==</span> <span class="s2">"hex"</span><span class="p">:</span>
+        <span class="n">row_height</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">row_height</span> <span class="o">=</span> <span class="n">spacing</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">motif_radius</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">row_height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">motif_radius</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">height</span> <span class="o">/</span> <span class="n">width</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span>
+            <span class="k">if</span> <span class="n">lattice</span> <span class="o">==</span> <span class="s2">"hex"</span> <span class="ow">and</span> <span class="n">row</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>   <span class="c1"># and: both conditions must hold</span>
+                <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[(</span><span class="n">row</span> <span class="o">+</span> <span class="n">col</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]</span>
+            <span class="n">draw_rosette</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">row_height</span><span class="p">,</span> <span class="n">motif_radius</span><span class="p">,</span>
+                         <span class="n">n_sides</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 1 and 2: khatam medallions on a square grid vs twelve-point lace</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">rosette_tiling</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_sides</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_copies</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span>
+                       <span class="n">lattice</span><span class="o">=</span><span class="s2">"square"</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">)</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">rosette_tiling</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_sides</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_copies</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span>
+                       <span class="n">lattice</span><span class="o">=</span><span class="s2">"hex"</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"rothko_dark"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7a811858bf566599ad3c7cb20bb8473681696219ed2d7ee2f27817d2d6241bca.png" src="../_images/7a811858bf566599ad3c7cb20bb8473681696219ed2d7ee2f27817d2d6241bca.png" />
+<img alt="../_images/991f76be725b3c629f4f4196c2ed2094b7195b45bb13a929ab515f04457ae4fc.png" src="../_images/991f76be725b3c629f4f4196c2ed2094b7195b45bb13a929ab515f04457ae4fc.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 3: hexagram rosettes at exactly interlocking spacing</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">rosette_tiling</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">n_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_copies</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+                       <span class="n">lattice</span><span class="o">=</span><span class="s2">"hex"</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3bd39db5a019ad72f00a7b219a9c54938869e99f1902468bb4a7984ef0e48cc5.png" src="../_images/3bd39db5a019ad72f00a7b219a9c54938869e99f1902468bb4a7984ef0e48cc5.png" />
+</div>
+</div>
+</section>
+<section id="the-showpiece-stars-and-hexagons-filled">
+<h2>The showpiece: stars and hexagons, filled<a class="headerlink" href="#the-showpiece-stars-and-hexagons-filled" title="Link to this heading">#</a></h2>
+<p>For the final pattern we switch from line drawing to <strong>filled</strong> shapes, which is where a tiling starts to look like tilework. The construction uses everything from today:</p>
+<ul class="simple">
+<li><p>a six-pointed star at every point of a hexagonal lattice, drawn as a rosette of two filled triangles (<code class="docutils literal notranslate"><span class="pre">ax.fill</span></code> instead of <code class="docutils literal notranslate"><span class="pre">ax.plot</span></code>),</p></li>
+<li><p>with tip radius equal to half the lattice spacing, so neighboring stars touch tip to tip,</p></li>
+<li><p>and a small hexagon nested into the gaps above and below each star. Geometry does the bookkeeping: the hexagon’s corner radius is <span class="math notranslate nohighlight">\(r/\sqrt{3}\)</span>, which lands its corners exactly in the stars’ notches.</p></li>
+</ul>
+<p>Two palettes are offered below; the pattern reads completely differently depending on whether the stars or the hexagons carry the stronger color. Figure and ground trade places, an effect Escher built a career on.</p>
+<p>The generator cell is the densest of the chapter, on purpose: run it, enjoy the result, and read it line by line at home. The three bullets above are all you need to follow along in class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the showpiece generator: a star-and-hexagon tiling, filled</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">star_and_hexagon</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">,</span>
+                     <span class="n">line_color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.4</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">spacing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span>                      <span class="c1"># stars touch tip to tip</span>
+    <span class="n">row_height</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">hex_radius</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>        <span class="c1"># corners land in the stars' notches</span>
+    <span class="n">figure_height</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">*</span> <span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">row_height</span> <span class="o">/</span> <span class="p">((</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">figure_height</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">+</span> <span class="p">(</span><span class="n">row</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+            <span class="n">cy</span> <span class="o">=</span> <span class="n">row</span> <span class="o">*</span> <span class="n">row_height</span>
+            <span class="k">for</span> <span class="n">rotation</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">]:</span>       <span class="c1"># two triangles = one star</span>
+                <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">polygon_points</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">direction</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">palette</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">palette</span><span class="p">[</span><span class="mi">2</span><span class="p">])]:</span>
+                <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">polygon_points</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">hex_radius</span><span class="p">,</span>
+                                        <span class="n">hex_radius</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">spacing</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>        <span class="c1"># crop to an endless field</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">row_height</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">row_height</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the same pattern in two palettes -- watch figure and ground trade places</span>
+<span class="n">art_4</span> <span class="o">=</span> <span class="n">star_and_hexagon</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">)</span>
+<span class="n">art_5</span> <span class="o">=</span> <span class="n">star_and_hexagon</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"rothko_dark"</span><span class="p">,</span>
+                         <span class="n">line_color</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4eea3683efb5e9b2195c6b2b535478e4130b5acfd4825b1f149b92596db53761.png" src="../_images/4eea3683efb5e9b2195c6b2b535478e4130b5acfd4825b1f149b92596db53761.png" />
+<img alt="../_images/8037958070ddb8040dbfb26d2ade60025d522e62b30b3d8f3bf396ceca1a7236.png" src="../_images/8037958070ddb8040dbfb26d2ade60025d522e62b30b3d8f3bf396ceca1a7236.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> In the Bauhaus version, do you see red stars on a blue-and-yellow ground, or colored hexagons pinned by dark stars? Does the answer flip in the Rothko version? Among the line tilings, <code class="docutils literal notranslate"><span class="pre">art_3</span></code> uses hexagram rosettes at exactly interlocking spacing: cover it half with your hand and compare its rhythm with <code class="docutils literal notranslate"><span class="pre">art_2</span></code>. Which pattern feels woven, which feels printed, and can you say <em>which parameter</em> is responsible?</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Choose your generator (<code class="docutils literal notranslate"><span class="pre">rosette_tiling</span></code> or <code class="docutils literal notranslate"><span class="pre">star_and_hexagon</span></code>), tune the parameters and palette, replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code>, and run the cell; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">star_and_hexagon</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"rothko_dark"</span><span class="p">,</span>
+                              <span class="n">line_color</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8037958070ddb8040dbfb26d2ade60025d522e62b30b3d8f3bf396ceca1a7236.png" src="../_images/8037958070ddb8040dbfb26d2ade60025d522e62b30b3d8f3bf396ceca1a7236.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch03_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: make them interlock.</strong> Run <code class="docutils literal notranslate"><span class="pre">rosette_tiling(n_sides=3,</span> <span class="pre">n_copies=2,</span> <span class="pre">lattice=&quot;hex&quot;,</span> <span class="pre">spacing=3.0)</span></code>: the hexagrams float separately. Lower <code class="docutils literal notranslate"><span class="pre">spacing</span></code> in small steps. At which value do the star tips exactly touch? The motif radius is 1.0; can you explain the touching value from the geometry? What happens below it?</p>
+<p><strong>(b) Code modification: glide reflection.</strong> Our rosettes are so symmetric that a mirror changes nothing you can see. Use this deliberately lopsided “flag” motif instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">flag_xs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+<span class="n">flag_ys</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>First tile it on a rectangular lattice (all flags identical: wallpaper at its most boring). Then add <strong>glide reflection</strong>: every odd row gets the motif <em>mirrored</em> (negate the x-coordinates, as in the rotation-and-reflection cell) <em>and shifted</em> by half the spacing. The result is the footprints-in-snow pattern: left, right, left, right.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">flag_xs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+<span class="n">flag_ys</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">flag_tiling</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">glide</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">/</span> <span class="n">cols</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">mirror</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">if</span> <span class="n">glide</span> <span class="ow">and</span> <span class="n">row</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">mirror</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>               <span class="c1"># reflect the motif...</span>
+                <span class="n">shift</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">/</span> <span class="mi">2</span>       <span class="c1"># ...and glide it half a step</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag_xs</span><span class="p">)):</span>
+                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">+</span> <span class="n">shift</span> <span class="o">+</span> <span class="n">mirror</span> <span class="o">*</span> <span class="n">flag_xs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">+</span> <span class="n">flag_ys</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">flag_tiling</span><span class="p">(</span><span class="n">glide</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">flag_tiling</span><span class="p">(</span><span class="n">glide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reflection alone would stack the mirrored rows directly above the originals; the half-step shift is what makes the footsteps walk. Both versions belong to wallpaper group <em>pg</em>, one of the 17: the shift changes the look, not the symmetry class.</p>
+</details>
+<p><strong>(c) Creative challenge: design a motif and tile it.</strong> Compose your own motif from polygons, stars, and rosettes (overlay two or three calls with different sizes and rotations), then repeat it on the lattice of your choice with a color rule of your choice. Name the result the way Owen Jones would: plate number, culture, epoch, all invented.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Owen Jones, <a class="reference external" href="https://archive.org/details/grammarornament00Jone"><em>The Grammar of Ornament</em></a> (1856): the full chromolithographed atlas, digitized; browse the Moresque plates and read the 37 propositions.</p></li>
+<li><p>Peter J. Lu and Paul J. Steinhardt, <a class="reference external" href="https://doi.org/10.1126/science.1135491">“Decagonal and Quasi-Crystalline Tilings in Medieval Islamic Architecture”</a>, <em>Science</em> 315 (2007): the girih-tile argument, and worth reading alongside the published critical comments.</p></li>
+<li><p>Eric Broug, <em>Islamic Geometric Patterns</em> (Thames &amp; Hudson, 2008): compass-and-straightedge constructions you can follow by hand; his <a class="reference external" href="https://www.broug.com/">School of Islamic Geometric Design</a> offers free video tutorials.</p></li>
+<li><p>Doris Schattschneider, <em>M.C. Escher: Visions of Symmetry</em> (1990): Escher’s Alhambra notebooks and his own symmetry system, reproduced page by page.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-goury1842"></span>Goury, J., and Jones, O. (1842–1845). <em>Plans, Elevations, Sections, and Details of the Alhambra</em> (2 vols.). London. <a class="reference external" href="https://archive.org/details/Planselevations1Gour">archive.org/details/Planselevations1Gour</a>. From drawings taken on the spot in 1834 and 1837.</p></li>
+<li><p><span id="ref-grunbaum2006"></span>Grünbaum, B. (2006). What Symmetry Groups Are Present in the Alhambra? <em>Notices of the American Mathematical Society</em>, 53(6), 670–673. <a class="reference external" href="https://www.ams.org/notices/200606/comm-grunbaum.pdf">ams.org/notices/200606/comm-grunbaum.pdf</a>. Surveys the “widely diverging answers” mathematicians have given.</p></li>
+<li><p><span id="ref-jones1856"></span>Jones, O. (1856). <em>The Grammar of Ornament</em>. Day and Son. <a class="reference external" href="https://archive.org/details/grammarornament00Jone">archive.org/details/grammarornament00Jone</a>.</p></li>
+<li><p><span id="ref-lu2007"></span>Lu, P. J., and Steinhardt, P. J. (2007). Decagonal and Quasi-Crystalline Tilings in Medieval Islamic Architecture. <em>Science</em>, 315(5815), 1106–1110. <a class="reference external" href="https://doi.org/10.1126/science.1135491">doi:10.1126/science.1135491</a>.</p></li>
+<li><p><span id="ref-makovicky2007"></span>Makovicky, E. (2007). Comment on “Decagonal and Quasi-Crystalline Tilings in Medieval Islamic Architecture”. <em>Science</em>, 318(5855), 1383. <a class="reference external" href="https://doi.org/10.1126/science.1146262">doi:10.1126/science.1146262</a>. The published critique; Lu and Steinhardt’s response appears alongside it.</p></li>
+<li><p><span id="ref-met2001"></span>Metropolitan Museum of Art, Department of Islamic Art (2001). Geometric Patterns in Islamic Art. <em>Heilbrunn Timeline of Art History</em>. <a class="reference external" href="https://www.metmuseum.org/toah/hd/geom/hd_geom.htm">metmuseum.org/toah/hd/geom/hd_geom.htm</a>.</p></li>
+<li><p><span id="ref-necipoglu1995"></span>Necipoğlu, G. (1995). <em>The Topkapı Scroll: Geometry and Ornament in Islamic Architecture</em>. Getty Center for the History of Art and the Humanities. The scholarly edition of the scroll, with a facsimile.</p></li>
+<li><p><span id="ref-schattschneider1978"></span>Schattschneider, D. (1978). The Plane Symmetry Groups: Their Recognition and Notation. <em>The American Mathematical Monthly</em>, 85(6), 439–450. <a class="reference external" href="https://doi.org/10.1080/00029890.1978.11994612">doi:10.1080/00029890.1978.11994612</a>.</p></li>
+<li><p><span id="ref-schattschneider1990"></span>Schattschneider, D. (1990). <em>M. C. Escher: Visions of Symmetry</em>. W. H. Freeman. (New edition: Harry N. Abrams, 2004.) Reproduces Escher’s Alhambra sketchbooks and notebooks.</p></li>
+<li><p><span id="ref-thalal2011"></span>Thalal, A., Benatia, M. J., Jali, A., Aboufadil, Y., and Elidrissi, M. A. (2011). Islamic geometric patterns constructed by craftsmen working on wood. <em>Symmetry: Culture and Science</em>, 22(1–2), 103–130. Names the eight-pointed star of two rotated squares “Khatem Suleimani (Solomon’s seal)”, the most important shape of the craft tradition.</p></li>
+<li><p><span id="ref-unesco"></span>UNESCO World Heritage Centre. Alhambra, Generalife and Albayzín, Granada, World Heritage List entry. <a class="reference external" href="https://whc.unesco.org/en/list/314/">whc.unesco.org/en/list/314</a>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the star-and-hexagon tiling</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">star_and_hexagon</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4eea3683efb5e9b2195c6b2b535478e4130b5acfd4825b1f149b92596db53761.png" src="../_images/4eea3683efb5e9b2195c6b2b535478e4130b5acfd4825b1f149b92596db53761.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch03_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-chance-and-randomness.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. Chance Operations and Controlled Randomness</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-truchet-tiles.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. Truchet Tiles: Chance on a Grid</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-ornament-as-calculated-beauty">Context: ornament as calculated beauty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-circle-sine-and-cosine">The circle: sine and cosine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-polygons">Regular polygons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#star-polygons">Star polygons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-and-reflection">Rotation and reflection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-rosettes">Build-up: rosettes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-tiling-the-plane">Build-up: tiling the plane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hexagonal-lattice">The hexagonal lattice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-by-position">Color by position</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-showpiece-stars-and-hexagons-filled">The showpiece: stars and hexagons, filled</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>11. Deeper Noise: Cells, Ridges, and Warped Space &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/11-deeper-noise';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. Curl and the Endless Loop: Fields in Motion" href="12-curl-and-loops.html" />
+    <link rel="prev" title="10. Noise and Flow Fields" href="10-noise-and-flow-fields.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>11. Deeper Noise: Cells, Ridges, and Warped Space</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-one-bookshelf-one-workshop">Context: one bookshelf, one workshop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#worley-noise-the-nearest-seed-field">Worley noise: the nearest-seed field</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridged-noise-fold-before-you-stack">Ridged noise: fold before you stack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-warping-noise-bends-space">Domain warping: noise bends space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies-four-temperaments-of-one-machine">Parameter studies: four temperaments of one machine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deeper-noise-cells-ridges-and-warped-space">
+<h1>11. Deeper Noise: Cells, Ridges, and Warped Space<a class="headerlink" href="#deeper-noise-cells-ridges-and-warped-space" title="Link to this heading">#</a></h1>
+<p>Chapter 10 met coherent noise and let it blow particles around. Today we stay with the noise itself and learn three deeper moves from the texture-maker’s workshop: distance fields that crystallize into cells, folded octaves that crease into ridges, and the strangest of the three, noise used to bend the very space it lives in.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A slab of imaginary geology: strata that fold, pinch and swirl like polished stone, rendered in a custom mineral palette. No stroke of it is drawn. A ridged noise field supplies the strata, and then the field is pushed <em>through itself</em>, twice: every pixel goes to look up its value not at its own location but at a spot displaced by more noise, and the straight bands smear into currents. The move is called domain warping, and it is as close as this book comes to a magic trick. By the end of today you will perform it, and its two workshop siblings, on any image-like array you own.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch11_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/25d86767b491cb2c66d9a5890444cbde47ad9bf8e38bb58938bd53f275d7d8eb.png" src="../_images/25d86767b491cb2c66d9a5890444cbde47ad9bf8e38bb58938bd53f275d7d8eb.png" />
+</div>
+</div>
+</section>
+<section id="context-one-bookshelf-one-workshop">
+<h2>Context: one bookshelf, one workshop<a class="headerlink" href="#context-one-bookshelf-one-workshop" title="Link to this heading">#</a></h2>
+<p>The craft this chapter teaches has an unusually compact address. In 1994, five graphics programmers published a shared volume, <em>Texturing and Modeling: A Procedural Approach</em> (<a class="cite" href="#ref-ebert1994">Ebert, Musgrave, Peachey, Perlin, Worley</a>), and the chapter you are reading descends almost entirely from three of its authors. <strong>Ken Perlin</strong> you met in chapter 10: his 1985 noise <a class="cite" href="#ref-perlin1985">(Perlin 1985)</a>, born of frustration with the machine-clean look of <em>Tron</em>, is the raw material for everything below. <strong>Steven Worley</strong> added the second instrument at SIGGRAPH 1996, “A Cellular Texture Basis Function” <a class="cite" href="#ref-worley1996">(Worley 1996)</a>: scatter feature points in space and ask, for every pixel, <em>how far is the nearest one?</em> The resulting distance fields shade into cobblestones, cells and cracked glazes, and Worley noise remains a standard name for it. <strong>F. Kenton Musgrave</strong>, Mandelbrot’s former research assistant at Yale <a class="cite" href="#ref-musgrave1993">(Musgrave 1993)</a> (Mandelbrot called him “the first true fractal-based artist” <a class="cite" href="#ref-taylor2014">(Taylor 2014)</a>), contributed the third: his ridged multifractal, published as working code in that same shared book, folds each noise octave before stacking so that smooth hills sharpen into mountain crests; after directing advanced 3D research at MetaCreations, maker of the landscape software Bryce, he built his fractal planets into his own software MojoWorld (<a class="cite" href="#ref-metacreations">MetaCreations, archived product page</a>; <a class="cite" href="#ref-musgrave2014">Musgrave, resume</a>). The craft’s contemporary canon lives on the web: <strong>Inigo Quilez</strong>, co-creator of Shadertoy (2013), maintains at <a class="reference external" href="http://iquilezles.org">iquilezles.org</a> the articles on cellular noise and domain warping that today’s shader artists learn from, including the formula this chapter closes with <a class="cite" href="#ref-quilez">(Quilez, “Domain Warping”)</a>.</p>
+<p>But the chapter’s emotional center is far older than computer graphics. For centuries, bookbinders’ marbled endpapers have been made by floating pigment on thickened liquid and dragging combs and styluses through it: Ottoman <em>ebru</em> (inscribed by UNESCO as intangible cultural heritage in 2014; <a class="cite" href="#ref-unesco">UNESCO, Representative List entry</a>) and Japanese <em>suminagashi</em>, ink floated on water, commonly dated back to the Heian period <a class="cite" href="#ref-chambers1991">(Chambers 1991)</a>. Look closely at a marbled paper: the colors were laid down in plain drops and stripes, and every feather and swirl is the <em>carrier being deformed</em>. Marbling is domain warping performed with physical matter, five hundred years before anyone could name the mathematics; when the code below bends a striped field into eddies, you are watching the marbler’s comb.</p>
+<p>And the cellular look has its own art-historical double: <strong>craquelure</strong> (Krakelee), the crack networks of aged paint and fired glazes, which Song-dynasty Chinese potters promoted from kiln defect to the entire decoration of Guan and Ge ware (“golden thread and iron wire”, the connoisseurs’ name for Ge ware’s two-scale crack net; <a class="cite" href="#ref-nilsson">Nilsson, glossary entry</a>; <a class="cite" href="#ref-xie2007">Xie et al. 2007</a>). Chapter 14 will <em>grow</em> such patterns from simulated chemistry; Worley conjures them from geometry alone, and comparing the two ways of arriving at one look is Part III’s quiet running theme.</p>
+</section>
+<section id="worley-noise-the-nearest-seed-field">
+<h2>Worley noise: the nearest-seed field<a class="headerlink" href="#worley-noise-the-nearest-seed-field" title="Link to this heading">#</a></h2>
+<p>The recipe is almost embarrassingly short. Scatter a few dozen <strong>seed points</strong> in the plane. Then, for every pixel <span class="math notranslate nohighlight">\(p\)</span>, measure</p>
+<div class="math notranslate nohighlight">
+\[F_1(p) = \text{distance to the nearest seed}, \qquad F_2(p) = \text{distance to the second-nearest},\]</div>
+<p>read aloud: <em>stand at the pixel, look around, note how far the closest and the next-closest seeds are.</em> <span class="math notranslate nohighlight">\(F_1\)</span> alone makes a field of soft dark basins (dark = a seed is near) with bright watersheds between them. The difference <span class="math notranslate nohighlight">\(F_2 - F_1\)</span> is subtler and better: it is zero exactly where the two nearest seeds tie, which happens on the <em>border</em> between their territories, and grows as you move into either territory. Worley’s 1996 paper already knew what that was good for: rendered as brightness, <span class="math notranslate nohighlight">\(F_2 - F_1\)</span> draws “a latticework of connected ridges, forming a vein-like tracery”, his words <a class="cite" href="#ref-worley1996">(Worley 1996)</a>, and one of art history’s oldest surface decorations falls out of a subtraction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># forty seeds on a square: the cast of the whole first act</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>                       <span class="c1"># make the course package importable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">GRID</span> <span class="o">=</span> <span class="mi">600</span>                                  <span class="c1"># canonical resolution; raise for prints</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>              <span class="c1"># chapter 2's seeded generator</span>
+<span class="n">seeds</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">40</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span>             <span class="c1"># 40 points in a 3-by-3 world</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">seeds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">seeds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"the seeds: every pixel will measure its way to these"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c0ccd0ab50c144bec3f58f98ff1413b6ae58ec230cb0dbb3b063b1ee28501612.png" src="../_images/c0ccd0ab50c144bec3f58f98ff1413b6ae58ec230cb0dbb3b063b1ee28501612.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># F1 the honest way: one seed at a time, keeping the running minimum</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">GRID</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>            <span class="c1"># chapter 8's pixel-coordinate move</span>
+
+<span class="n">f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>          <span class="c1"># start: nearest seed infinitely far</span>
+<span class="k">for</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">:</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">xx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span>   <span class="c1"># this seed's distance to every pixel</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>           <span class="c1"># keep whichever is nearer</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"F1: distance to the nearest seed"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/07c5efa82ae4e2061de06d2ef90862ca70fba9ed6e7815301b0f42bd047367cd.png" src="../_images/07c5efa82ae4e2061de06d2ef90862ca70fba9ed6e7815301b0f42bd047367cd.png" />
+</div>
+</div>
+<p>Stone. Specifically: a cobbled surface lit from nowhere, each basin one seed’s territory, the bright ridges the no-man’s-land between territories. The loop is worth reading twice, because its shape recurs all chapter: <em>for each seed, compute a whole image of distances, and fold it into the running answer with <code class="docutils literal notranslate"><span class="pre">np.minimum</span></code></em>. Forty seeds means forty vectorized sweeps over the pixel grid, and NumPy does the million-pixel arithmetic while Python only turns the pages. (The same forty sweeps could be written in one line, <code class="docutils literal notranslate"><span class="pre">np.min(np.stack(all_distance_images),</span> <span class="pre">axis=0)</span></code>, at the price of holding all forty images in memory at once; the running-minimum loop keeps just one and scales to any seed count.)</p>
+<p>For <span class="math notranslate nohighlight">\(F_2\)</span> we track <em>two</em> running values: when a closer seed appears, the old champion becomes the runner-up.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># F1 and F2 together, and the fields they unlock</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="n">f2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="n">nearest_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seeds</span><span class="p">):</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">xx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span>
+    <span class="n">closer</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">f1</span>                  <span class="c1"># does this seed beat the champion?</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="n">distance</span><span class="p">))</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">f1</span><span class="p">)</span>
+    <span class="n">nearest_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">nearest_index</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f1</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">,</span> <span class="s2">"F1: soft basins"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f2</span> <span class="o">-</span> <span class="n">f1</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">,</span> <span class="s2">"F2 - F1: the border field"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nearest_index</span><span class="p">,</span> <span class="s2">"viridis"</span><span class="p">,</span> <span class="s2">"nearest seed's index: territories"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4df8bfcbe71bbbd6f3a2e65baa9fbb197d17d0c7cde91a14e03fa6d1431c9fa4.png" src="../_images/4df8bfcbe71bbbd6f3a2e65baa9fbb197d17d0c7cde91a14e03fa6d1431c9fa4.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The middle panel is the cracked glaze: dark veins exactly on the territory borders, Worley’s tracery, Ge ware by subtraction. The right panel colors each pixel by <em>which</em> seed is nearest rather than <em>how far</em> it is, and the territories snap into flat cells. Those cells have a name, and chapter 15 will earn it properly: this is a Voronoi diagram, and there we will harvest the regions themselves (their areas, their centers, their polygons) rather than rendering their distances as texture, as today. Same geometry, two different harvests.</p>
+<p><strong>Try it.</strong> Change the seed count to 12 and to 200 and rerun the cell: the glaze coarsens into flagstones or tightens into skin. Seed density is the material’s grain.</p>
+</section>
+<section id="ridged-noise-fold-before-you-stack">
+<h2>Ridged noise: fold before you stack<a class="headerlink" href="#ridged-noise-fold-before-you-stack" title="Link to this heading">#</a></h2>
+<p>Chapter 10 stacked octaves of noise into fbm: hills upon hills, all rounded, because noise crosses zero <em>smoothly</em>. Musgrave’s move is one line of surgery on each octave before it joins the sum: replace the octave’s value <span class="math notranslate nohighlight">\(n\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[1 - |n|,\]</div>
+<p>read aloud: <em>distance below the ceiling.</em> Wherever the raw octave crossed zero, <span class="math notranslate nohighlight">\(|n|\)</span> has a sharp V-shaped crease, so <span class="math notranslate nohighlight">\(1 - |n|\)</span> has a sharp inverted crest, and the smooth hill becomes a knife-edged ridge. Sum the folded octaves with the usual shrinking amplitudes and the creases of every scale interleave: mountains. (Musgrave’s full ridged multifractal goes one step further and lets each octave’s strength be modulated by the one before it, so detail gathers on the crests and the valleys stay smooth; that refinement is out of our scope, and the additive version below already makes convincing rock.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fbm vs ridged: the same octaves, one fold apart</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opensimplex</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fbm</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">persistence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lacunarity</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="c1"># chapter 10's octave_noise, condensed: stack noise at doubling frequencies</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+    <span class="n">amplitude</span><span class="p">,</span> <span class="n">frequency</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">octaves</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">ys</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="n">amplitude</span> <span class="o">*=</span> <span class="n">persistence</span>
+        <span class="n">frequency</span> <span class="o">*=</span> <span class="n">lacunarity</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ridged</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">persistence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lacunarity</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+    <span class="n">amplitude</span><span class="p">,</span> <span class="n">frequency</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">octaves</span><span class="p">):</span>
+        <span class="n">octave</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">ys</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">octave</span><span class="p">))</span>    <span class="c1"># the fold: crease at zero</span>
+        <span class="n">amplitude</span> <span class="o">*=</span> <span class="n">persistence</span>
+        <span class="n">frequency</span> <span class="o">*=</span> <span class="n">lacunarity</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">smooth_field</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ridged_field</span> <span class="o">=</span> <span class="n">ridged</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">smooth_field</span><span class="p">,</span> <span class="s2">"fbm: rounded hills"</span><span class="p">),</span>
+                         <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ridged_field</span><span class="p">,</span> <span class="s2">"ridged: 1 - |octave|, then stack"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/01654c17e597ad8c16e0665be88f330f8979b347dd0e5d902510aa1344293c18.png" src="../_images/01654c17e597ad8c16e0665be88f330f8979b347dd0e5d902510aa1344293c18.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Same seed, same octaves, and the left panel is weather while the right is terrain. The fold manufactures exactly what smooth noise cannot: <em>lines</em>, the bright connected crests where an octave crossed zero, reading instantly as ridgelines, veins of quartz, dried riverbeds. Squint at the right panel and it is already a relief map of nowhere.</p>
+</section>
+<section id="domain-warping-noise-bends-space">
+<h2>Domain warping: noise bends space<a class="headerlink" href="#domain-warping-noise-bends-space" title="Link to this heading">#</a></h2>
+<p>The third move is the deep one. So far noise has always answered the question <em>what value lives at <span class="math notranslate nohighlight">\(p\)</span>?</em> Domain warping changes the question: evaluate the field not at <span class="math notranslate nohighlight">\(p\)</span> but at a spot that noise points to,</p>
+<div class="math notranslate nohighlight">
+\[f\big(p + a \cdot d(p)\big),\]</div>
+<p>read aloud: <em>go to <span class="math notranslate nohighlight">\(p\)</span>, ask a displacement field <span class="math notranslate nohighlight">\(d\)</span> (Verschiebung) which way to shove you and shove yourself by <span class="math notranslate nohighlight">\(a\)</span> times that, then read <span class="math notranslate nohighlight">\(f\)</span> where you land.</em> In the purest, self-referential version <span class="math notranslate nohighlight">\(d\)</span> is <span class="math notranslate nohighlight">\(f\)</span> itself, the field bending its own canvas; in practice, and in Quilez’s canonical article, the shove gets its own pair of noise fields, one per axis, so that it has a direction and not just a strength. The dial <span class="math notranslate nohighlight">\(a\)</span> sets how hard the shove is, and iterating the trick (warp the already-warped field) compounds the folding the way the marbler’s second comb-pass drags the first pass’s stripes into feathers.</p>
+<p>One practical detour, and it is this chapter’s one true black box. Our <code class="docutils literal notranslate"><span class="pre">noise2array</span></code> evaluates on rectilinear grids only: it can hand us <em>the field as an image</em>, but not “the field at these million scattered landing spots”. So we do what photographers do with an enlarger: precompute the field as a fine image once, then read it at arbitrary coordinates with <code class="docutils literal notranslate"><span class="pre">scipy.ndimage.map_coordinates</span></code>, which looks up positions <em>between</em> the stored pixels by blending their neighbors (skim its call below; the one idea is that it reads between the pixels, so a landing spot of row 41.7 gets a 30/70 blend of rows 41 and 42). Everything else in the cell is arithmetic you already own.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the marbling machine: fbm, warped, warped again</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">map_coordinates</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+<span class="n">shove_x</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        <span class="c1"># one noise field per displacement axis</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">59</span><span class="p">)</span>
+<span class="n">shove_y</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">warp</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">amplitude_pixels</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Read `field` at positions displaced by the shove fields (in pixels)."""</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">GRID</span><span class="p">),</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">field</span><span class="p">,</span>
+                           <span class="p">[</span><span class="n">rows</span> <span class="o">+</span> <span class="n">amplitude_pixels</span> <span class="o">*</span> <span class="n">shove_y</span><span class="p">,</span>
+                            <span class="n">cols</span> <span class="o">+</span> <span class="n">amplitude_pixels</span> <span class="o">*</span> <span class="n">shove_x</span><span class="p">],</span>
+                           <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"reflect"</span><span class="p">)</span>
+
+<span class="n">once</span> <span class="o">=</span> <span class="n">warp</span><span class="p">(</span><span class="n">smooth_field</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">twice</span> <span class="o">=</span> <span class="n">warp</span><span class="p">(</span><span class="n">once</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">smooth_field</span><span class="p">,</span> <span class="s2">"f(p): plain fbm"</span><span class="p">),</span>
+                         <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">once</span><span class="p">,</span> <span class="s2">"single warp: one comb pass"</span><span class="p">),</span>
+                         <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">twice</span><span class="p">,</span> <span class="s2">"double warp: the marbler's second comb"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/70e2e67e61fc045be12446cbd97d3c31a8fc903f97feed5b92f081dd0fe922bf.png" src="../_images/70e2e67e61fc045be12446cbd97d3c31a8fc903f97feed5b92f081dd0fe922bf.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Left to right is five hundred years of marbling compressed into two function calls. The plain field’s soft blobs stretch into currents, and the currents fold into eddies with hooked tails, the exact vocabulary of an ebru endpaper. Nothing was drawn; a field of values was <em>transported</em>.</p>
+<p><strong>Try it.</strong> The amplitude 60 is in pixels, a tenth of the image. Halve it and the marbling relaxes toward the original; double it and space tears into streaks. Exercise (a) walks this dial properly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the instruments combined: warped ridges, melting cells</span>
+<span class="n">warped_ridged</span> <span class="o">=</span> <span class="n">warp</span><span class="p">(</span><span class="n">ridged_field</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="n">melting_cells</span> <span class="o">=</span> <span class="n">warp</span><span class="p">(</span><span class="n">f2</span> <span class="o">-</span> <span class="n">f1</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">warped_ridged</span><span class="p">,</span> <span class="s2">"copper"</span><span class="p">,</span> <span class="s2">"ridged field, warped: folded strata"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">melting_cells</span><span class="p">,</span> <span class="s2">"bone"</span><span class="p">,</span> <span class="s2">"F2 - F1, warped: the glaze melts"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2c6ecde60dddd9960a31d44b33a446637d1725d2ebb269a4f428af326d437573.png" src="../_images/2c6ecde60dddd9960a31d44b33a446637d1725d2ebb269a4f428af326d437573.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Everything composes with everything: the warp does not care that one field came from folded octaves and the other from measured distances. The left panel’s crests now meander like rock strata seen in a cliff face; the right panel’s crack network sags as if the glaze refired and began to flow. This composability is the workshop’s real lesson, and it is why the five authors could share one book: procedural texturing is a small set of field-makers (noise, distances) and field-benders (folds, warps) that combine without asking permission.</p>
+</section>
+<section id="parameter-studies-four-temperaments-of-one-machine">
+<h2>Parameter studies: four temperaments of one machine<a class="headerlink" href="#parameter-studies-four-temperaments-of-one-machine" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four labeled studies: the dials are amplitude, octaves, and seed density</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">warp</span><span class="p">(</span><span class="n">smooth_field</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"gentle warp (a=25): brushed silk"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">warp</span><span class="p">(</span><span class="n">warp</span><span class="p">(</span><span class="n">smooth_field</span><span class="p">,</span> <span class="mi">110</span><span class="p">),</span> <span class="mi">110</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"violent double warp (a=110): torn weather"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                     <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ridged</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"ridged, one octave: bare crests"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">dense_rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">dense_seeds</span> <span class="o">=</span> <span class="n">dense_rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">220</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">dense_f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="n">dense_f2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="ow">in</span> <span class="n">dense_seeds</span><span class="p">:</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">xx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span>
+    <span class="n">closer</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">dense_f1</span>
+    <span class="n">dense_f2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">dense_f1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">dense_f2</span><span class="p">,</span> <span class="n">distance</span><span class="p">))</span>
+    <span class="n">dense_f1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">dense_f1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dense_f2</span> <span class="o">-</span> <span class="n">dense_f1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"220 seeds, F2 - F1: reptile skin"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2c323672540aced993798e53609c5d7d0f95189db2ddd8fd8a8612c973142f5f.png" src="../_images/2c323672540aced993798e53609c5d7d0f95189db2ddd8fd8a8612c973142f5f.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Four materials from one afternoon of arithmetic: silk, storm, rock, skin. Name which dial made each difference before reading the titles again; if you can do that, you own the machine.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Compose your own material: pick a base field (fbm, ridged, or a Worley difference), a warp amplitude (possibly zero, possibly applied twice), and a colormap. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR texture: choose base field, warp strength, colormap</span>
+<span class="n">my_field</span> <span class="o">=</span> <span class="n">warp</span><span class="p">(</span><span class="n">warp</span><span class="p">(</span><span class="n">ridged_field</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">my_artwork</span><span class="p">,</span> <span class="n">my_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">my_field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"copper"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3187f88b4dfd610075084f8c407520e8dae68a505cec98e1aa97d225deecbefd.png" src="../_images/3187f88b4dfd610075084f8c407520e8dae68a505cec98e1aa97d225deecbefd.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch11_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the birth of marbling.</strong> Render <code class="docutils literal notranslate"><span class="pre">warp(smooth_field,</span> <span class="pre">a)</span></code> for <span class="math notranslate nohighlight">\(a \in \{0, 10, 20, 40, 80, 160\}\)</span> in a row of six panels. Somewhere along that row the image stops being <em>textured noise</em> and starts being <em>marbled paper</em>: find the panel where the change happens for you, and defend the choice in one sentence (what, exactly, does your eye use as evidence: curvature? layering? the hooked eddy tails?).</p>
+<p><strong>(b) Code modification: Manhattan Worley.</strong> City distance instead of crow’s flight: replace <code class="docutils literal notranslate"><span class="pre">np.hypot(xx</span> <span class="pre">-</span> <span class="pre">sx,</span> <span class="pre">yy</span> <span class="pre">-</span> <span class="pre">sy)</span></code> with <span class="math notranslate nohighlight">\(|x - s_x| + |y - s_y|\)</span> in the F1/F2 loop and re-render both <span class="math notranslate nohighlight">\(F_1\)</span> and <span class="math notranslate nohighlight">\(F_2 - F_1\)</span>. Describe how the cells change and why.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">GRID</span><span class="p">,</span> <span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">:</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">yy</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span>   <span class="c1"># Manhattan metric</span>
+    <span class="n">closer</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">m1</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">distance</span><span class="p">))</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">closer</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">m1</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Manhattan F1"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">m2</span> <span class="o">-</span> <span class="n">m1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Manhattan F2 - F1"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Circles become diamonds: under the Manhattan metric the set of points at a fixed distance from a seed is a square rotated 45 degrees, so the basins grow as diamonds and the borders between territories run preferentially at 45 degrees (with dead-straight horizontal and vertical segments where two seeds share a coordinate). The glaze stops looking organic and starts looking cut, like a tiled floor laid by someone who only owned a diagonal saw.</p>
+</details>
+<p><strong>(c) Creative challenge: marble your own past.</strong> Take an image-like array you made earlier in this book (the chapter 2 color grid is the suggested victim: rebuild one with its generator, or load any saved artwork via <code class="docutils literal notranslate"><span class="pre">mpimg.imread</span></code>, which hands back an array with a color channel axis) and push it through <code class="docutils literal notranslate"><span class="pre">warp</span></code>, one <code class="docutils literal notranslate"><span class="pre">map_coordinates</span></code> call per color channel, same shove fields for all three. Start gentle. A marbled Richter grid, a marbled random walk, a marbled Mondrian: your earlier chapters are a drawer of plain papers waiting for the comb. (One practical hurdle: <code class="docutils literal notranslate"><span class="pre">warp</span></code> assumes a 600 by 600 field. Either downsample your image to that size first, <code class="docutils literal notranslate"><span class="pre">image[::step,</span> <span class="pre">::step]</span></code> on each channel, or rebuild the shove fields at your image’s size the way the showpiece appendix does.)</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Steven Worley, “A Cellular Texture Basis Function”, <em>SIGGRAPH 96 Proceedings</em>, 291-294: four dense pages containing this chapter’s whole first act, F1, F2, the border tracery and the flagstone cells.</p></li>
+<li><p>David S. Ebert, F. Kenton Musgrave, Darwyn Peachey, Ken Perlin and Steven Worley, <em>Texturing and Modeling: A Procedural Approach</em> (Academic Press, 1994; 3rd ed. Morgan Kaufmann, 2003): the shared bookshelf itself; Musgrave’s terrain chapters include the full ridged multifractal this chapter simplified.</p></li>
+<li><p>Inigo Quilez, “Domain Warping” and the cellular-noise articles at <a class="reference external" href="http://iquilezles.org">iquilezles.org</a>: the contemporary canon, with live shader code; our <code class="docutils literal notranslate"><span class="pre">warp</span></code> function is his construction translated from GPU to NumPy.</p></li>
+<li><p>UNESCO Intangible Cultural Heritage list: “Ebru, Turkish art of marbling” (inscribed 2014): a short official portrait of the physical craft this chapter’s mathematics imitates.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-chambers1991"></span>Chambers, A. (1991). <em>Suminagashi: The Japanese Art of Marbling</em>. Thames and Hudson. The standard monograph on the craft, its earliest surviving Heian-period papers included.</p></li>
+<li><p><span id="ref-ebert1994"></span>Ebert, D. S., Musgrave, F. K., Peachey, D., Perlin, K., and Worley, S. (1994). <em>Texturing and Modeling: A Procedural Approach</em>. AP Professional / Academic Press; 3rd ed. Morgan Kaufmann, 2003. The shared bookshelf; Musgrave’s chapters carry the ridged multifractal as working code, and the 3rd edition adds his chapter “MojoWorld: Building Procedural Planets”.</p></li>
+<li><p><span id="ref-metacreations"></span>MetaCreations Corporation (1999). Bryce 3D product page, as archived 30 April 1999. <a class="reference external" href="https://web.archive.org/web/19990430044931/http://www.metacreations.com/products/bryce3d/bryce3d.html">Wayback Machine capture</a>. The landscape software in its maker’s own words: “dedicated to designing and animating breathtaking natural 3D worlds”.</p></li>
+<li><p><span id="ref-musgrave1993"></span>Musgrave, F. K. (1993). <em>Methods for Realistic Landscape Imaging</em>. PhD dissertation, Yale University. His doctoral work, carried out under Mandelbrot.</p></li>
+<li><p><span id="ref-musgrave2014"></span>Musgrave, F. K. (2014). About (resume). <a class="reference external" href="http://kenmusgrave.com">kenmusgrave.com</a>, as archived 2 November 2014. <a class="reference external" href="https://web.archive.org/web/20141102020720/http://www.kenmusgrave.com/about.html">Wayback Machine capture</a>. Documents his posts as Director of Advanced 3D Research at MetaCreations (1997–1999) and founder-CEO of Pandromeda (1999–2011).</p></li>
+<li><p><span id="ref-nilsson"></span>Nilsson, J.-E. Ge (Wade-Giles: ko) ware. In <em>Chinese Porcelain Glossary</em>, <a class="reference external" href="http://gotheborg.com">gotheborg.com</a>. <a class="reference external" href="https://www.gotheborg.com/glossary/ge.shtml">gotheborg.com/glossary/ge.shtml</a>. The double crackle <em>jinsi tiexian</em> (“gold thread and iron wire”) as the mark separating Ge from Guan.</p></li>
+<li><p><span id="ref-perlin1985"></span>Perlin, K. (1985). An image synthesizer. <em>ACM SIGGRAPH Computer Graphics</em>, 19(3), 287–296. <a class="reference external" href="https://doi.org/10.1145/325165.325247">doi:10.1145/325165.325247</a>. Chapter 10’s noise, the raw material of this whole workshop.</p></li>
+<li><p><span id="ref-quilez"></span>Quilez, I. Domain Warping. <a class="reference external" href="https://iquilezles.org/articles/warp/">iquilezles.org/articles/warp</a>. The canonical article our <code class="docutils literal notranslate"><span class="pre">warp</span></code> function translates from GPU to NumPy; his site also carries the cellular-noise articles and records co-founding Shadertoy with Pol Jeremias.</p></li>
+<li><p><span id="ref-taylor2014"></span>Taylor, G. D. (2014). <em>When the Machine Made Art: The Troubled History of Computer Art</em>. Bloomsbury Academic. Documents Mandelbrot’s description of Musgrave (p. 170).</p></li>
+<li><p><span id="ref-unesco"></span>UNESCO. Ebru, Turkish art of marbling. Representative List of the Intangible Cultural Heritage of Humanity, inscribed 2014. <a class="reference external" href="https://ich.unesco.org/en/RL/ebru-turkish-art-of-marbling-00644">ich.unesco.org</a>. The official portrait of the physical craft.</p></li>
+<li><p><span id="ref-worley1996"></span>Worley, S. (1996). A cellular texture basis function. <em>SIGGRAPH ‘96 Proceedings</em>, 291–294. <a class="reference external" href="https://doi.org/10.1145/237170.237267">doi:10.1145/237170.237267</a>. Four pages: F1, F2, and the vein-like tracery quoted above.</p></li>
+<li><p><span id="ref-xie2007"></span>Xie, G., Feng, S., Feng, X., Wang, Y., Zhu, J., Yan, L., Li, Y., and Han, H. (2007). Study on ancient Chinese imitated GE ware by INAA and WDXRF. <em>Nuclear Instruments and Methods in Physics Research Section B</em>, 264(1), 103–108. <a class="reference external" href="https://doi.org/10.1016/j.nimb.2007.08.017">doi:10.1016/j.nimb.2007.08.017</a>. The two-colored crazing “called ‘golden thread and iron wire’”, here under nuclear analysis.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image at the top of the notebook: a five-octave ridged field on a wider window (span 4.5) at 900 by 900, double-warped by upsampled shove fields, in a custom five-stop mineral colormap (basalt, slate, iron oxide, sand, bone). About 25 seconds; it runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: folded strata, twice combed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+
+<span class="n">MINERAL</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+    <span class="s2">"mineral"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"#14171C"</span><span class="p">,</span> <span class="s2">"#3A4A5A"</span><span class="p">,</span> <span class="s2">"#7A4A32"</span><span class="p">,</span> <span class="s2">"#C99B62"</span><span class="p">,</span> <span class="s2">"#EFE6D5"</span><span class="p">])</span>
+
+<span class="n">SP_GRID</span> <span class="o">=</span> <span class="mi">900</span>
+<span class="n">sp_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">SP_GRID</span><span class="p">)</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">sp_ridged</span> <span class="o">=</span> <span class="n">ridged</span><span class="p">(</span><span class="n">sp_axis</span><span class="p">,</span> <span class="n">sp_axis</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># shove fields upsampled from the chapter's 600-pixel ones: displacement is</span>
+<span class="c1"># smooth by nature, so it survives enlargement (map_coordinates again)</span>
+<span class="n">fine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SP_GRID</span><span class="p">)</span>
+<span class="n">fine_rows</span><span class="p">,</span> <span class="n">fine_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">fine</span><span class="p">,</span> <span class="n">fine</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
+<span class="n">sp_shove_x</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">shove_x</span><span class="p">,</span> <span class="p">[</span><span class="n">fine_rows</span><span class="p">,</span> <span class="n">fine_cols</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_shove_y</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">shove_y</span><span class="p">,</span> <span class="p">[</span><span class="n">fine_rows</span><span class="p">,</span> <span class="n">fine_cols</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sp_warp</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">amplitude_pixels</span><span class="p">):</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">SP_GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">SP_GRID</span><span class="p">),</span>
+                             <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">field</span><span class="p">,</span>
+                           <span class="p">[</span><span class="n">rows</span> <span class="o">+</span> <span class="n">amplitude_pixels</span> <span class="o">*</span> <span class="n">sp_shove_y</span><span class="p">,</span>
+                            <span class="n">cols</span> <span class="o">+</span> <span class="n">amplitude_pixels</span> <span class="o">*</span> <span class="n">sp_shove_x</span><span class="p">],</span>
+                           <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"reflect"</span><span class="p">)</span>
+
+<span class="n">sp_field</span> <span class="o">=</span> <span class="n">sp_warp</span><span class="p">(</span><span class="n">sp_warp</span><span class="p">(</span><span class="n">sp_ridged</span><span class="p">,</span> <span class="mi">54</span><span class="p">),</span> <span class="mi">54</span><span class="p">)</span>
+<span class="n">showpiece</span><span class="p">,</span> <span class="n">sp_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sp_field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">MINERAL</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/37d7aaaa9074ef77c90e9fd9d6cff0b8b00d3e73a44a7f82985e0e62b0d91eaf.png" src="../_images/37d7aaaa9074ef77c90e9fd9d6cff0b8b00d3e73a44a7f82985e0e62b0d91eaf.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch11_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="10-noise-and-flow-fields.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">10. Noise and Flow Fields</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="12-curl-and-loops.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">12. Curl and the Endless Loop: Fields in Motion</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-one-bookshelf-one-workshop">Context: one bookshelf, one workshop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#worley-noise-the-nearest-seed-field">Worley noise: the nearest-seed field</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridged-noise-fold-before-you-stack">Ridged noise: fold before you stack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-warping-noise-bends-space">Domain warping: noise bends space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies-four-temperaments-of-one-machine">Parameter studies: four temperaments of one machine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

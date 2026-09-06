@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="0. Warming Up: Python and Mathematics from Zero" href="notebooks/00-warming-up.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Algorithmic Generative Art with Python</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapters">Chapters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prelude">Prelude</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i-foundations">Part I · Foundations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-ii-growth-and-iteration">Part II · Growth and Iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-iii-fields-and-grids">Part III · Fields and Grids</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-iv-the-image-transformed">Part IV · The Image, Transformed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-v-agents-and-complexity">Part V · Agents and Complexity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-vi-coda">Part VI · Coda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-book">How to use this book</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite">How to cite</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="algorithmic-generative-art-with-python">
+<h1>Algorithmic Generative Art with Python<a class="headerlink" href="#algorithmic-generative-art-with-python" title="Link to this heading">#</a></h1>
+<p><strong>A hands-on book teaching mathematics and Python through the making of generative art, written for art history students.</strong></p>
+<p><img alt="Artworks generated in this book" src="_images/hero.png" /></p>
+<section id="chapters">
+<h2>Chapters<a class="headerlink" href="#chapters" title="Link to this heading">#</a></h2>
+<section id="prelude">
+<h3>Prelude<a class="headerlink" href="#prelude" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td><p><a class="reference internal" href="notebooks/00-warming-up.html"><span class="std std-doc">Warming Up: Python and Mathematics from Zero</span></a></p></td>
+<td><p>Python basics, notation, first matplotlib</p></td>
+<td><p>stripe painting: Stella, Davis, Riley, Buren</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-i-foundations">
+<h3>Part I · Foundations<a class="headerlink" href="#part-i-foundations" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td><p><a class="reference internal" href="notebooks/01-random-walks.html"><span class="std std-doc">Random Walks: The First Generative System</span></a></p></td>
+<td><p>loops, randomness, plotting</p></td>
+<td><p>Sol LeWitt, Georg Nees <em>Schotter</em>, Vera Molnár</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>2</p></td>
+<td><p><a class="reference internal" href="notebooks/02-chance-and-randomness.html"><span class="std std-doc">Chance Operations and Controlled Randomness</span></a></p></td>
+<td><p>distributions, seeding, weighted choice</p></td>
+<td><p>Arp, Duchamp, Cage, Kelly, Richter</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>3</p></td>
+<td><p><a class="reference internal" href="notebooks/03-geometric-patterns.html"><span class="std std-doc">Geometric Patterns and Symmetry</span></a></p></td>
+<td><p>trigonometry, rotation, tiling</p></td>
+<td><p>Alhambra, girih tiles, Owen Jones, Escher</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>4</p></td>
+<td><p><a class="reference internal" href="notebooks/04-truchet-tiles.html"><span class="std std-doc">Truchet Tiles: Chance on a Grid</span></a></p></td>
+<td><p>grid randomness, tile sets</p></td>
+<td><p>Truchet 1704, Douat, Smith, <em>10 PRINT</em></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>5</p></td>
+<td><p><a class="reference internal" href="notebooks/05-recursion-and-subdivision.html"><span class="std std-doc">Recursion and Subdivision</span></a></p></td>
+<td><p>recursive functions</p></td>
+<td><p>Mondrian, De Stijl</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>6</p></td>
+<td><p><a class="reference internal" href="notebooks/06-color.html"><span class="std std-doc">Color: Spaces, Palettes, Extraction</span></a></p></td>
+<td><p>RGB/HSV/LAB, k-means</p></td>
+<td><p>Itten, Albers, Rothko</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-ii-growth-and-iteration">
+<h3>Part II · Growth and Iteration<a class="headerlink" href="#part-ii-growth-and-iteration" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>7</p></td>
+<td><p><a class="reference internal" href="notebooks/07-l-systems.html"><span class="std std-doc">L-Systems and Botanical Form</span></a></p></td>
+<td><p>string rewriting, turtle graphics</p></td>
+<td><p>Merian, Besler, Haeckel, D’Arcy Thompson</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td><p><a class="reference internal" href="notebooks/08-fractals.html"><span class="std std-doc">Fractals: Infinite Detail</span></a></p></td>
+<td><p>complex iteration, escape time</p></td>
+<td><p>Mandelbrot, Hokusai, the Pollock controversy</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>9</p></td>
+<td><p><a class="reference internal" href="notebooks/09-strange-attractors.html"><span class="std std-doc">Strange Attractors: The Shape of Chaos</span></a></p></td>
+<td><p>iterated 2D maps, density rendering</p></td>
+<td><p>Lorenz, Gleick, Pickover, de Jong</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-iii-fields-and-grids">
+<h3>Part III · Fields and Grids<a class="headerlink" href="#part-iii-fields-and-grids" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>10</p></td>
+<td><p><a class="reference internal" href="notebooks/10-noise-and-flow-fields.html"><span class="std std-doc">Noise and Flow Fields</span></a></p></td>
+<td><p>coherent noise, vector fields</p></td>
+<td><p>Perlin, Tyler Hobbs <em>Fidenza</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>11</p></td>
+<td><p><a class="reference internal" href="notebooks/11-deeper-noise.html"><span class="std std-doc">Deeper Noise: Cells, Ridges, and Warped Space</span></a></p></td>
+<td><p>Worley noise, ridged fbm, domain warping</p></td>
+<td><p>Ebru marbling, Worley, Musgrave, Quilez</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>12</p></td>
+<td><p><a class="reference internal" href="notebooks/12-curl-and-loops.html"><span class="std std-doc">Curl and the Endless Loop: Fields in Motion</span></a></p></td>
+<td><p>curl noise, seamless loops</p></td>
+<td><p>Bridson, phenakistiscope, the GIF</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>13</p></td>
+<td><p><a class="reference internal" href="notebooks/13-cellular-automata.html"><span class="std std-doc">Cellular Automata and Emergence</span></a></p></td>
+<td><p>rule tables, Game of Life</p></td>
+<td><p>Jacquard loom, Anni Albers, Conway</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>14</p></td>
+<td><p><a class="reference internal" href="notebooks/14-reaction-diffusion.html"><span class="std std-doc">Reaction-Diffusion: Turing Patterns</span></a></p></td>
+<td><p>Gray-Scott model</p></td>
+<td><p>Turing 1952, Morris, Jugendstil ornament</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-iv-the-image-transformed">
+<h3>Part IV · The Image, Transformed<a class="headerlink" href="#part-iv-the-image-transformed" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>15</p></td>
+<td><p><a class="reference internal" href="notebooks/15-voronoi-and-stippling.html"><span class="std std-doc">Voronoi, Delaunay, and Stippling</span></a></p></td>
+<td><p>tessellation, Lloyd relaxation</p></td>
+<td><p>Seurat, mosaic, Secord stippling</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>16</p></td>
+<td><p><a class="reference internal" href="notebooks/16-filters-and-dithering.html"><span class="std std-doc">Filters, Edges, and Dithering</span></a></p></td>
+<td><p>convolution, Gabor, Floyd-Steinberg</p></td>
+<td><p>Lichtenstein, halftone, glitch</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>17</p></td>
+<td><p><a class="reference internal" href="notebooks/17-pixel-sorting.html"><span class="std std-doc">Pixel Sorting: The Aesthetics of the Glitch</span></a></p></td>
+<td><p>sorting, masks, interval detection</p></td>
+<td><p>Paik, Menkman, Asendorf</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>18</p></td>
+<td><p><a class="reference internal" href="notebooks/18-circle-packing.html"><span class="std std-doc">Circle Packing: The Portrait in Dots</span></a></p></td>
+<td><p>collision tests, greedy growth</p></td>
+<td><p>Kandinsky, Kusama, the Apollonian gasket</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-v-agents-and-complexity">
+<h3>Part V · Agents and Complexity<a class="headerlink" href="#part-v-agents-and-complexity" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>19</p></td>
+<td><p><a class="reference internal" href="notebooks/19-particles-and-flocking.html"><span class="std std-doc">Particles, Agents, and Flocking</span></a></p></td>
+<td><p>Boids, simulation</p></td>
+<td><p>Calder, Riley, teamLab, Reynolds 1987</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>20</p></td>
+<td><p><a class="reference internal" href="notebooks/20-diffusion-limited-aggregation.html"><span class="std std-doc">Aggregation: Growth by Random Walk</span></a></p></td>
+<td><p>diffusion-limited aggregation</p></td>
+<td><p>Bentley, Lichtenberg figures, Witten &amp; Sander</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>21</p></td>
+<td><p><a class="reference internal" href="notebooks/21-physarum.html"><span class="std std-doc">Physarum: The Trail-Laying Swarm</span></a></p></td>
+<td><p>agents coupled to a field</p></td>
+<td><p>slime mold, Tero, Barnett, Jenson</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>22</p></td>
+<td><p><a class="reference internal" href="notebooks/22-differential-growth.html"><span class="std std-doc">Differential Growth: The Restless Line</span></a></p></td>
+<td><p>neighbor forces, node insertion</p></td>
+<td><p>Nervous System, Anders Hoff, kale and coral</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>23</p></td>
+<td><p><a class="reference internal" href="notebooks/23-evolving-images.html"><span class="std std-doc">Evolving Images: Breeding as Composition</span></a></p></td>
+<td><p>mutation, selection by eye</p></td>
+<td><p>Dawkins, Latham, Sims</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="part-vi-coda">
+<h3>Part VI · Coda<a class="headerlink" href="#part-vi-coda" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Ch.</p></th>
+<th class="head"><p>Title</p></th>
+<th class="head"><p>Core method</p></th>
+<th class="head"><p>Art anchor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>24</p></td>
+<td><p><a class="reference internal" href="notebooks/24-heatmaps.html"><span class="std std-doc">Attention Made Visible: Gaussians, KDE, Heatmaps</span></a></p></td>
+<td><p>kernel density estimation</p></td>
+<td><p>Yarbus, museum eye tracking</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>25</p></td>
+<td><p><a class="reference internal" href="notebooks/25-the-sounding-image.html"><span class="std std-doc">The Sounding Image: From Pixels to Sound</span></a></p></td>
+<td><p>additive synthesis, spectrogram</p></td>
+<td><p>Kandinsky, Fischinger, Xenakis</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>26</p></td>
+<td><p><a class="reference internal" href="notebooks/26-the-plotted-line.html"><span class="std std-doc">The Plotted Line: Vector Graphics and the Machine’s Hand</span></a></p></td>
+<td><p>SVG, line displacement, hatching</p></td>
+<td><p>Molnár, Nake, the pulsar plot</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>27</p></td>
+<td><p><a class="reference internal" href="notebooks/27-synthesis.html"><span class="std std-doc">Synthesis: Systems, Authorship, and the Final Project</span></a></p></td>
+<td><p>combining techniques</p></td>
+<td><p>Boden, Molnár’s late fame, the NFT arc</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="how-to-use-this-book">
+<h2>How to use this book<a class="headerlink" href="#how-to-use-this-book" title="Link to this heading">#</a></h2>
+<p>Every chapter is a fully executed notebook: all generated art is embedded,
+and reading online requires no installation.</p>
+</section>
+<section id="how-to-cite">
+<h2>How to cite<a class="headerlink" href="#how-to-cite" title="Link to this heading">#</a></h2>
+<p>If you use this book in your research or teaching, please cite it as:</p>
+<blockquote>
+<div><p>Long, Xingyu. <em>Algorithmic Generative Art with Python.</em> 2026.
+<a class="reference external" href="https://xyslong.github.io/agap/">https://xyslong.github.io/agap/</a></p>
+</div></blockquote>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@book</span><span class="p">{</span><span class="nl">long2026agap</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Long, Xingyu}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">title</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="s">{Algorithmic Generative Art with Python}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">year</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="s">{2026}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">url</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{https://xyslong.github.io/agap/}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Code is licensed under the MIT License; text under CC BY 4.0. Images
+generated by students belong to the students who made them.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="notebooks/00-warming-up.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">0. Warming Up: Python and Mathematics from Zero</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapters">Chapters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prelude">Prelude</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i-foundations">Part I · Foundations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-ii-growth-and-iteration">Part II · Growth and Iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-iii-fields-and-grids">Part III · Fields and Grids</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-iv-the-image-transformed">Part IV · The Image, Transformed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-v-agents-and-complexity">Part V · Agents and Complexity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-vi-coda">Part VI · Coda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-book">How to use this book</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite">How to cite</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

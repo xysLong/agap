@@ -1,0 +1,985 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>10. Noise and Flow Fields &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/10-noise-and-flow-fields';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. Deeper Noise: Cells, Ridges, and Warped Space" href="11-deeper-noise.html" />
+    <link rel="prev" title="9. Strange Attractors: The Shape of Chaos" href="09-strange-attractors.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>10. Noise and Flow Fields</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-an-oscar-for-a-texture-and-the-field-that-sold-out-in-seconds">Context: an Oscar for a texture, and the field that sold out in seconds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-is-not-noisy">Random is not noisy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coherent-noise-by-hand">Coherent noise by hand</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-noise-to-flow-every-point-gets-a-direction">From noise to flow: every point gets a direction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-particles">Tracing particles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-showpiece">The showpiece</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="noise-and-flow-fields">
+<h1>10. Noise and Flow Fields<a class="headerlink" href="#noise-and-flow-fields" title="Link to this heading">#</a></h1>
+<p>Pure randomness looks like television static; nature’s randomness looks like marble, smoke, and wind. Today we meet coherent noise, the tool that fills that gap, and use it to build flow fields: the technique behind some of the most celebrated generative art of the last decade.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>Five thousand particles released into an invisible field of forces, each drawing its path as a single fine line in a dark Rothko palette. Nobody drew any of these lines; we will design the wind, not the strokes. This flow field is the course’s poster child, and by the end of today it is yours to steer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch10_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f3c1491aab1583621bb81f1d127269cea27d045e58d8e0d170453b226b659948.png" src="../_images/f3c1491aab1583621bb81f1d127269cea27d045e58d8e0d170453b226b659948.png" />
+</div>
+</div>
+</section>
+<section id="context-an-oscar-for-a-texture-and-the-field-that-sold-out-in-seconds">
+<h2>Context: an Oscar for a texture, and the field that sold out in seconds<a class="headerlink" href="#context-an-oscar-for-a-texture-and-the-field-that-sold-out-in-seconds" title="Link to this heading">#</a></h2>
+<p>In 1982 the computer-animated sequences of <em>Tron</em> were state of the art, and <strong>Ken Perlin</strong>, then working at MAGI, one of the studios that produced them, was bothered by exactly that: everything looked machined, clean, dead. His answer, published in 1985 <a class="cite" href="#ref-perlin1985">(Perlin 1985)</a>, was a procedure for generating <em>controlled</em> randomness: smooth, natural-looking variation that could roughen a surface, curl smoke, or age a texture. <strong>Perlin noise</strong> became so fundamental to computer graphics that in 1997 the Academy of Motion Picture Arts and Sciences gave Perlin a Technical Achievement Award for it, an Oscar for a mathematical function <a class="cite" href="#ref-ampas1997">(Academy of Motion Picture Arts and Sciences 1997)</a>. We use its patent-free cousin OpenSimplex (Perlin’s own improved <em>simplex noise</em> was patented for years <a class="cite" href="#ref-perlin2005">(Perlin 2005)</a>, so the open-source world wrote around it), but the idea is the same.</p>
+<p>The idea matters to aesthetics far beyond graphics. <em>Random</em> and <em>noisy</em> name two different textures of chance. The <code class="docutils literal notranslate"><span class="pre">rng.random()</span></code> randomness of chapter 2 is independent from point to point, which is why it reads as static: knowing one pixel tells you nothing about its neighbor. In coherent noise, nearby points agree and distant points drift apart, which is how wood grain, dunes, clouds and water behave. When an artwork feels “organic”, spatial correlation is very often the reason, and today that word becomes a dial in your hands.</p>
+<p>Flow fields, today’s build, are coherent noise’s best-known artistic payoff: use noise to assign every point of the canvas a <em>direction</em>, then let particles drift along the directions and ink their trails <a class="cite" href="#ref-hobbs2020">(Hobbs 2020)</a>. In June 2021 <strong>Tyler Hobbs</strong> released <em>Fidenza</em>, a flow-field algorithm on the platform Art Blocks that generated 999 works, each minted unseen by its collector <a class="cite" href="#ref-artblocks">(Art Blocks, collection page)</a>; editions sold out and resold for sums that made newspapers <a class="cite" href="#ref-gao2023">(Gao 2023)</a> during the NFT boom (and fell with it). Whatever one thinks of that market, the artistic form it crystallized, <strong>long-form generative art</strong> <a class="cite" href="#ref-hobbs2021">(Hobbs 2021)</a>, is a genuine shift: the artist publishes the <em>algorithm</em>, buyers draw random outputs from it, and no cherry-picking is possible. Quality must hold across the whole output distribution, not in one lucky render. Remember Noll’s question from chapter 5 (who composed the picked-out best of 500 sheets?); long-form art answers it by forbidding the picking.</p>
+</section>
+<section id="random-is-not-noisy">
+<h2>Random is not noisy<a class="headerlink" href="#random-is-not-noisy" title="Link to this heading">#</a></h2>
+<p>Two grayscale squares. Left: chapter 2’s randomness, every pixel drawn independently. Right: coherent noise from the <code class="docutils literal notranslate"><span class="pre">opensimplex</span></code> library, sampled on the same grid. Same amount of “chance”, entirely different material.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># independent randomness vs coherent noise, side by side</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opensimplex</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">static</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">))</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">240</span><span class="p">)</span>             <span class="c1"># 3 "noise units" across</span>
+<span class="n">smooth</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">static</span><span class="p">,</span> <span class="s2">"independent: static"</span><span class="p">),</span>
+                         <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">smooth</span><span class="p">,</span> <span class="s2">"coherent: weather"</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1cf9f5ccea2d106a3fb9cd5d2dbf1701f31ca58924d1339d858eb8019dc7ba8f.png" src="../_images/1cf9f5ccea2d106a3fb9cd5d2dbf1701f31ca58924d1339d858eb8019dc7ba8f.png" />
+</div>
+</div>
+</section>
+<section id="coherent-noise-by-hand">
+<h2>Coherent noise by hand<a class="headerlink" href="#coherent-noise-by-hand" title="Link to this heading">#</a></h2>
+<p>Before trusting the library, build the principle yourself in 1D; that is this course’s habit. Coherent noise is nothing deeper than <strong>smooth interpolation between random anchor values</strong>: draw a random value at every whole number, then connect them not with straight lines but with an S-curve that flattens out at each anchor,</p>
+<div class="math notranslate nohighlight">
+\[t_{\text{smooth}} = 3t^2 - 2t^3,\]</div>
+<p>the <em>smoothstep</em> function, which rises from 0 to 1 like a lazy diagonal. The result wanders unpredictably yet has no kinks: a one-dimensional landscape.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># value noise in 1D: random anchors at whole numbers, smoothstep in between</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">anchors</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>                 <span class="c1"># one value at x = 0, 1, ... 10</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">xs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>             <span class="c1"># which anchor is to my left?</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">-</span> <span class="n">left</span>                                    <span class="c1"># how far toward the next one?</span>
+<span class="n">t_smooth</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">t</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">**</span> <span class="mi">3</span>               <span class="c1"># the S-curve</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">anchors</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t_smooth</span><span class="p">)</span> <span class="o">+</span> <span class="n">anchors</span><span class="p">[</span><span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">t_smooth</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="n">anchors</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"x"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"noise value"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f61c97f46379315980cdfe73903dbf98371665aceeaf3d7a1e27144f23ee66d1.png" src="../_images/f61c97f46379315980cdfe73903dbf98371665aceeaf3d7a1e27144f23ee66d1.png" />
+</div>
+</div>
+<p>The red dots are the only random decisions; everything between them is deterministic smoothing. (The library’s simplex noise refines this recipe, interpolating random <em>slopes</em> instead of values on a cleverer lattice, but the anchors-plus-smoothing idea is all you need to reason about it.)</p>
+<p>One layer of this is too smooth to pass for nature: real terrain has hills <em>and</em> pebbles. The classic fix is stacking <strong>octaves</strong> (Oktaven, borrowed from music because each layer doubles the frequency): add the noise to a half-amplitude copy at double frequency, then a quarter-amplitude copy at quadruple frequency, and so on. The doubling factor is called <em>lacunarity</em>, the amplitude factor <em>persistence</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># octave stacking in 1D: detail accumulates without losing the large shape</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">octave</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">octave</span>                      <span class="c1"># 1, 2, 4  (lacunarity 2)</span>
+    <span class="n">amplitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="n">octave</span>                    <span class="c1"># 1, 1/2, 1/4  (persistence 0.5)</span>
+    <span class="c1"># each octave samples its own y-slice of the noise (any offset works)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span>
+                                                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">octave</span> <span class="o">*</span> <span class="mf">9.7</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">layer</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">octave</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">octave</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"octave </span><span class="si">{</span><span class="n">octave</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">octave</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"sum"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4606fe190f12b94a287c9729a7932fdd4c558a5875fd8a5d75c3387e633bb0af.png" src="../_images/4606fe190f12b94a287c9729a7932fdd4c558a5875fd8a5d75c3387e633bb0af.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the same recipe in 2D, wrapped as a function for the rest of the chapter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">octave_noise</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">persistence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lacunarity</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+    <span class="n">amplitude</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">octave</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">octaves</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span>
+                                                     <span class="n">ys</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="n">amplitude</span> <span class="o">*=</span> <span class="n">persistence</span>
+        <span class="n">frequency</span> <span class="o">*=</span> <span class="n">lacunarity</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>         <span class="c1"># normalized to -1 ... 1</span>
+
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">n_octaves</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">4</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">octave_noise</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">n_octaves</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_octaves</span><span class="si">}</span><span class="s2"> octave(s)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/099d37d607ea6e3d1258bc88c2d116797630c2c3cb94a70d165bea8cab8bbac7.png" src="../_images/099d37d607ea6e3d1258bc88c2d116797630c2c3cb94a70d165bea8cab8bbac7.png" />
+</div>
+</div>
+<p><strong>Try it.</strong> Set <code class="docutils literal notranslate"><span class="pre">persistence=0.8</span></code> in the right panel’s call: the pebbles start shouting over the hills. Persistence is a balance-of-power dial between the scales.</p>
+</section>
+<section id="from-noise-to-flow-every-point-gets-a-direction">
+<h2>From noise to flow: every point gets a direction<a class="headerlink" href="#from-noise-to-flow-every-point-gets-a-direction" title="Link to this heading">#</a></h2>
+<p>Here is the move that turns a texture into a <em>force</em>. A noise value is a number between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>; multiply it by <span class="math notranslate nohighlight">\(\pi\)</span> and it is an <strong>angle</strong> between <span class="math notranslate nohighlight">\(-\pi\)</span> and <span class="math notranslate nohighlight">\(\pi\)</span>. Do that at every point of the canvas and you have a <strong>vector field</strong> (Vektorfeld): an invisible wind blowing in a smoothly varying direction everywhere. The diagram below draws one arrow per grid cell, chapter 8’s <code class="docutils literal notranslate"><span class="pre">np.meshgrid</span></code> supplying the grid, exactly as promised.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the invisible wind, made visible: one arrow per cell of a coarse grid</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">coarse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="n">octave_noise</span><span class="p">(</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span>
+           <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"angle(x, y) = noise(x, y) * pi"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f824f4b471c3f7a7b5fec4568cbdefd3e1b4badac066d8970b7f920c89b4dd29.png" src="../_images/f824f4b471c3f7a7b5fec4568cbdefd3e1b4badac066d8970b7f920c89b4dd29.png" />
+</div>
+</div>
+</section>
+<section id="tracing-particles">
+<h2>Tracing particles<a class="headerlink" href="#tracing-particles" title="Link to this heading">#</a></h2>
+<p>Now release particles into the wind. Each particle repeats one tiny rule: <em>look up the angle where I stand, take a small step in that direction</em>. Collecting the positions gives a trail per particle, and the trails are the artwork.</p>
+<p>One honest performance note: computing fresh noise at every particle position at every step is the textbook version, but it is slow in pure Python. We precompute the angles once on a fine grid and let particles look their angle up, which is thousands of times faster and visually indistinguishable. Particles that wander off the canvas end their trail (<code class="docutils literal notranslate"><span class="pre">np.nan</span></code> positions create exactly the line break we want when drawing). Two numpy idioms carry the code: <code class="docutils literal notranslate"><span class="pre">np.where(condition,</span> <span class="pre">a,</span> <span class="pre">b)</span></code> picks from <code class="docutils literal notranslate"><span class="pre">a</span></code> where the condition holds and from <code class="docutils literal notranslate"><span class="pre">b</span></code> elsewhere, an if/else for whole arrays; and <code class="docutils literal notranslate"><span class="pre">np.nan_to_num</span></code> turns the dead particles’ <code class="docutils literal notranslate"><span class="pre">nan</span></code> into 0 so the grid lookup stays legal (the <code class="docutils literal notranslate"><span class="pre">np.where</span></code> keeps them dead regardless).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># particles stepping through the angle grid; histories become trails</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_particles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span>
+    <span class="n">xs_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">ys_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">xs_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">ys_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">resolution</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+                         <span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">resolution</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+                      <span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">angles</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">xs_history</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">ys_history</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># first flight: two thousand particles, plain ink</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineCollection</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="n">octave_noise</span><span class="p">(</span><span class="n">fine</span><span class="p">,</span> <span class="n">fine</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span> <span class="o">=</span> <span class="n">trace_particles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">n_particles</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+                                         <span class="n">n_steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mf">0.0025</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="c1"># .T flips the histories so each row is one particle; np.stack then</span>
+<span class="c1"># glues x and y into (x, y) pairs: one polyline per particle</span>
+<span class="n">trails</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs_history</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ys_history</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">trails</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span>
+                                 <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.35</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5b65013838af16419818a80defc4c7c5c640624800a9f3c229f1ee651802ce78.png" src="../_images/5b65013838af16419818a80defc4c7c5c640624800a9f3c229f1ee651802ce78.png" />
+</div>
+</div>
+<p>Already recognizably a flow field: dense currents, calm eddies, empty shorelines where the wind blows particles away. Three dials will now take this from sketch to artwork:</p>
+<ul class="simple">
+<li><p><strong>noise scale</strong>: how many noise units span the canvas; low is laminar (calm, parallel currents), high is turbulent;</p></li>
+<li><p><strong>swirl</strong>: how much of the full circle the angles may use. A full <span class="math notranslate nohighlight">\(2\pi\)</span> lets currents loop back on themselves; a narrow swirl around a base direction (<em>drift</em>) combs everything one way, like brushed hair;</p></li>
+<li><p><strong>palette and weights</strong>: line colors drawn by weighted choice, chapter 2’s oldest trick, so one color can dominate and another appear as a rare accent.</p></li>
+</ul>
+<p><strong>Try it.</strong> In the cell above, change <code class="docutils literal notranslate"><span class="pre">octaves=3</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> and the field combs itself smooth; the eddies were the upper octaves’ work.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator, part 1: the wind</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flow_angles</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">drift</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
+    <span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">octave_noise</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">octaves</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">drift</span> <span class="o">+</span> <span class="n">noise</span> <span class="o">*</span> <span class="n">swirl</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="c1"># part 2: drawing the trails onto an axis</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_trails</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">linewidths</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span>
+                <span class="n">background</span><span class="p">):</span>
+    <span class="n">trails</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs_history</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ys_history</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">trails</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+                                     <span class="n">linewidths</span><span class="o">=</span><span class="n">linewidths</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># part 3: the whole piece -- wind, particles, weighted colors, varied widths</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_particles</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mf">0.0025</span><span class="p">,</span>
+               <span class="n">scale</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">drift</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+               <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">,</span>
+               <span class="n">width_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"rothko_dark"</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">n_particles</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_particles</span> <span class="o">*</span> <span class="n">quality</span><span class="p">)</span>     <span class="c1"># rendering budget dial</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">flow_angles</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">octaves</span><span class="p">,</span> <span class="n">swirl</span><span class="p">,</span> <span class="n">drift</span><span class="p">)</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span> <span class="o">=</span> <span class="n">trace_particles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">,</span>
+                                             <span class="n">n_steps</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+    <span class="n">color_index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">),</span> <span class="n">n_particles</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">color_index</span><span class="p">:</span>
+        <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    <span class="n">linewidths</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">width_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">width_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_particles</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
+    <span class="n">draw_trails</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">linewidths</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span>
+                <span class="n">background</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 1: laminar drift -- narrow swirl, pastel on paper</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">drift</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                   <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"pastel"</span><span class="p">],</span> <span class="n">background</span><span class="o">=</span><span class="n">PAPER</span><span class="p">,</span>
+                   <span class="n">width_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b43565e583add2de051923f9109a9b4c63c895897865a63fb3e56f851f0bbe74.png" src="../_images/b43565e583add2de051923f9109a9b4c63c895897865a63fb3e56f851f0bbe74.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 2: turbulence -- high scale, full swirl, viridis on near-black</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+                   <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"viridis"</span><span class="p">],</span> <span class="n">background</span><span class="o">=</span><span class="s2">"#0B0B12"</span><span class="p">,</span>
+                   <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
+                   <span class="n">width_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3dde4f2ff6ef0063dbb7fd85723aef25830ed96031f6c61b3e1467f12225de3e.png" src="../_images/3dde4f2ff6ef0063dbb7fd85723aef25830ed96031f6c61b3e1467f12225de3e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 3: ink study -- monochrome, one dominant tone, rare pale accent</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
+                   <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"monochrome"</span><span class="p">],</span> <span class="n">background</span><span class="o">=</span><span class="n">PAPER</span><span class="p">,</span>
+                   <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
+                   <span class="n">width_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.45</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4f84c769283ef21c3599a995a8f10bba50b69f24fb7cba0b4cfe33a69da387bc.png" src="../_images/4f84c769283ef21c3599a995a8f10bba50b69f24fb7cba0b4cfe33a69da387bc.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The three temperaments differ in scale, swirl and palette at once. Which one feels <em>slow</em>? Find the single parameter most responsible, then test your hypothesis by changing only it. And a Fidenza-flavored question: if you had to publish ONE of these three configurations as a long-form series of 999 seeds, sight unseen, which would you trust to stay good across all 999, and why? (Consistent quality and peak quality are different virtues; collectors of generative art discuss exactly this.)</p>
+</section>
+<section id="the-showpiece">
+<h2>The showpiece<a class="headerlink" href="#the-showpiece" title="Link to this heading">#</a></h2>
+<p>Five thousand particles, the dark Rothko palette over near-black, deep reds dominant and the pale orange rationed to a scattering of embers. On a laptop this renders in well under a minute; for a poster-sized print at home, raise <code class="docutils literal notranslate"><span class="pre">quality</span></code> to 2 or 3 and <code class="docutils literal notranslate"><span class="pre">n_steps</span></code> to 500, and expect a coffee break.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the showpiece: 5000 particles in ember light</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flow_showpiece</span><span class="p">(</span><span class="n">quality</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_particles</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span>
+                      <span class="n">scale</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">swirl</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+                      <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"rothko_dark"</span><span class="p">][:</span><span class="mi">4</span><span class="p">],</span>
+                      <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.38</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">],</span>
+                      <span class="n">background</span><span class="o">=</span><span class="s2">"#1E1420"</span><span class="p">,</span> <span class="n">width_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">),</span>
+                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="n">quality</span><span class="p">)</span>
+
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">flow_showpiece</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d4457aad70894cb01e9b2b1a9ca33d7effaf1425c111aa97f273aa4bedcf17c1.png" src="../_images/d4457aad70894cb01e9b2b1a9ca33d7effaf1425c111aa97f273aa4bedcf17c1.png" />
+</div>
+</div>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Tune a field until it is yours, then export. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">flow_field</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">2026</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                        <span class="n">palette</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"magma"</span><span class="p">],</span> <span class="n">background</span><span class="o">=</span><span class="s2">"#0B0B12"</span><span class="p">,</span>
+                        <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7249ef3f3037d6f4a70527ae3c36c652a24e5ef451a4602026c1381e87e7ed95.png" src="../_images/7249ef3f3037d6f4a70527ae3c36c652a24e5ef451a4602026c1381e87e7ed95.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch10_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: from turbulence to lamination.</strong> Render the same seed at <code class="docutils literal notranslate"><span class="pre">scale</span></code> 0.8, 1.6, 3.2, 6.4 (everything else fixed). Somewhere in that sweep the image changes species, from weather map to combed silk. Which scale would you hang in a bedroom, and which in a techno club? Defend the difference in one sentence about spatial frequency.</p>
+<p><strong>(b) Code modification: die and be reborn.</strong> Our particles that leave the canvas are gone for good, so long runs drain the image. Modify <code class="docutils literal notranslate"><span class="pre">trace_particles</span></code> so that a particle leaving the canvas <em>respawns</em> at a fresh random position, leaving a break in its trail. The <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> trick does the breaking for you: record <code class="docutils literal notranslate"><span class="pre">nan</span></code> at the step where the particle dies, then continue the history from the new position; matplotlib renders the gap automatically.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trace_particles_respawn</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span>
+    <span class="n">xs_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">ys_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">xs_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">ys_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">resolution</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+                         <span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">resolution</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+                      <span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">angles</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">outside</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">xs_history</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">outside</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>   <span class="c1"># gap in the trail</span>
+        <span class="n">ys_history</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">outside</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">outside</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># reborn elsewhere</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">outside</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_particles</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="n">octave_noise</span><span class="p">(</span><span class="n">fine</span><span class="p">,</span> <span class="n">fine</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span> <span class="o">=</span> <span class="n">trace_particles_respawn</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span>
+                                                 <span class="mf">0.0025</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">draw_trails</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">xs_history</span><span class="p">,</span> <span class="n">ys_history</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">"white"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compare coverage with the original at the same 400 steps: the respawning version fills the canvas evenly instead of developing bald patches. (The <code class="docutils literal notranslate"><span class="pre">rng.random(n_particles)</span></code> respawn draws fresh positions for every particle and keeps only the dead ones’ values via <code class="docutils literal notranslate"><span class="pre">np.where</span></code>; wasteful but simple, and simple wins.)</p>
+</details>
+<p><strong>(c) Creative challenge: shape the space.</strong> Two classic moves, pick one. <em>Mask</em>: only draw trail points inside a circle around the canvas center (set positions outside the circle to <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> after tracing; the artwork becomes a tondo, a circular painting). <em>Obstacle</em>: before tracing, override the angle grid so that near a chosen point all angles point directly away from it; the flow parts around an invisible stone. Combine with a palette of your own for the gallery.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Tyler Hobbs, the essays “Flow Fields” and “The Rise of Long-Form Generative Art” on <a class="reference external" href="https://www.tylerxhobbs.com/">tylerxhobbs.com</a>: a leading practitioner explaining both the technique and the art form’s economics from inside.</p></li>
+<li><p>Ken Perlin, “An Image Synthesizer”, <em>SIGGRAPH</em> 1985: the original noise paper, short and surprisingly readable.</p></li>
+<li><p>Daniel Shiffman, <a class="reference external" href="https://natureofcode.com/random/"><em>The Nature of Code</em>, chapter “Randomness”</a>: Perlin noise built up gently, in JavaScript but directly translatable to today’s Python.</p></li>
+<li><p><a class="reference external" href="https://www.artblocks.io/">Art Blocks</a>: browse the curated collections and judge long-form consistency for yourself, Fidenza included.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-ampas1997"></span>Academy of Motion Picture Arts and Sciences (1997). Technical Achievement Award to Ken Perlin “for the development of Perlin Noise, a technique used to produce natural appearing textures on computer generated surfaces for motion picture visual effects”. <a class="reference external" href="https://cs.nyu.edu/~perlin/doc/oscar.html">Award citation, reproduced on Perlin’s NYU page</a>. The Oscar for a mathematical function.</p></li>
+<li><p><span id="ref-artblocks"></span>Art Blocks. Fidenza by Tyler Hobbs. <a class="reference external" href="https://www.artblocks.io/collection/fidenza-by-tyler-hobbs">Collection page</a>. Confirms the fixed edition of 999 and the release date of 11 June 2021.</p></li>
+<li><p><span id="ref-gao2023"></span>Gao, J. (2023). Fidenza: the NFT collection leading generative art revolution. DappRadar blog, 17 July 2023. <a class="reference external" href="https://dappradar.com/blog/fidenza-the-nft-collection-leading-generative-art-revolution">dappradar.com</a>. The market data: 999 works released on Art Blocks in June 2021 at about <span class="math notranslate nohighlight">\(400 each, with resales above \)</span>1 million within months.</p></li>
+<li><p><span id="ref-hobbs2020"></span>Hobbs, T. (2020). Flow Fields. <a class="reference external" href="https://www.tylerxhobbs.com/words/flow-fields">tylerxhobbs.com/words/flow-fields</a>. The leading practitioner’s own account of the technique built in this chapter.</p></li>
+<li><p><span id="ref-hobbs2021"></span>Hobbs, T. (2021). The Rise of Long-Form Generative Art. <a class="reference external" href="https://www.tylerxhobbs.com/words/the-rise-of-long-form-generative-art">tylerxhobbs.com/words/the-rise-of-long-form-generative-art</a>. Defines the form and its no-cherry-picking discipline.</p></li>
+<li><p><span id="ref-perlin1985"></span>Perlin, K. (1985). An image synthesizer. <em>ACM SIGGRAPH Computer Graphics</em>, 19(3), 287–296. <a class="reference external" href="https://doi.org/10.1145/325165.325247">doi:10.1145/325165.325247</a>. The original noise paper.</p></li>
+<li><p><span id="ref-perlin2005"></span>Perlin, K. (2005). Standard for perlin noise. US Patent 6,867,776, filed 2002, granted 2005. <a class="reference external" href="https://patents.google.com/patent/US6867776B2/en">Google Patents</a>. The simplex-noise patent the open-source world wrote around.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the ember flow field</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">flow_showpiece</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d4457aad70894cb01e9b2b1a9ca33d7effaf1425c111aa97f273aa4bedcf17c1.png" src="../_images/d4457aad70894cb01e9b2b1a9ca33d7effaf1425c111aa97f273aa4bedcf17c1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch10_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09-strange-attractors.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">9. Strange Attractors: The Shape of Chaos</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="11-deeper-noise.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">11. Deeper Noise: Cells, Ridges, and Warped Space</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-an-oscar-for-a-texture-and-the-field-that-sold-out-in-seconds">Context: an Oscar for a texture, and the field that sold out in seconds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-is-not-noisy">Random is not noisy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coherent-noise-by-hand">Coherent noise by hand</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-noise-to-flow-every-point-gets-a-direction">From noise to flow: every point gets a direction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-particles">Tracing particles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-showpiece">The showpiece</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

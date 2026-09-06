@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. Recursion and Subdivision &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/05-recursion-and-subdivision';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Color: Spaces, Palettes, Extraction" href="06-color.html" />
+    <link rel="prev" title="4. Truchet Tiles: Chance on a Grid" href="04-truchet-tiles.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5. Recursion and Subdivision</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-from-tree-to-grid-and-the-question-of-taste">Context: from tree to grid, and the question of taste</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-function-that-calls-itself">A function that calls itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-subdividing-a-canvas">Build-up: subdividing a canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-rationed">Color, rationed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dials-of-the-system">The dials of the system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-the-tree-run-backwards">Bonus: the tree, run backwards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="recursion-and-subdivision">
+<h1>5. Recursion and Subdivision<a class="headerlink" href="#recursion-and-subdivision" title="Link to this heading">#</a></h1>
+<p>A function that calls itself can split a canvas into ever finer pieces. Today we teach a dozen lines of code to compose in the manner of Piet Mondrian, and then ask the uncomfortable question: what makes one generated composition better than another?</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>Six Mondrians nobody painted. Each panel comes from the same recursive system with a different seed; the differences between them are pure chance, and yet you will immediately find some panels stronger than others. That comparison, not any single panel, is today’s real artwork, and today’s real question.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch05_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2092dc04ef61ebfa8cee08d47d3818a457729e1917d4d019b98e16949f5853fa.png" src="../_images/2092dc04ef61ebfa8cee08d47d3818a457729e1917d4d019b98e16949f5853fa.png" />
+</div>
+</div>
+</section>
+<section id="context-from-tree-to-grid-and-the-question-of-taste">
+<h2>Context: from tree to grid, and the question of taste<a class="headerlink" href="#context-from-tree-to-grid-and-the-question-of-taste" title="Link to this heading">#</a></h2>
+<p>Between 1908 and 1921, <strong>Piet Mondrian</strong> performed one of the most documented abstractions in art history, and he performed it on a tree. <em>The Red Tree</em> (1908–10) is still a tree, feverish but recognizable. <em>The Gray Tree</em> (1911) keeps the branching but lets go of the leaves and the color. In <em>Flowering Apple Tree</em> (1912) the branches have become a field of curved strokes; the motif is dissolving into structure <a class="cite" href="#ref-kunstmuseum">(Kunstmuseum Den Haag, collection entries)</a>. In <em>Pier and Ocean</em> (1915), Mondrian now drawing the sea and a pier rather than the tree, only short horizontal and vertical dashes remain <a class="cite" href="#ref-krollermuller">(Kröller-Müller Museum, collection entry)</a>, and from 1920 on Mondrian paints what he is remembered for: white fields, black lines, rectangles of red, yellow, and blue. He called the program <strong>Neoplasticism</strong> (<em>De Nieuwe Beelding</em>), and with Theo van Doesburg’s journal <em>De Stijl</em> (founded 1917) it became a movement. The rules were explicit and severe: horizontals and verticals only, primary colors plus non-colors (white, gray, black), no symmetry, balance instead of repetition (<a class="cite" href="#ref-jaffe1956">Jaffé 1956</a>; <a class="cite" href="#ref-tate">Tate, art term entry</a>). An artist who paints by declared rules is an artist asking to be replaced by a system; it is astonishing how often Mondrian’s late work is described, even by admirers, as <em>algorithmic</em>.</p>
+<p>A generation later, <strong>Barnett Newman</strong> reduced division further: a single vertical “zip” splitting a color field (<em>Onement I</em>, 1948; <a class="cite" href="#ref-moma">MoMA, collection entry</a>). One cut, placed exactly; division itself as the entire composition.</p>
+<p>And here the empirical question walks in. In 1966, the engineer <strong>A. Michael Noll</strong> showed people two pictures: Mondrian’s <em>Composition with Lines</em> (1917) and his own computer imitation of it, made with pseudo-random numbers at Bell Labs. A majority of his participants <em>preferred</em> the computer version, and most could not tell which was which <a class="cite" href="#ref-noll1966">(Noll 1966)</a>. Noll’s little study is an ancestor of today’s empirical aesthetics, and it sharpens the question this chapter keeps asking: if a program’s Mondrian can pass for a Mondrian, where exactly does the artistry live? In the rules? In the tuning of the rules? In the choosing of one output among hundreds? Keep the question warm; you will vote on generated Mondrians yourself before the session ends.</p>
+<p>The tool for all of this is <strong>recursion</strong> (Rekursion): a function that calls itself. Mondrian never used the word, but his canvases behave like it: a rectangle divided, the parts divided again, until some part is interesting enough to leave alone.</p>
+</section>
+<section id="a-function-that-calls-itself">
+<h2>A function that calls itself<a class="headerlink" href="#a-function-that-calls-itself" title="Link to this heading">#</a></h2>
+<p>Recursion sounds like a paradox: how can a function use itself before it is finished being defined? The trick is that each call works on a <em>smaller</em> problem, and that some smallest problem is answered without any further call. That escape hatch is the <strong>base case</strong>, and forgetting it is the classic recursion accident (the calls never stop; Python pulls the emergency brake with a <code class="docutils literal notranslate"><span class="pre">RecursionError</span></code>).</p>
+<p>The hello-world of recursion is a countdown: to count down from 3, say “3”, then count down from 2. The base case is zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the hello-world of recursion: a countdown</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">countdown</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>            <span class="c1"># the base case: stop calling, do something</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"liftoff!"</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">countdown</span><span class="p">(</span><span class="n">number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>      <span class="c1"># the function calls itself, one step smaller</span>
+
+<span class="n">countdown</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+2
+1
+liftoff!
+</pre></div>
+</div>
+</div>
+</div>
+<p>Python keeps track of the nested calls on a <strong>call stack</strong>: each call waits for the one it started. For <code class="docutils literal notranslate"><span class="pre">countdown(3)</span></code> the stack grows like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>countdown(3)   prints 3
+└─ countdown(2)   prints 2
+   └─ countdown(1)   prints 1
+      └─ countdown(0)   prints "liftoff!"
+</pre></div>
+</div>
+<p>Now the important twist for us: a recursive function may call itself <strong>twice</strong>. Then every call spawns two, those spawn four, and the counts double at every level: after <span class="math notranslate nohighlight">\(d\)</span> levels there are up to <span class="math notranslate nohighlight">\(2^d\)</span> open ends. This exponential growth is why recursion is so good at generating rich structure from tiny programs, and why a small <code class="docutils literal notranslate"><span class="pre">depth</span></code> parameter goes a long way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># doubling at every level: why depth is such a powerful parameter</span>
+<span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"depth"</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="s2">"-&gt; up to"</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">depth</span><span class="p">,</span> <span class="s2">"rectangles"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>depth 1 -&gt; up to 2 rectangles
+depth 2 -&gt; up to 4 rectangles
+depth 3 -&gt; up to 8 rectangles
+depth 4 -&gt; up to 16 rectangles
+depth 5 -&gt; up to 32 rectangles
+depth 6 -&gt; up to 64 rectangles
+depth 7 -&gt; up to 128 rectangles
+depth 8 -&gt; up to 256 rectangles
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-up-subdividing-a-canvas">
+<h2>Build-up: subdividing a canvas<a class="headerlink" href="#build-up-subdividing-a-canvas" title="Link to this heading">#</a></h2>
+<p>Our canvas is the unit square: a rectangle described by four numbers <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">height)</span></code>. The recursive rule, in words:</p>
+<ol class="arabic simple">
+<li><p>If this rectangle should stay whole: return it (base case).</p></li>
+<li><p>Otherwise split it in two, across its longer side, at a random ratio somewhere near the middle.</p></li>
+<li><p>Ask both halves to subdivide themselves, and pool the results.</p></li>
+</ol>
+<p>When does a rectangle stay whole? We combine three base cases: the recursion has reached its depth limit, or the rectangle has become too small, or <strong>chance says stop</strong>, with probability <code class="docutils literal notranslate"><span class="pre">stop_chance</span></code> per call. That last rule is the compositional heart of the system: it is what makes some regions coarse and others fine, like Mondrian keeping one big field calm while an edge gets busy. With stop probability <span class="math notranslate nohighlight">\(p\)</span>, each level multiplies the expected number of growing branches (“expected” in the statistician’s sense: the average over many runs) by <span class="math notranslate nohighlight">\(2(1-p)\)</span>; at <span class="math notranslate nohighlight">\(p = 0.5\)</span> the system hovers between order and explosion.</p>
+<p>One guard rail: chance may only quiet a field that is already smallish (<code class="docutils literal notranslate"><span class="pre">calm_area</span></code>, a quarter of the canvas by default). Without it, the very first call itself could stop with probability <span class="math notranslate nohighlight">\(p\)</span>: at our default of 0.4, two canvases in five would come out entirely blank. (Whether an all-white canvas <em>is</em> a Mondrian is a fine seminar question; as a default behavior it is mostly a bug.)</p>
+<p>Randomness is back, so we return to <code class="docutils literal notranslate"><span class="pre">rng</span> <span class="pre">=</span> <span class="pre">np.random.default_rng(seed)</span></code> from chapter 2, and every seed below is fixed: change any of them for compositions of your own.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># recursive subdivision: returns a list of (x, y, width, height) rectangles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span>
+              <span class="n">min_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">calm_area</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+    <span class="n">finished</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="n">min_size</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">min_size</span>
+    <span class="n">may_rest</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">calm_area</span>      <span class="c1"># only small fields may rest</span>
+    <span class="k">if</span> <span class="n">finished</span> <span class="ow">or</span> <span class="p">(</span><span class="n">may_rest</span> <span class="ow">and</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">stop_chance</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)]</span>         <span class="c1"># base case: stay whole</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">)</span>            <span class="c1"># split near, not at, the middle</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="n">height</span><span class="p">:</span>                        <span class="c1"># split across the longer side</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+                         <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">),</span> <span class="n">height</span><span class="p">,</span>
+                          <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span>
+                       <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">),</span>
+                    <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bottom</span> <span class="o">+</span> <span class="n">top</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rectangles</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rectangles</span><span class="p">),</span> <span class="s2">"rectangles; the first one:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">rectangles</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8 rectangles; the first one: [0.    0.    0.504 0.25 ]
+</pre></div>
+</div>
+</div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">stop_chance=0.0</span></code> and depth 3 we get exactly <span class="math notranslate nohighlight">\(2^3 = 8\)</span> rectangles. Numbers are not a composition yet; let’s see it. We draw each rectangle as a <code class="docutils literal notranslate"><span class="pre">matplotlib.patches.Rectangle</span></code>, the tool you know from chapter 2’s color grids: all fields white, black borders, nothing else. Even uncolored, the skeleton already has a temperament.</p>
+<p><strong>Try it:</strong> run the cell, then set <code class="docutils literal notranslate"><span class="pre">stop_chance</span></code> to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> and to <code class="docutils literal notranslate"><span class="pre">0.7</span></code> and run it again; you are turning the system’s most important dial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># render the subdivision skeleton: white fields, black borders</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">rectangles</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#F2EFE9"</span><span class="p">,</span>
+                           <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rectangles</span><span class="p">),</span> <span class="s2">"rectangles"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fd1616559770736549559cdbe22b7b8522f6b104f1595d93948ae273c636b439.png" src="../_images/fd1616559770736549559cdbe22b7b8522f6b104f1595d93948ae273c636b439.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>17 rectangles
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="color-rationed">
+<h2>Color, rationed<a class="headerlink" href="#color-rationed" title="Link to this heading">#</a></h2>
+<p>Now the paint. Mondrian’s economy is strict: most fields stay white; red, blue, and yellow appear as counterweights, and small black planes are the rarest events of all. That is a <strong>weighted choice</strong>, exactly the tool from chapter 2, and conveniently our <code class="docutils literal notranslate"><span class="pre">bauhaus</span></code> palette holds the right five colors in order: red, blue, yellow, near-black, and an off-white for the ground.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># weighted coloring: mostly white fields, primaries as counterweights</span>
+<span class="n">color_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">]</span>   <span class="c1"># red, blue, yellow, black, white</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">rectangles</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="n">color_weights</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+                           <span class="n">facecolor</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                           <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5ee191026bc0716df08f73078e62ee40ed1c50e541c6b282a76e323e8c9fff24.png" src="../_images/5ee191026bc0716df08f73078e62ee40ed1c50e541c6b282a76e323e8c9fff24.png" />
+</div>
+</div>
+</section>
+<section id="the-dials-of-the-system">
+<h2>The dials of the system<a class="headerlink" href="#the-dials-of-the-system" title="Link to this heading">#</a></h2>
+<p>Two parameters shape the composition’s character more than any others. <code class="docutils literal notranslate"><span class="pre">stop_chance</span></code> sets the grain: high values stop the splitting early (few large, calm fields), low values let it run deep (nervous lattices). And the border <code class="docutils literal notranslate"><span class="pre">linewidth</span></code> changes the work’s voice completely; Mondrian himself fussed endlessly over the widths of his black lines, which are painted planes, not drawn lines <a class="cite" href="#ref-vanderwerf2026">(van der Werf et al. 2026)</a>. Compare:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># same system, different dials: calm and bold vs deep and wiry</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_composition</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="ow">in</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+                               <span class="n">facecolor</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                               <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">border</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">draw_composition</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">color_weights</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">draw_composition</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">depth</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">color_weights</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9a036c4ec3e2577024fc1523b3d3b90a785683970c5a9be214108ad8bc7c46bb.png" src="../_images/9a036c4ec3e2577024fc1523b3d3b90a785683970c5a9be214108ad8bc7c46bb.png" />
+</div>
+</div>
+<p>Same seed, same random sequence: every difference between the two panels comes from the dials. Notice how the thin-lined version stops looking like Mondrian and starts looking like a city map; parameters carry style.</p>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>The finished generator, and the sheet function that makes today’s showpiece: a 2 × 3 grid of compositions from six different seeds. Since <code class="docutils literal notranslate"><span class="pre">draw_composition</span></code> paints onto an axis we hand it, building the sheet is just a loop over subplots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator: one Mondrian-style composition</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mondrian</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">draw_composition</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="c1"># a sheet of six: the comparison is the artwork</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mondrian_sheet</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="p">]</span>      <span class="c1"># row = i // 3, column = i % 3</span>
+        <span class="n">draw_composition</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">seeds</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"seed = </span><span class="si">{</span><span class="n">seeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 1 and 2: a single composition, then a variation with more color</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">mondrian</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">mondrian</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+                 <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/644359fa147e2f009557f16d0d8733671c67cb1f5c09bf0c3f438e8864b17767.png" src="../_images/644359fa147e2f009557f16d0d8733671c67cb1f5c09bf0c3f438e8864b17767.png" />
+<img alt="../_images/f1c15ff539c05e8c8510fcbb656c71f6496bb15445c029f8a843d3b0b2c3c180.png" src="../_images/f1c15ff539c05e8c8510fcbb656c71f6496bb15445c029f8a843d3b0b2c3c180.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 3: the sheet -- six seeds, one system</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">mondrian_sheet</span><span class="p">(</span><span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c7a928f75f5a1237b89ad6be3292595aa1e712ef5047191939268b59f3ab1fd8.png" src="../_images/c7a928f75f5a1237b89ad6be3292595aa1e712ef5047191939268b59f3ab1fd8.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Rank the six panels of the sheet from strongest to weakest before talking to your neighbor, then compare rankings. Where you agree: can you name the property? (A dominant calm field? A well-placed red?) Where you disagree, you have found the part of aesthetics that the parameters do not reach. And a harder question, Noll’s question: if we generated 500 sheets and <em>you</em> picked the best panel, who composed it: the algorithm, the seed, or you?</p>
+</section>
+<section id="bonus-the-tree-run-backwards">
+<h2>Bonus: the tree, run backwards<a class="headerlink" href="#bonus-the-tree-run-backwards" title="Link to this heading">#</a></h2>
+<p>Mondrian walked from tree to grid; our recursion can walk the other way. The same self-calling pattern that split rectangles can grow branches: draw a line, then grow two smaller lines from its tip, rotated left and right. The angles come from chapter 3’s trigonometry. This doodle is a preview: in chapter 7 a much more powerful grammar for plants, the L-system, grows whole gardens from three rules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a branch draws itself, then asks two smaller branches to do the same</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">branch</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>                              <span class="c1"># base case: the twig ends</span>
+    <span class="n">x_tip</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">y_tip</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x_tip</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">y_tip</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">depth</span> <span class="o">*</span> <span class="mf">0.55</span><span class="p">)</span>
+    <span class="n">branch</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x_tip</span><span class="p">,</span> <span class="n">y_tip</span><span class="p">,</span> <span class="n">angle</span> <span class="o">+</span> <span class="mf">0.42</span><span class="p">,</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">0.74</span><span class="p">,</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">branch</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x_tip</span><span class="p">,</span> <span class="n">y_tip</span><span class="p">,</span> <span class="n">angle</span> <span class="o">-</span> <span class="mf">0.42</span><span class="p">,</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">0.74</span><span class="p">,</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">branch</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/852be3b44cf2bb368a33fd2c544e6caacbc4049fe63a11ac0a5747e6a7d9acc2.png" src="../_images/852be3b44cf2bb368a33fd2c544e6caacbc4049fe63a11ac0a5747e6a7d9acc2.png" />
+</div>
+</div>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Generate sheets until one panel feels right, then export either a single composition or a whole sheet. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">mondrian</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2026</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/17c3321db8f6dfd9ce15c03937bbac32fc23e324355570ab870e3893f49fc5b1.png" src="../_images/17c3321db8f6dfd9ce15c03937bbac32fc23e324355570ab870e3893f49fc5b1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch05_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: fool a friend.</strong> Tune <code class="docutils literal notranslate"><span class="pre">depth</span></code>, <code class="docutils literal notranslate"><span class="pre">stop_chance</span></code>, <code class="docutils literal notranslate"><span class="pre">border</span></code>, and the color weights until a composition could hang in a museum’s Mondrian room without raising suspicion. Test it on someone outside this course, next to a photo of a real one (<em>Composition with Red, Blue and Yellow</em>, 1930, is easy to find), and bring your best forgery to the next session. Which parameter did the fooling?</p>
+<p><strong>(b) Code modification: lonely colors.</strong> In real Mondrians, colored planes rarely touch each other; white keeps them apart. Enforce it: <strong>no colored rectangle may share an edge with another colored rectangle.</strong> Assign colors one rectangle at a time, remember which rectangles got color, and when a candidate would touch one of them, paint it white instead. Two axis-aligned rectangles share an edge if they touch along x and overlap along y, or the other way around.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">touching</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">ax_</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">aw</span><span class="p">,</span> <span class="n">ah</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="n">bx</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">bw</span><span class="p">,</span> <span class="n">bh</span> <span class="o">=</span> <span class="n">b</span>
+    <span class="n">beside</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ax_</span> <span class="o">+</span> <span class="n">aw</span> <span class="o">-</span> <span class="n">bx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bx</span> <span class="o">+</span> <span class="n">bw</span> <span class="o">-</span> <span class="n">ax_</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span>
+    <span class="n">overlap_y</span> <span class="o">=</span> <span class="n">ay</span> <span class="o">&lt;</span> <span class="n">by</span> <span class="o">+</span> <span class="n">bh</span> <span class="o">-</span> <span class="mf">1e-9</span> <span class="ow">and</span> <span class="n">by</span> <span class="o">&lt;</span> <span class="n">ay</span> <span class="o">+</span> <span class="n">ah</span> <span class="o">-</span> <span class="mf">1e-9</span>
+    <span class="n">stacked</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ay</span> <span class="o">+</span> <span class="n">ah</span> <span class="o">-</span> <span class="n">by</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">by</span> <span class="o">+</span> <span class="n">bh</span> <span class="o">-</span> <span class="n">ay</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span>
+    <span class="n">overlap_x</span> <span class="o">=</span> <span class="n">ax_</span> <span class="o">&lt;</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">bw</span> <span class="o">-</span> <span class="mf">1e-9</span> <span class="ow">and</span> <span class="n">bx</span> <span class="o">&lt;</span> <span class="n">ax_</span> <span class="o">+</span> <span class="n">aw</span> <span class="o">-</span> <span class="mf">1e-9</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">beside</span> <span class="ow">and</span> <span class="n">overlap_y</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">stacked</span> <span class="ow">and</span> <span class="n">overlap_x</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mondrian_lonely</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stop_chance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">rectangles</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">stop_chance</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">colored</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>                        <span class="c1"># a colored candidate...</span>
+            <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">colored</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">touching</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>     <span class="c1"># ...touching a colored one?</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="mi">4</span>                 <span class="c1"># then white after all</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">colored</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">rect</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rect</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">rect</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">rect</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                               <span class="n">facecolor</span><span class="o">=</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                               <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">border</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">art</span> <span class="o">=</span> <span class="n">mondrian_lonely</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">1e-9</span></code> tolerances guard against floating-point fuzz: two rectangles born from one split share an edge <em>exactly</em>, but arithmetic on those coordinates can be off by a hair’s breadth. Compare the same seed with and without the rule; the constrained version usually breathes more.</p>
+</details>
+<p><strong>(c) Creative challenge: change the cut.</strong> Our system only knows straight, axis-aligned cuts, Mondrian’s dogma. Break it: subdivide with circles (each level draws a ring of smaller circles inside), or allow diagonal cuts at ±45°, or split rectangles into three parts instead of two. One changed rule, a completely different artist. Give the result a manifesto sentence, De Stijl style.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A. Michael Noll, “Human or Machine: A Subjective Comparison of Piet Mondrian’s <em>Composition with Lines</em> (1917) and a Computer-Generated Picture”, <em>The Psychological Record</em> 16 (1966): the founding experiment; Noll hosts his computer-art papers on <a class="reference external" href="https://noll.uscannenberg.org/">his own site</a>.</p></li>
+<li><p>Meyer Schapiro, “Mondrian: Order and Randomness in Abstract Painting”, in <em>Modern Art: 19th and 20th Centuries</em> (1978): a great art historian on exactly our chapter title.</p></li>
+<li><p>The <a class="reference external" href="https://www.kunstmuseum.nl/en/collections/piet-mondriaan">Kunstmuseum Den Haag</a>, home of the world’s largest Mondrian collection: browse the tree series in order and watch the abstraction happen.</p></li>
+<li><p>Daniel Shiffman, <a class="reference external" href="https://natureofcode.com/fractals/"><em>The Nature of Code</em>, chapter on fractals</a>: recursion continued into self-similar territory, where our chapter 8 also goes.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-jaffe1956"></span>Jaffé, H. L. C. (1956). <em>De Stijl 1917–1931: The Dutch Contribution to Modern Art</em>. Meulenhoff. The standard monograph on the movement, its journal, and its program.</p></li>
+<li><p><span id="ref-krollermuller"></span>Kröller-Müller Museum. Piet Mondriaan, <em>Composition 10 in Black and White</em>, 1915, collection entry. <a class="reference external" href="https://www.krollermuller.nl/en/collection/piet-mondriaan-composition-10-in-black-and-white-km-104-241">krollermuller.nl</a>. The painting known informally as <em>Pier and Ocean</em>.</p></li>
+<li><p><span id="ref-kunstmuseum"></span>Kunstmuseum Den Haag. Piet Mondriaan collection entries: <a class="reference external" href="https://www.kunstmuseum.nl/en/collection/avond-evening-red-tree"><em>Avond (Evening): The Red Tree</em></a>, <a class="reference external" href="https://www.kunstmuseum.nl/en/collection/grey-tree"><em>The Grey Tree</em></a>, <a class="reference external" href="https://www.kunstmuseum.nl/en/collection/flowering-apple-tree"><em>Flowering Apple Tree</em></a>.</p></li>
+<li><p><span id="ref-moma"></span>Museum of Modern Art. Barnett Newman, <em>Onement I</em>, 1948, collection entry. <a class="reference external" href="https://www.moma.org/collection/works/79601">moma.org/collection/works/79601</a>. The band “later dubbed a ‘zip’” that became Newman’s signature mark.</p></li>
+<li><p><span id="ref-noll1966"></span>Noll, A. M. (1966). Human or Machine: A Subjective Comparison of Piet Mondrian’s <em>Composition with Lines</em> (1917) and a Computer-Generated Picture. <em>The Psychological Record</em>, 16(1), 1–10. <a class="reference external" href="https://doi.org/10.1007/BF03393635">doi:10.1007/BF03393635</a>. 59% of participants preferred the computer picture; only 28% identified it correctly.</p></li>
+<li><p><span id="ref-tate"></span>Tate. Neo-plasticism, art term entry. <a class="reference external" href="https://www.tate.org.uk/art/art-terms/n/neo-plasticism">tate.org.uk</a>. The restriction to primary colors, non-colors, and straight horizontals and verticals.</p></li>
+<li><p><span id="ref-vanderwerf2026"></span>van der Werf, I. D., Coppes, W., Gross, M., Steckling, F., van den Berg, K. J., de Groot, S., Hürlimann, C., Pause, R., and Smulders, S. (2026). The Black Lines in Piet Mondrian’s Paintings (1921–1938). <em>Heritage</em>, 9(6), 245. <a class="reference external" href="https://doi.org/10.3390/heritage9060245">doi:10.3390/heritage9060245</a>. Technical study showing that Mondrian “frequently moved the lines and changed their width up to the very last working phase”, building them from layered bone-black oil paint.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: a sheet of six compositions</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">mondrian_sheet</span><span class="p">(</span><span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c7a928f75f5a1237b89ad6be3292595aa1e712ef5047191939268b59f3ab1fd8.png" src="../_images/c7a928f75f5a1237b89ad6be3292595aa1e712ef5047191939268b59f3ab1fd8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch05_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-truchet-tiles.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4. Truchet Tiles: Chance on a Grid</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="06-color.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">6. Color: Spaces, Palettes, Extraction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-from-tree-to-grid-and-the-question-of-taste">Context: from tree to grid, and the question of taste</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-function-that-calls-itself">A function that calls itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-subdividing-a-canvas">Build-up: subdividing a canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-rationed">Color, rationed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dials-of-the-system">The dials of the system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-the-tree-run-backwards">Bonus: the tree, run backwards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

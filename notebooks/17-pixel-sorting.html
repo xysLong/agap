@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>17. Pixel Sorting: The Aesthetics of the Glitch &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/17-pixel-sorting';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="18. Circle Packing: The Portrait in Dots" href="18-circle-packing.html" />
+    <link rel="prev" title="16. Filters, Edges, and Dithering" href="16-filters-and-dithering.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>17. Pixel Sorting: The Aesthetics of the Glitch</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-when-the-medium-shows-itself">Context: when the medium shows itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-as-an-aesthetic-operation">Sorting as an aesthetic operation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-victim">The victim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#total-destruction-one-column-at-a-time">Total destruction, one column at a time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-runs">Finding the runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-interval-sort">The interval sort</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-keys-other-failures">Other keys, other failures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-walk">The parameter walk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-the-edge-is-sharpest-bonus">Where the edge is sharpest (bonus)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pixel-sorting-the-aesthetics-of-the-glitch">
+<h1>17. Pixel Sorting: The Aesthetics of the Glitch<a class="headerlink" href="#pixel-sorting-the-aesthetics-of-the-glitch" title="Link to this heading">#</a></h1>
+<p>Chapter 16 taught the image to degrade politely, in the service of reproduction. Today we let it fail on purpose: one call to a sorting function, aimed at a painting, melts it into cascades of falling color. The trick is deciding where to aim.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>Seurat’s <em>Grande Jatte</em>, interval-sorted. Inside a chosen brightness band, every column of pixels has been reordered from dark to light, so the painting streams downward like wet paint; outside the band, nothing was touched, so the Sunday strollers survive as ghosts inside the cascade. No pixel was invented or destroyed: every dot of color in this image is one of Seurat’s own, in a new place. By the end of today you can aim this failure precisely.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch17_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bccd84a77abfbe7026edc670dfe81ae2813ea0c11d6bf4f7fef695c9e3204462.png" src="../_images/bccd84a77abfbe7026edc670dfe81ae2813ea0c11d6bf4f7fef695c9e3204462.png" />
+</div>
+</div>
+</section>
+<section id="context-when-the-medium-shows-itself">
+<h2>Context: when the medium shows itself<a class="headerlink" href="#context-when-the-medium-shows-itself" title="Link to this heading">#</a></h2>
+<p>In 1965 <strong>Nam June Paik</strong> set an industrial magnet on top of a seventeen-inch black-and-white television. <em>Magnet TV</em> (Whitney Museum of American Art) turns the broadcast image into a writhing abstract bloom: the magnet bends the electron beam, and the set, built to be a transparent window onto elsewhere, suddenly shows you its own insides <a class="cite" href="#ref-whitney">(Whitney Museum of American Art, collection entry)</a>. Paik, widely regarded as the founder of video art, had already shown “prepared” televisions with deliberately manipulated circuitry at his first solo exhibition (<em>Exposition of Music – Electronic Television</em>, Galerie Parnass, Wuppertal, 1963) <a class="cite" href="#ref-saam">(Smithsonian American Art Museum, artist biography)</a>. The lesson, two decades before the personal computer: distorting the electronic image need not be vandalism of art; it can be the art.</p>
+<p>The theory arrived with <strong>Rosa Menkman</strong>, whom you brushed past at the end of chapter 16. She calls a glitch a “break from an expected flow”: the moment a medium fails is the moment it stops being invisible and shows itself (<a class="cite" href="#ref-menkman2010"><em>Glitch Studies Manifesto</em>, 2009/2010</a>; <a class="cite" href="#ref-menkman2011"><em>The Glitch Moment(um)</em>, 2011</a>). Glitch artists cultivate such moments deliberately. <strong>Databending</strong>, for instance, opens an image file in a text or audio editor, edits it as if it were prose or sound, and saves the beautiful wreckage; JPEG files, whose compression packs meaning densely, corrupt the most dramatically.</p>
+<p>Our technique for today is younger and gentler: it breaks nothing, it only pretends to. Around 2010 the German artist <strong>Kim Asendorf</strong> wrote a short Processing script that sorted stretches of pixels within an image by brightness, and ran ten mountain photographs found online through it (<a class="cite" href="#ref-asendorf2010"><em>Mountain Tour</em>, 2010</a>). When he open-sourced the code, called <a class="cite" href="#ref-asendorf2012">ASDFPixelSort</a>, in 2012, the look spread through net culture within months: <strong>pixel sorting</strong> became one of the most recognizable aesthetics of the glitch wave <a class="cite" href="#ref-sharma2015">(Sharma 2015)</a>, precisely because it is not a malfunction at all. It is a <em>simulated</em> one: deliberate, repeatable, tunable. In other words, exactly this book’s kind of object, an algorithm with dials.</p>
+<p>Note the reversal from last chapter. Dithering was <em>controlled</em> degradation in the service of reproduction: the error was managed, hidden, made humble so that the image would survive a crude printer. The glitch <em>celebrates</em> the error and promotes it to subject. Both are children of the same insight, that every image is carried by a fallible process, and the wider mood has a name: the post-digital, a term the composer Kim Cascone borrowed from Nicholas Negroponte and pushed into currency with his essay <a class="cite" href="#ref-cascone2000">”The Aesthetics of Failure” (2000)</a>, which argued that a medium’s character lives in its failures.</p>
+</section>
+<section id="sorting-as-an-aesthetic-operation">
+<h2>Sorting as an aesthetic operation<a class="headerlink" href="#sorting-as-an-aesthetic-operation" title="Link to this heading">#</a></h2>
+<p>Sorting is the least mysterious algorithm in this book: put things in order. What makes it an <em>artistic</em> instrument is the question it forces you to answer first: in order <em>of what</em>? A pixel is three numbers, and it has no single natural size. You must choose a <strong>key</strong> (Sortierschlüssel), a single number computed per pixel that decides who goes before whom, and every choice is a different artwork:</p>
+<ul class="simple">
+<li><p><strong>luminance</strong>, the perceived brightness (chapter 16 used PIL’s weighted grayscale conversion for exactly this),</p></li>
+<li><p><strong>hue</strong>, the angle around chapter 6’s color wheel,</p></li>
+<li><p><strong>saturation</strong>, the distance from gray,</p></li>
+<li><p>or any single channel: just the red, just the green.</p></li>
+</ul>
+<p>Watch the operation itself on something small enough to see whole: sixteen grays in arrival order, then the same sixteen grays sorted. Same pixels, different picture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sorting reorders, it never invents: the same 16 values before and after</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">arrival_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.62</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.36</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">,</span>
+                           <span class="mf">0.27</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">])</span>
+<span class="c1"># np.sort returns the values in ascending order; the originals are untouched</span>
+<span class="n">in_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">arrival_values</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">arrival_values</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"as they arrived"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">in_order</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"sorted"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6cab5ef9a2a302a95a0ff1f40f063209d8c416d199e31a0f2eaefa9a81724fbe.png" src="../_images/6cab5ef9a2a302a95a0ff1f40f063209d8c416d199e31a0f2eaefa9a81724fbe.png" />
+</div>
+</div>
+<p>The top strip is noise; the bottom strip is a gradient. That is the whole phenomenon: <strong>sorting turns texture into gradient</strong>. Every pixel-sorted image you have ever seen is this two-strip figure, scaled up and aimed.</p>
+<p>One more tool and we can aim it. A color pixel is a <em>row</em> of three numbers, so we cannot sort the pixels directly; we sort the <em>key</em> and ask numpy where each value came from. <code class="docutils literal notranslate"><span class="pre">np.argsort</span></code> returns not the sorted values but the <strong>positions that would sort them</strong>, and chapter 15’s paired index arrays then let us drag the full RGB rows into that order. This key-versus-payload split is precisely how a spreadsheet sorts whole rows by one column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># argsort gives the order; fancy indexing drags the RGB payload along</span>
+<span class="n">demo_key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.62</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.36</span><span class="p">])</span>
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">demo_key</span><span class="p">)</span>          <span class="c1"># positions that would sort the key</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"key:      "</span><span class="p">,</span> <span class="n">demo_key</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"order:    "</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="s2">" (read: smallest sits at position 1)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"key[order]:"</span><span class="p">,</span> <span class="n">demo_key</span><span class="p">[</span><span class="n">order</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>key:       [0.62 0.14 0.83 0.36]
+order:     [1 3 0 2]  (read: smallest sits at position 1)
+key[order]: [0.14 0.36 0.62 0.83]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-victim">
+<h2>The victim<a class="headerlink" href="#the-victim" title="Link to this heading">#</a></h2>
+<p>The painting we sort deserves a moment’s thought. We use the <em>Grande Jatte</em> (chapter 15 took a Vermeer apart into dots; Seurat had already assembled this painting from them, beginning in 1884; <a class="cite" href="#ref-artic">Art Institute of Chicago, collection entry</a>). A pointillist surface is the perfect victim for this chapter, because pixel sorting literally re-orders the painter’s dots: divisionism promised that color mixes in the eye, and sorting takes the promise apart dot by dot, reassembling the mixture into its spectrum.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the Grande Jatte, small enough to experiment on quickly</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">original</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../assets/images/seurat_grande_jatte.jpg"</span><span class="p">)</span>
+<span class="n">work_w</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">work_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">work_w</span> <span class="o">/</span> <span class="n">original</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">seurat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">work_w</span><span class="p">,</span> <span class="n">work_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="c1"># the luminance key: chapter 16's grayscale conversion, kept alongside the color</span>
+<span class="n">luminance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">work_w</span><span class="p">,</span> <span class="n">work_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">seurat</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"color:"</span><span class="p">,</span> <span class="n">seurat</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">" key:"</span><span class="p">,</span> <span class="n">luminance</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/11df6089ecf94ad23552919b1d75f9e0b10787cc5ab0ebd50632a9ef54aca011.png" src="../_images/11df6089ecf94ad23552919b1d75f9e0b10787cc5ab0ebd50632a9ef54aca011.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>color: (399, 600, 3)  key: (399, 600)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="total-destruction-one-column-at-a-time">
+<h2>Total destruction, one column at a time<a class="headerlink" href="#total-destruction-one-column-at-a-time" title="Link to this heading">#</a></h2>
+<p>Start honestly, with the crudest possible move: pick one column of the image and sort it, all of it, by luminance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sort a single column of pixels, fully, by brightness</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">column_rgb</span> <span class="o">=</span> <span class="n">seurat</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span>                 <span class="c1"># all rows of one column: (height, 3)</span>
+<span class="n">column_key</span> <span class="o">=</span> <span class="n">luminance</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span>
+<span class="n">sorted_column</span> <span class="o">=</span> <span class="n">column_rgb</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">column_key</span><span class="p">)]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="c1"># each column shown 24 pixels wide so it is visible; np.tile from chapter 16</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">column_rgb</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">sorted_column</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"sorted"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d79cc2843d8f41dec7060a1e53a2641d78fea31972b685e2baaf2e29f75f84ae.png" src="../_images/d79cc2843d8f41dec7060a1e53a2641d78fea31972b685e2baaf2e29f75f84ae.png" />
+</div>
+</div>
+<p>The left strip still remembers the painting: sky, tree, grass, shadow, in Seurat’s order. The right strip is the same paint poured through a sieve: a single smooth pour from shadow-black to sky-white. Now do that to every column at once. <code class="docutils literal notranslate"><span class="pre">np.argsort(...,</span> <span class="pre">axis=0)</span></code> sorts each column independently, and one pair of index arrays applies all six hundred reorderings in a single line (<code class="docutils literal notranslate"><span class="pre">full_order</span></code> says, for every output cell, which row of its own column to take; <code class="docutils literal notranslate"><span class="pre">columns</span></code> simply repeats each column’s number so the pairing lines up).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the waterfall: every column fully sorted, the painting dissolves</span>
+<span class="n">full_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">luminance</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>       <span class="c1"># one ordering per column</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">work_w</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>             <span class="c1"># paired with each column's order</span>
+<span class="n">waterfall</span> <span class="o">=</span> <span class="n">seurat</span><span class="p">[</span><span class="n">full_order</span><span class="p">,</span> <span class="n">columns</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">seurat</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Seurat"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">waterfall</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"the waterfall: all columns fully sorted"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fcd59ca0d3e3d484e41aee020ce39818958c2c991e7cbba476502e800a3f15a6.png" src="../_images/fcd59ca0d3e3d484e41aee020ce39818958c2c991e7cbba476502e800a3f15a6.png" />
+</div>
+</div>
+<p>Total sorting is total loss. The waterfall has a certain drama (the palette survives, arranged into a spectral rain), but <em>nothing of the picture</em> survives: composition, figures, depth, all gone. Every image sorted this way looks like every other image sorted this way, differing only in palette. As art, it is a dead end that took one line to reach.</p>
+<p>The insight that turned pixel sorting from a party trick into a genre, the one Asendorf’s script encodes, is this: <strong>do not sort everything</strong>. Choose a band of brightness, find the <em>contiguous runs</em> of pixels inside that band, and sort each run separately, in place. Pixels outside the band never move, so they hold the image together; pixels inside the band melt. Failure needs structure to be legible as failure.</p>
+<p><strong>Try it.</strong> Before reading on: in the waterfall cell, replace <code class="docutils literal notranslate"><span class="pre">luminance</span></code> with <code class="docutils literal notranslate"><span class="pre">-luminance</span></code> inside the <code class="docutils literal notranslate"><span class="pre">argsort</span></code>. The pour flips upside down. Aiming the <em>direction</em> of failure is already a choice.</p>
+</section>
+<section id="finding-the-runs">
+<h2>Finding the runs<a class="headerlink" href="#finding-the-runs" title="Link to this heading">#</a></h2>
+<p>A <strong>run</strong> (also called an interval) is a maximal stretch of consecutive <code class="docutils literal notranslate"><span class="pre">True</span></code> pixels in a column of the mask. The concept is one loop with a memory: walk down the column, note where you <em>enter</em> the band, note where you <em>leave</em> it. We write that loop first, because it is the heart of the chapter, and the fast version afterward.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the honest version: walk down one column, remember where runs start and end</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_runs</span><span class="p">(</span><span class="n">mask_column</span><span class="p">):</span>
+    <span class="n">runs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>                       <span class="c1"># None: we are currently outside a run</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">inside</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mask_column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inside</span> <span class="ow">and</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">row</span>                <span class="c1"># entering a run</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inside</span> <span class="ow">and</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>  <span class="c1"># leaving: the run was [start, row)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>              <span class="c1"># a run may reach the bottom edge</span>
+        <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask_column</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">runs</span>
+
+<span class="n">demo_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"mask:"</span><span class="p">,</span> <span class="n">demo_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"runs:"</span><span class="p">,</span> <span class="n">find_runs</span><span class="p">(</span><span class="n">demo_mask</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mask: [0 1 1 1 0 0 1 1 0 1]
+runs: [(1, 4), (6, 8), (9, 10)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Three runs: rows 1 to 3, rows 6 to 7, and row 9 alone (each pair means “from the first number up to, but not including, the second”, the same half-open convention as <code class="docutils literal notranslate"><span class="pre">range</span></code> and slicing, chapter 0).</p>
+<p>The fast version replaces the loop with <code class="docutils literal notranslate"><span class="pre">np.diff</span></code>, which reports each element’s difference from the one before. Applied to the mask, the differences are 0 everywhere except at the steps: +1 where the mask enters a run, -1 where it leaves one. Padding a <code class="docutils literal notranslate"><span class="pre">False</span></code> onto both ends catches runs that touch the edges.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the fast version: run boundaries are the steps in the mask</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_runs_fast</span><span class="p">(</span><span class="n">mask_column</span><span class="p">):</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="kc">False</span><span class="p">],</span> <span class="n">mask_column</span><span class="p">,</span> <span class="p">[</span><span class="kc">False</span><span class="p">]])</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">padded</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>     <span class="c1"># +1 where a run enters, -1 where it exits</span>
+    <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">steps</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ends</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">steps</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">)]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"loop:"</span><span class="p">,</span> <span class="n">find_runs</span><span class="p">(</span><span class="n">demo_mask</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"fast:"</span><span class="p">,</span> <span class="n">find_runs_fast</span><span class="p">(</span><span class="n">demo_mask</span><span class="p">))</span>
+<span class="c1"># check both agree on 200 random columns of real mask (chapter 16's habit)</span>
+<span class="n">check_rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">band</span> <span class="o">=</span> <span class="p">(</span><span class="n">luminance</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">luminance</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="n">agree</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">find_runs</span><span class="p">(</span><span class="n">band</span><span class="p">[:,</span> <span class="n">c</span><span class="p">])</span> <span class="o">==</span> <span class="n">find_runs_fast</span><span class="p">(</span><span class="n">band</span><span class="p">[:,</span> <span class="n">c</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">check_rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">work_w</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"agree on 200 real columns:"</span><span class="p">,</span> <span class="n">agree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loop: [(1, 4), (6, 8), (9, 10)]
+fast: [(1, 4), (6, 8), (9, 10)]
+agree on 200 real columns: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-interval-sort">
+<h2>The interval sort<a class="headerlink" href="#the-interval-sort" title="Link to this heading">#</a></h2>
+<p>Assemble the instrument. <code class="docutils literal notranslate"><span class="pre">pixel_sort</span></code> takes the color image, a key, and a brightness band; it masks the key into the band, finds each column’s runs, and sorts each run by the key, in place. An optional <code class="docutils literal notranslate"><span class="pre">mask</span></code> argument lets you supply your own mask instead of the band (exercise (c) will want that), and <code class="docutils literal notranslate"><span class="pre">direction=&quot;horizontal&quot;</span></code> simply hands the transposed image to the same function and transposes the answer back, one recursive call, as in chapter 5. (<code class="docutils literal notranslate"><span class="pre">transpose(1,</span> <span class="pre">0,</span> <span class="pre">2)</span></code> is <code class="docutils literal notranslate"><span class="pre">.T</span></code> for image arrays: it swaps rows and columns but leaves each pixel’s three color values as a pixel.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the interval sort: melt only inside the band, hold everything else still</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pixel_sort</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"vertical"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">"horizontal"</span><span class="p">:</span>      <span class="c1"># sort rows = sort columns of the transpose</span>
+        <span class="n">turned</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">key</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">,</span>
+                            <span class="kc">None</span> <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">mask</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">turned</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">&gt;=</span> <span class="n">lo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;=</span> <span class="n">hi</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">find_runs_fast</span><span class="p">(</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]):</span>
+            <span class="n">segment_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">col</span><span class="p">])</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">col</span><span class="p">][</span><span class="n">segment_order</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">melted</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">melted</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/74b7b05541b619a1ce213b4ac23b0f6cd8bceb8d2931004b3cb4fb8422f345af.png" src="../_images/74b7b05541b619a1ce213b4ac23b0f6cd8bceb8d2931004b3cb4fb8422f345af.png" />
+</div>
+</div>
+<p>There it is. The lawn streams, the water pours, and yet the painting is still unmistakably the <em>Grande Jatte</em>: the dark figures and the deep shadows sit below the band, the brightest sky above it, and they anchor everything the band melts. This image obeys both of chapter 16’s masters at once: it is made entirely of faithful reproduction (every pixel is Seurat’s) and entirely of failure (none of them is where he put it).</p>
+<p><strong>Try it.</strong> Narrow the band to <code class="docutils literal notranslate"><span class="pre">lo=0.55,</span> <span class="pre">hi=0.75</span></code> and the melt retreats into the mid-bright lawn only; the picture barely fails at all. Where between these settings and the waterfall does it <em>stop being a painting</em>? Hold that thought, it is exercise (a).</p>
+</section>
+<section id="other-keys-other-failures">
+<h2>Other keys, other failures<a class="headerlink" href="#other-keys-other-failures" title="Link to this heading">#</a></h2>
+<p>The band decides <em>where</em> the image melts; the key decides <em>what the melt looks like</em>. Luminance melts into brightness gradients. Hue melts into rainbows; saturation pulls gray toward color. Chapter 6 converted single colors to HSV with <code class="docutils literal notranslate"><span class="pre">colorsys</span></code>, one at a time; matplotlib’s <code class="docutils literal notranslate"><span class="pre">rgb_to_hsv</span></code> does the whole image array at once.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># three other keys: hue, saturation, one raw channel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">rgb_to_hsv</span>
+
+<span class="n">hsv</span> <span class="o">=</span> <span class="n">rgb_to_hsv</span><span class="p">(</span><span class="n">seurat</span><span class="p">)</span>               <span class="c1"># hue 0..1, saturation 0..1, value 0..1</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"hue"</span><span class="p">:</span> <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">"saturation"</span><span class="p">:</span> <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">"red channel"</span><span class="p">:</span> <span class="n">seurat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">keys</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="c1"># same luminance band decides WHERE; the named key decides the ORDER inside</span>
+    <span class="n">variant</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="n">luminance</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">luminance</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">variant</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"sorted by </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/348b6df897c68de5d8ffe43d6bde005dd95f6bfe3bf57f46e1081880fbd6a626.png" src="../_images/348b6df897c68de5d8ffe43d6bde005dd95f6bfe3bf57f46e1081880fbd6a626.png" />
+</div>
+</div>
+<p>Same mask, three temperaments. The hue sort files Seurat’s dots by color family, so each run becomes a tiny rainbow inventory of the paint in that stretch; the saturation sort pushes his grayest dots to one end of each run; the red channel is a colorblind judge that produces the strangest, most chemical streaks. None of these is more correct than another. The key is a <em>curatorial</em> choice, exactly as the palette was in chapter 2.</p>
+</section>
+<section id="the-parameter-walk">
+<h2>The parameter walk<a class="headerlink" href="#the-parameter-walk" title="Link to this heading">#</a></h2>
+<p>The finished instrument has four dials: band low, band high, key, direction. The band is the one to learn by hand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four positions of the band: from barely touched to almost waterfall</span>
+<span class="n">band_studies</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="s2">"narrow: a shimmer"</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="s2">"the working band"</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="s2">"wide: the picture drowns"</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="s2">"the waterfall again"</span><span class="p">)]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">band_studies</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="n">hi</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"band </span><span class="si">{</span><span class="n">lo</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">hi</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3669953f608c7632e45f78b876d2f7d8292c5c92213bcebea18902ffb10d1f6e.png" src="../_images/3669953f608c7632e45f78b876d2f7d8292c5c92213bcebea18902ffb10d1f6e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># and the direction dial: the same band, melting sideways</span>
+<span class="n">sideways</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"horizontal"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sideways</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a84e0ae152939ad57e4cd86b18d9c4313c6d9bcb3b8bc42b90a04be4ad22dc66.png" src="../_images/a84e0ae152939ad57e4cd86b18d9c4313c6d9bcb3b8bc42b90a04be4ad22dc66.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Vertical sorting reads as gravity: the painting melts, drips, rains. Horizontal sorting reads as motion or transmission error: the painting smears, streams sideways, loses horizontal hold like a failing broadcast (which is where this chapter began, with a magnet on a television). Which reading suits the <em>Grande Jatte</em>, a painting about stillness? Is the more <em>wrong</em> direction the more interesting one?</p>
+</section>
+<section id="where-the-edge-is-sharpest-bonus">
+<h2>Where the edge is sharpest (bonus)<a class="headerlink" href="#where-the-edge-is-sharpest-bonus" title="Link to this heading">#</a></h2>
+<p>The band masks by brightness, but nothing says it has to. Chapter 16’s gradient magnitude knows where Seurat’s edges are; using <em>low</em> gradient as the mask melts the calm regions and preserves every contour, a glitch that respects drawing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># bonus: sort where the painting is calm, hold where it has edges</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
+
+<span class="n">sobel_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">convolve</span><span class="p">(</span><span class="n">luminance</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                   <span class="o">+</span> <span class="n">convolve</span><span class="p">(</span><span class="n">luminance</span><span class="p">,</span> <span class="n">sobel_x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">calm</span> <span class="o">=</span> <span class="n">gradient</span> <span class="o">&lt;</span> <span class="mf">0.35</span>                  <span class="c1"># well below a real edge (those reach ~4)</span>
+
+<span class="n">edge_respecting</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">calm</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">edge_respecting</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/049d21b98cb88daa766116d4d59508f3b7c6eecda39c1dfaa8bcf990f215888d.png" src="../_images/049d21b98cb88daa766116d4d59508f3b7c6eecda39c1dfaa8bcf990f215888d.png" />
+</div>
+</div>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Any band, any key, any direction; other images from <code class="docutils literal notranslate"><span class="pre">assets/images/</span></code> are one filename away (the Hokusai melts beautifully sideways). Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run. (The sorted array is saved at its working resolution; <code class="docutils literal notranslate"><span class="pre">np.kron</span></code>, chapter 13’s pixel-art enlarger, last used in chapter 16, lifts it to print size with the streaks kept crisp.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: aim the failure, then replace 'yourname'</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_artwork</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="n">my_glitch</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">my_glitch</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>    <span class="c1"># 600 px wide -&gt; 2400</span>
+<span class="n">show</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/286905cb0b6c2fdf97f3113ea56b00114d51c6c188d618c010a4a80419e3f4bc.png" src="../_images/286905cb0b6c2fdf97f3113ea56b00114d51c6c188d618c010a4a80419e3f4bc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch17_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the boundary of the painting.</strong> Fix <code class="docutils literal notranslate"><span class="pre">hi=0.85</span></code> and walk <code class="docutils literal notranslate"><span class="pre">lo</span></code> downward: 0.6, 0.5, 0.4, 0.3, 0.2, 0.1. Somewhere on that walk the image stops being a glitched painting and becomes colored streaks with debris. Find <em>your</em> boundary and defend it in one written sentence: what, concretely, is the last thing that has to survive for the <em>Grande Jatte</em> to still be present? (There is no correct answer; there are defended and undefended ones.)</p>
+<p><strong>(b) Code modification: melt one color family.</strong> So far the <em>mask</em> has always come from brightness. Build it from <strong>hue</strong> instead, so that only Seurat’s greens melt: the lawn streams away while the sky, the water and the figures stand still. Sort the greens by luminance as usual.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hsv</span> <span class="o">=</span> <span class="n">rgb_to_hsv</span><span class="p">(</span><span class="n">seurat</span><span class="p">)</span>
+<span class="n">hue</span> <span class="o">=</span> <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">greens</span> <span class="o">=</span> <span class="p">(</span><span class="n">hue</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">hue</span> <span class="o">&lt;</span> <span class="mf">0.45</span><span class="p">)</span>      <span class="c1"># the hue band of the lawn</span>
+<span class="n">lawn_melt</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">seurat</span><span class="p">,</span> <span class="n">luminance</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">greens</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">lawn_melt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>One caveat, promised in chapter 6: hue is <em>circular</em>. Red sits at both ends of the scale, near 0 and near 1, so a single band like the greens’ can never capture “the reds”; you would need two bands joined with <code class="docutils literal notranslate"><span class="pre">|</span></code>. The same circularity is why <em>sorting by</em> hue (as in the key studies above) treats two nearly identical reds as maximally far apart when they straddle the wrap-around point.</p>
+</details>
+<p><strong>(c) Creative challenge: the borrowed mask.</strong> The <code class="docutils literal notranslate"><span class="pre">mask</span></code> argument accepts any True/False image of the right shape, and this book is full of machines that make exactly those. Feed one system’s output to another: threshold a chapter 13 rule-110 spacetime diagram, or chapter 15’s Voronoi cells (color half the cells True), resize the result to the painting’s shape, and pass it as <code class="docutils literal notranslate"><span class="pre">mask</span></code>. (A boolean mask resizes like an image: <code class="docutils literal notranslate"><span class="pre">Image.fromarray((small_mask</span> <span class="pre">*</span> <span class="pre">255).astype(np.uint8)).resize((width,</span> <span class="pre">height))</span></code>, then threshold the result back to True/False.) The painting now melts <em>in the pattern of another system</em>: a cellular automaton deciding where a Seurat fails. Name the piece so the debt is visible, and bring it to the gallery.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Rosa Menkman, <em>The Glitch Moment(um)</em> (Network Notebooks 04, Institute of Network Cultures, 2011), free PDF online: the theory of the aesthetics of error, by its central theorist; short and quotable.</p></li>
+<li><p>Iman Moradi, Ant Scott, Joe Gilmore and Christopher Murphy, <em>Glitch: Designing Imperfection</em> (Mark Batty Publisher, 2009): a visual survey of glitch aesthetics from before the pixel-sorting wave.</p></li>
+<li><p>Satyarth Mishra Sharma, “Pixel Sorting” (<a class="reference external" href="http://satyarth.me/articles/pixel-sorting">satyarth.me/articles/pixel-sorting</a>): a technical walkthrough of exactly the interval technique in this chapter, tracing it back to Asendorf’s script.</p></li>
+<li><p>Kim Cascone, “The Aesthetics of Failure: ‘Post-Digital’ Tendencies in Contemporary Computer Music”, <em>Computer Music Journal</em> 24/4 (2000): the essay that named the mood; written about sound, true of images.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-artic"></span>Art Institute of Chicago. <em>A Sunday on La Grande Jatte – 1884</em>, Georges Seurat, 1884–86 (1926.224). <a class="reference external" href="https://www.artic.edu/artworks/27992/a-sunday-on-la-grande-jatte-1884">Collection entry</a>.</p></li>
+<li><p><span id="ref-asendorf2010"></span>Asendorf, K. (2010). <em>Mountain Tour</em>. <a class="reference external" href="https://kimasendorf.com/mountain-tour/about/">About page</a>. The artist’s own account of the ten found photographs and the 2012 code release.</p></li>
+<li><p><span id="ref-asendorf2012"></span>Asendorf, K. (2012). ASDFPixelSort. Processing script, open-sourced on <a class="reference external" href="https://github.com/kimasendorf/ASDFPixelSort">GitHub</a>.</p></li>
+<li><p><span id="ref-cascone2000"></span>Cascone, K. (2000). The Aesthetics of Failure: “Post-Digital” Tendencies in Contemporary Computer Music. <em>Computer Music Journal</em>, 24(4), 12–18. <a class="reference external" href="https://doi.org/10.1162/014892600559489">doi:10.1162/014892600559489</a>. The essay that named the mood, with the term credited to Negroponte.</p></li>
+<li><p><span id="ref-menkman2010"></span>Menkman, R. (2009/2010). Glitch Studies Manifesto. <a class="reference external" href="https://beyondresolution.info/Glitch-Studies-Manifesto">beyondresolution.info</a>; reprinted in G. Lovink and R. Somers Miles (eds.), <em>Video Vortex Reader II</em> (Institute of Network Cultures, 2011). Source of the “break from an expected flow” definition.</p></li>
+<li><p><span id="ref-menkman2011"></span>Menkman, R. (2011). <em>The Glitch Moment(um)</em>. Network Notebooks 04. Institute of Network Cultures. <a class="reference external" href="https://networkcultures.org/blog/publication/no-04-the-glitch-momentum-rosa-menkman/">Free PDF</a>.</p></li>
+<li><p><span id="ref-sharma2015"></span>Sharma, S. M. (2015). Pixel Sorting. <a class="reference external" href="https://satyarth.me/articles/pixel-sorting">satyarth.me/articles/pixel-sorting</a>. Technical walkthrough of the interval technique, traced back to Asendorf’s script.</p></li>
+<li><p><span id="ref-saam"></span>Smithsonian American Art Museum. Nam June Paik: biography. <a class="reference external" href="https://americanart.si.edu/research/paik/biography">Research page</a>. “Father of Video Art” and the 1963 Galerie Parnass exhibition of prepared televisions.</p></li>
+<li><p><span id="ref-whitney"></span>Whitney Museum of American Art. <em>Magnet TV</em>, Nam June Paik, 1965 (86.60a-b). <a class="reference external" href="https://whitney.org/collection/works/6139">Collection entry</a>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook, sorting the <em>Grande Jatte</em> at its full resolution. One adjustment is needed there: at full size, Seurat’s individual dots pepper the brightness band with tiny holes, chopping every run short and taming the melt (our 600-pixel working copy escaped this because shrinking an image <em>is</em> a blur). So the mask is computed from a blurred copy of the key (chapter 16’s blur idea, one scipy <code class="docutils literal notranslate"><span class="pre">gaussian_filter</span></code> call) while the <em>sorting</em> still uses the raw key; the runs grow long again and the cascade returns at full silkiness. <code class="docutils literal notranslate"><span class="pre">np.kron</span></code> then doubles the result to print size. Give it a few seconds: the run-sorting loop visits every one of the 1920 columns in pure Python. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the interval-sorted Grande Jatte</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter</span>
+
+<span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="n">big_key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">))</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="c1"># blur only the mask's copy of the key, so dots stop chopping the runs short</span>
+<span class="n">smooth_key</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">big_key</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">big_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">smooth_key</span> <span class="o">&gt;=</span> <span class="mf">0.3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">smooth_key</span> <span class="o">&lt;=</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="n">big_sorted</span> <span class="o">=</span> <span class="n">pixel_sort</span><span class="p">(</span><span class="n">big</span><span class="p">,</span> <span class="n">big_key</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">big_mask</span><span class="p">)</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">big_sorted</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">show</span><span class="p">(</span><span class="n">showpiece</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/56546e2e43e7768fa9904492b53d5c4599f0a8b019078da1a7c1aa7fadb4e058.png" src="../_images/56546e2e43e7768fa9904492b53d5c4599f0a8b019078da1a7c1aa7fadb4e058.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch17_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="16-filters-and-dithering.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">16. Filters, Edges, and Dithering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="18-circle-packing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">18. Circle Packing: The Portrait in Dots</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-when-the-medium-shows-itself">Context: when the medium shows itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-as-an-aesthetic-operation">Sorting as an aesthetic operation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-victim">The victim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#total-destruction-one-column-at-a-time">Total destruction, one column at a time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-runs">Finding the runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-interval-sort">The interval sort</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-keys-other-failures">Other keys, other failures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-walk">The parameter walk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-the-edge-is-sharpest-bonus">Where the edge is sharpest (bonus)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

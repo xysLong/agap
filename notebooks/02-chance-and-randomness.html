@@ -1,0 +1,972 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Chance Operations and Controlled Randomness &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"000c0a928f544b9aa3afd9369490caaa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "rows", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_104af1dc32764ead9e3cb06f867cc31a", "max": 40, "min": 4, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_368b49b4802141c5a9f6143a14665879", "tabbable": null, "tooltip": null, "value": 20}}, "0332add6ea9b44bab754e41303cef059": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "104af1dc32764ead9e3cb06f867cc31a": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "1bc5ae220bf64ecaa5fc590df3a761cd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": ""}}, "1cdbad56ff2b4c2bb5953564608f1161": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "22e6445da0aa4af384f1f8088304ccbf": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "29d2b139d113495297e68397a0f4c07e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "FloatSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "FloatSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "jitter", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_1cdbad56ff2b4c2bb5953564608f1161", "max": 0.4, "min": 0.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.02, "style": "IPY_MODEL_ea62c44924ba481b83af0ce1a2b5a279", "tabbable": null, "tooltip": null, "value": 0.0}}, "2a1da1034d8442e5aa8b57b794702475": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "352cf51c967140e385024a1c18095303": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "cols", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_22e6445da0aa4af384f1f8088304ccbf", "max": 40, "min": 4, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_48c1b49f3ed14126b194ae458d114d20", "tabbable": null, "tooltip": null, "value": 20}}, "368b49b4802141c5a9f6143a14665879": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "48c1b49f3ed14126b194ae458d114d20": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "4fa4fe3a174841818d68a2cb388b165c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "FloatSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "FloatSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "cell_size", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_e60da147b9e64c60909bff44f7cc622b", "max": 2.7600000000000002, "min": -0.92, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_2a1da1034d8442e5aa8b57b794702475", "tabbable": null, "tooltip": null, "value": 0.92}}, "58d79e2a08514a379d701e31131d41e0": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_7fb69a60d8684ad995d969c0f28d01a8", "msg_id": "", "outputs": [{"data": {"image/png": "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", "text/plain": "<Figure size 1000x1000 with 1 Axes>"}, "metadata": {}, "output_type": "display_data"}, {"data": {"image/png": "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", "text/plain": "<Figure size 1000x1000 with 1 Axes>"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "7fb69a60d8684ad995d969c0f28d01a8": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "80f597c98ccc43c99fcc71f52798ad9e": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "8cdb5e196cc34d77bdced1011df3a210": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "DropdownModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "DropdownModel", "_options_labels": ["bauhaus", "rothko_dark", "pastel", "monochrome", "viridis", "magma", "kelly"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "DropdownView", "description": "palette_name", "description_allow_html": false, "disabled": false, "index": 0, "layout": "IPY_MODEL_0332add6ea9b44bab754e41303cef059", "style": "IPY_MODEL_1bc5ae220bf64ecaa5fc590df3a761cd", "tabbable": null, "tooltip": null}}, "9b0fc7fd1bca4b3b8f27aca0b27db7a6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "seed", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_80f597c98ccc43c99fcc71f52798ad9e", "max": 100, "min": 0, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_fef4234810b24eccbf330a02be7e85b6", "tabbable": null, "tooltip": null, "value": 1}}, "b8f9f0a18c1149a5add3095c6fafcd52": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "VBoxModel", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_000c0a928f544b9aa3afd9369490caaa", "IPY_MODEL_352cf51c967140e385024a1c18095303", "IPY_MODEL_8cdb5e196cc34d77bdced1011df3a210", "IPY_MODEL_29d2b139d113495297e68397a0f4c07e", "IPY_MODEL_4fa4fe3a174841818d68a2cb388b165c", "IPY_MODEL_9b0fc7fd1bca4b3b8f27aca0b27db7a6", "IPY_MODEL_58d79e2a08514a379d701e31131d41e0"], "layout": "IPY_MODEL_c731b39f180048389e1460a591aafba4", "tabbable": null, "tooltip": null}}, "c731b39f180048389e1460a591aafba4": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e60da147b9e64c60909bff44f7cc622b": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ea62c44924ba481b83af0ce1a2b5a279": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "fef4234810b24eccbf330a02be7e85b6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-chance-and-randomness';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Geometric Patterns and Symmetry" href="03-geometric-patterns.html" />
+    <link rel="prev" title="1. Random Walks: The First Generative System" href="01-random-walks.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. Chance Operations and Controlled Randomness</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-chance-as-anti-composition-and-its-return-through-the-back-door">Context: chance as anti-composition, and its return through the back door</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-kinds-of-randomness">Two kinds of randomness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seeds-repeatable-chance">Seeds: repeatable chance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-choice">Weighted choice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-values-on-the-canvas">Keeping values on the canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-from-garish-to-composed">Build-up: from garish to composed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chance-operations-and-controlled-randomness">
+<h1>2. Chance Operations and Controlled Randomness<a class="headerlink" href="#chance-operations-and-controlled-randomness" title="Link to this heading">#</a></h1>
+<p>In the last chapter chance drew lines for us; today we learn to <em>shape</em> chance, using distributions, weights, and seeds, and to generate color-chart compositions in the spirit of Gerhard Richter and Ellsworth Kelly.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>A large Richter-style color grid: thousands of cells, colors drawn by weighted chance from a curated palette. Pure randomness plus two artistic decisions: <em>which</em> colors, and <em>how often</em> each may appear.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch02_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/32faf549913cab2a5a5765f655b635035c9a33430856fcf08be60ed638aa28cf.png" src="../_images/32faf549913cab2a5a5765f655b635035c9a33430856fcf08be60ed638aa28cf.png" />
+</div>
+</div>
+</section>
+<section id="context-chance-as-anti-composition-and-its-return-through-the-back-door">
+<h2>Context: chance as anti-composition, and its return through the back door<a class="headerlink" href="#context-chance-as-anti-composition-and-its-return-through-the-back-door" title="Link to this heading">#</a></h2>
+<p>Around 1916, in wartime Zurich, <strong>Hans Arp</strong> tore paper into scraps and let them fall onto a sheet; according to the much-repeated account of his friend <a class="cite" href="#ref-richter1965">Hans Richter (1965)</a>, he glued them down exactly where they landed: <em>Nach dem Gesetz des Zufalls</em> (“According to the Laws of Chance”, 1916–17). Look closely at the collages and you may doubt the story, as scholars do: they are suspiciously tidy, and Arp seems to have nudged the scraps after the fall <a class="cite" href="#ref-momaarp">(MoMA, collection entry)</a>. Chance proposed; Arp disposed. Either way, for the Dadaists chance was a weapon: against academic composition, against good taste, against a rationality that had just produced an industrial war. A few years earlier, <strong>Marcel Duchamp</strong> had already dropped three meter-long threads onto canvas and enshrined their curves as new “standard meters” (<em>3 stoppages étalon</em>, 1913–14): measurement itself handed over to accident <a class="cite" href="#ref-molderings2010">(Molderings 2010)</a>.</p>
+<p>The second wave was cooler and more systematic. <strong>John Cage</strong> composed <em>Music of Changes</em> (1951) by tossing coins and consulting the <em>I Ching</em> <a class="cite" href="#ref-cage1961">(Cage 1961)</a>: chance not as rebellion but as a discipline for evading one’s own preferences. That same year his friend <strong>Ellsworth Kelly</strong>, in Paris, arranged colored squares by chance procedures of his own devising: the collage series <em>Spectrum Colors Arranged by Chance</em> (1951, a related painting followed in 1951–53), grids whose serene, even glow looks anything but accidental (<a class="cite" href="#ref-momakelly">MoMA, collection entry</a>; <a class="cite" href="#ref-sfmomachance">SFMOMA, collection entry</a>). And from 1966 on, <strong>Gerhard Richter</strong> built his color charts from industrial paint-sample cards; the late culmination, <em>4900 Farben</em> (2007), is a machine-fair grid of 4900 lacquered squares whose arrangement was decided by a random number generator <a class="cite" href="#ref-gerhardrichter">(Gerhard Richter, <em>4900 Colours</em> microsite)</a>.</p>
+<p>Here is the paradox to hold on to today: Arp used chance to <em>destroy</em> composition, yet Kelly’s and Richter’s chance-works are unmistakably composed. Where did the composing go? Into the <strong>constraints</strong>: Kelly chose the eighteen colors before chance touched anything; Richter fixed the palette, the grid, the format. Chance only ever filled in a form that taste had already built. When we replace uniform randomness with a <em>weighted</em> distribution, or jitter positions by a carefully tuned amount, we are doing exactly what they did: composing with the dials of probability. The artist does not disappear; the artist moves one level up.</p>
+<p>That is why this session pairs the art history with a bit of probability theory. Distributions, weights, and clipping are not technical chores; they are, quite literally, the compositional tools of chance art.</p>
+</section>
+<section id="two-kinds-of-randomness">
+<h2>Two kinds of randomness<a class="headerlink" href="#two-kinds-of-randomness" title="Link to this heading">#</a></h2>
+<p>Not all randomness looks alike. A <strong>uniform distribution</strong> (Gleichverteilung) makes every value in a range equally likely: pure, flat chance. A <strong>normal (Gaussian) distribution</strong> (Normalverteilung) clusters values around a mean and makes extremes rare: chance with a preference. Its two dials are the mean and a <strong>spread</strong> (its standard deviation, Streuung): roughly the typical distance from that mean, so <code class="docutils literal notranslate"><span class="pre">rng.normal(0.5,</span> <span class="pre">0.15,</span> <span class="pre">...)</span></code> below draws around 0.5 with spread 0.15. The histogram below (a <strong>histogram</strong> chops the range into small bins and raises one bar per bin, counting how many samples landed inside) shows 10,000 samples of each; the difference in shape is the difference between “anything goes” and “mostly this, sometimes that”, and you will <em>see</em> it in the artworks later.</p>
+<p>From this chapter on we also switch from the <code class="docutils literal notranslate"><span class="pre">random</span></code> module to <strong>numpy</strong>, the array library that powers the rest of the course. An array is, for now, simply a list that does arithmetic on all its elements at once; chapter 6 will lean on that idea hard.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 10,000 uniform vs 10,000 normal samples, compared as histograms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">uniform_samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10_000</span><span class="p">)</span>    <span class="c1"># 10_000 is 10000; the _ only groups digits</span>
+<span class="n">normal_samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">uniform_samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"uniform: every value equally likely"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">normal_samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"normal: values cluster around the mean"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/28c30cf76f718a8b780210b10ff3b807b6a970c980e2f07e9d81f8dd73ef9b49.png" src="../_images/28c30cf76f718a8b780210b10ff3b807b6a970c980e2f07e9d81f8dd73ef9b49.png" />
+</div>
+</div>
+</section>
+<section id="seeds-repeatable-chance">
+<h2>Seeds: repeatable chance<a class="headerlink" href="#seeds-repeatable-chance" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rng</span></code> object above is a <strong>random number generator</strong>, created with a <strong>seed</strong> (<code class="docutils literal notranslate"><span class="pre">42</span></code>). Chapter 1 already whispered that a computer’s randomness is <em>pseudo</em>-random, a deterministic formula in disguise; the seed is that formula’s starting point. Same seed, same sequence, every time and on every machine (strictly: for a given version of numpy).</p>
+<p>For generative artists this is a superpower, and it solves a real problem Cage had: he spent the better part of a year tossing coins for <em>Music of Changes</em> <a class="cite" href="#ref-cage1961">(Cage 1961)</a>, and no one can ever re-toss them. With a seed, a “chance” artwork becomes exactly reproducible: you can regenerate it at poster size, publish it as <code class="docutils literal notranslate"><span class="pre">seed=7</span></code>, or browse thousands of variants and <em>keep the address</em> of the one you love.</p>
+<p><strong>Course convention from now on:</strong> every notebook creates its randomness via <code class="docutils literal notranslate"><span class="pre">rng</span> <span class="pre">=</span> <span class="pre">np.random.default_rng(seed)</span></code>, and every generator function takes a <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter. All our seeds are fixed so the notebooks reproduce exactly; change any seed, any time, to make a piece your own. This is the one and only time we explain this; it holds for the rest of the book.</p>
+<p><strong>Try it:</strong> in the cell below, give <code class="docutils literal notranslate"><span class="pre">rng_c</span></code> your birth year as a seed and run the cell twice: different from <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, but perfectly identical to itself.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># same seed -&gt; same numbers; different seed -&gt; different numbers</span>
+<span class="n">rng_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">rng_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">rng_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a:"</span><span class="p">,</span> <span class="n">rng_a</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"b:"</span><span class="p">,</span> <span class="n">rng_b</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"c:"</span><span class="p">,</span> <span class="n">rng_c</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a: [0.62509547 0.8972138  0.77568569]
+b: [0.62509547 0.8972138  0.77568569]
+c: [0.32697228 0.98727684 0.31871084]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="weighted-choice">
+<h2>Weighted choice<a class="headerlink" href="#weighted-choice" title="Link to this heading">#</a></h2>
+<p>Kelly drew his colors by lot, but nothing forces the lots to be fair. <code class="docutils literal notranslate"><span class="pre">rng.choice</span></code> accepts a probability per option (<code class="docutils literal notranslate"><span class="pre">p=...</span></code>); the probabilities must add up to 1. This single idea is the difference between a color chart where every hue shouts equally and one with a quiet dominant tone and rare accents.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># weighted choice: blue common, yellow occasional, red rare</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">"blue"</span><span class="p">,</span> <span class="s2">"yellow"</span><span class="p">,</span> <span class="s2">"red"</span><span class="p">])</span>
+<span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">picks</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">probabilities</span><span class="p">)</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+    <span class="n">counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">picks</span> <span class="o">==</span> <span class="n">option</span><span class="p">))</span>   <span class="c1"># compares all 1000 at once; True counts as 1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="s2">"#F7C523"</span><span class="p">,</span> <span class="s2">"#D02433"</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"1000 weighted picks"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/33a0afdaee0547834b71e2dd15e10b800ea4317debe60425414e718ba9cd0f19.png" src="../_images/33a0afdaee0547834b71e2dd15e10b800ea4317debe60425414e718ba9cd0f19.png" />
+</div>
+</div>
+</section>
+<section id="keeping-values-on-the-canvas">
+<h2>Keeping values on the canvas<a class="headerlink" href="#keeping-values-on-the-canvas" title="Link to this heading">#</a></h2>
+<p>Gaussian randomness has long tails: a jittered position can land outside the canvas, a jittered color value outside the legal range 0–1. <code class="docutils literal notranslate"><span class="pre">np.clip</span></code> fences values into a range, a small tool you will use constantly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># clip: values below 0 become 0, values above 1 become 1</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"raw:    "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"clipped:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>raw:     [ 1.32 -0.52  0.67  0.27  0.32  0.41 -0.31  0.41]
+clipped: [1.   0.   0.67 0.27 0.32 0.41 0.   0.41]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-up-from-garish-to-composed">
+<h2>Build-up: from garish to composed<a class="headerlink" href="#build-up-from-garish-to-composed" title="Link to this heading">#</a></h2>
+<p>We now build the color grid in five stages, adding one compositional decision at a time. Stage one: no decisions at all; every cell gets a completely random RGB color. An image, for numpy, is just an array of shape <code class="docutils literal notranslate"><span class="pre">(rows,</span> <span class="pre">cols,</span> <span class="pre">3)</span></code>: three numbers (red, green, blue) per cell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stage 1: every cell a completely random RGB color</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2026</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0832bc2f449d7c26c394e7c4d565735251f628c7038c6f3ffb53ad269f3a4fff.png" src="../_images/0832bc2f449d7c26c394e7c4d565735251f628c7038c6f3ffb53ad269f3a4fff.png" />
+</div>
+</div>
+<p>Garish, isn’t it? Sixteen million colors, all equally likely, produce mud with sparks, what photographers call “clown vomit”. No museum wall shows this. The first artistic decision is <strong>curation</strong>: restrict chance to a palette somebody chose. Our numpy grid stores three numbers per cell, while the course palettes store colors as hex text like <code class="docutils literal notranslate"><span class="pre">&quot;#D02433&quot;</span></code>, so we need one small converter. (Matplotlib itself happily accepts hex strings, as stage 4 will quietly show; the converter is for the array.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># convert a hex color like '#D02433' into three numbers between 0 and 1</span>
+<span class="c1"># hex_color[1:3] slices two characters; int(..., 16) reads them as base-16</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">hex_color</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">hex_to_rgb</span><span class="p">(</span><span class="s2">"#D02433"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.8156862745098039, 0.1411764705882353, 0.2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stage 2: the same grid, but every cell picks from a fixed palette</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">]</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2026</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>   <span class="c1"># top bound excluded, like range</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b87cfdf950466a7a2cb71f0cabe7ac04a1157357afe1a9004293dab71eb26ddc.png" src="../_images/b87cfdf950466a7a2cb71f0cabe7ac04a1157357afe1a9004293dab71eb26ddc.png" />
+</div>
+</div>
+<p>Same code, same chance, same seed; only the <em>menu</em> changed, and suddenly it holds together. Remember the paradox from the context section: the composing moved into the constraints. Notice also that this is <strong>authorship</strong>: two students with different palettes get recognizably different works from identical algorithms.</p>
+<p>Stage 3: not all colors deserve equal airtime. We give each palette color a weight: lots of near-black, a little cream, yellow as a rare event.</p>
+<p><strong>Try it:</strong> after running the cell, edit the weights (keep them summing to 1) and run it again; you are mixing the mood of the piece.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stage 3: weighted palette -- a dominant tone and rare accents</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>   <span class="c1"># one weight per bauhaus color</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2026</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b7980d0bb5609a6f804a854a8afef3afac03e4286f4eb2bc7c96e4b28fc7ba1d.png" src="../_images/b7980d0bb5609a6f804a854a8afef3afac03e4286f4eb2bc7c96e4b28fc7ba1d.png" />
+</div>
+</div>
+<p>Stage 4: so far the <em>colors</em> are random but the <em>geometry</em> is rigid. Now we jitter positions and sizes with small Gaussian nudges (<code class="docutils literal notranslate"><span class="pre">rng.normal(0,</span> <span class="pre">jitter)</span></code>), so the grid trembles like something laid out by hand. For that we leave <code class="docutils literal notranslate"><span class="pre">imshow</span></code> and draw each cell as a <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code>; remember drawing shapes one by one from the last chapter’s squares.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stage 4: a hand-trembled grid -- positions and sizes jittered</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">jitter</span> <span class="o">=</span> <span class="mf">0.12</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fc1a983f18eed1fd39ff4d4373b5330944d6bf837dac77325f6cc640d7325351.png" src="../_images/fc1a983f18eed1fd39ff4d4373b5330944d6bf837dac77325f6cc640d7325351.png" />
+</div>
+</div>
+<p>Stage 5: chance can also ride on top of a <em>gradient</em>. In Kelly’s related <em>Spectrum</em> paintings, the ordered cousins of the chance collages, hue drifts systematically across the surface <a class="cite" href="#ref-sfmomaspectrum">(SFMOMA, <em>Spectrum I</em>)</a>; here we let chance roughen that order. We build colors in <strong>HSV</strong> (hue–saturation–value), let the hue follow the column index, and add Gaussian noise to it. Hue lives on a color <em>wheel</em>, so instead of clipping we <strong>wrap</strong> with the modulo operator <code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">1.0</span></code>: clip fences a line, modulo closes a circle.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stage 5: Kelly-style spectrum -- hue drifts left to right, chance roughens it</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">colorsys</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+        <span class="n">hue</span> <span class="o">=</span> <span class="n">col</span> <span class="o">/</span> <span class="n">cols</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">)</span>
+        <span class="n">hue</span> <span class="o">=</span> <span class="n">hue</span> <span class="o">%</span> <span class="mf">1.0</span>                      <span class="c1"># hues wrap around the color wheel</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="n">hue</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/81452216d30ecba142c9f6a05b19e532d99f38e0949c41348b421164e0f60376.png" src="../_images/81452216d30ecba142c9f6a05b19e532d99f38e0949c41348b421164e0f60376.png" />
+</div>
+</div>
+</section>
+<section id="playground">
+<h2>Playground<a class="headerlink" href="#playground" title="Link to this heading">#</a></h2>
+<p>The finished generator, all decisions as parameters: grid size, palette, weights (or <code class="docutils literal notranslate"><span class="pre">None</span></code> for fair chance), jitter, seed. Below it is called four times with very different temperaments, plus a slider version if your environment supports it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the finished generator: a chance color grid in the Richter/Kelly tradition</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">jitter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cell_size</span><span class="o">=</span><span class="mf">0.92</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">rows</span> <span class="o">/</span> <span class="n">cols</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">cell_size</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 1 and 2: strict Richter grid vs trembling pastel</span>
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"pastel"</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f6d0324d5e02ba60f7c6061b38daec296a554a659561911f0ffc351004125f39.png" src="../_images/f6d0324d5e02ba60f7c6061b38daec296a554a659561911f0ffc351004125f39.png" />
+<img alt="../_images/da6303abd0dbd0cbb3d2feed0ee332e760314c598f1f9659efd73134ad17073e.png" src="../_images/da6303abd0dbd0cbb3d2feed0ee332e760314c598f1f9659efd73134ad17073e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 3 and 4: dark and weighted vs a quiet monochrome frieze</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"rothko_dark"</span><span class="p">,</span>
+                   <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span> <span class="n">jitter</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">art_4</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"monochrome"</span><span class="p">,</span>
+                   <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/48b6144b517e6fb0c871205651dbb7d3e0dbfde097fbd1a2ba21d96573353938.png" src="../_images/48b6144b517e6fb0c871205651dbb7d3e0dbfde097fbd1a2ba21d96573353938.png" />
+<img alt="../_images/f17e53ec2ab0fa40873fea857e66d05f4a1bd55d4a8c8bea484bd6b84ee2e140.png" src="../_images/f17e53ec2ab0fa40873fea857e66d05f4a1bd55d4a8c8bea484bd6b84ee2e140.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Which of the four feels calmest? Which parameter is responsible: the palette, the weights, or the jitter? Note that <code class="docutils literal notranslate"><span class="pre">art_3</span></code> uses <em>both</em> weights and jitter: cover one eye and ask yourself which of the two carries more of its mood. And why does the wide format of <code class="docutils literal notranslate"><span class="pre">art_4</span></code> alone change how you read it?</p>
+<div class="cell tag_skip-execution docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># optional sliders -- everything they do, the plain function calls above do too</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">fixed</span>
+    <span class="n">interact</span><span class="p">(</span><span class="n">color_grid</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+             <span class="n">palette_name</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">weights</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+             <span class="n">jitter</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"ipywidgets is not installed -- use the plain function calls above"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b8f9f0a18c1149a5add3095c6fafcd52", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Tune the parameters until the grid feels like yours, replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code>, run the cell; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust parameters, replace 'yourname', run the cell</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">,</span>
+                        <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
+                        <span class="n">jitter</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2026</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a58cc60ddbf558412b36f5d68e51e07cc6e7eacb542db88d812bde2475973129.png" src="../_images/a58cc60ddbf558412b36f5d68e51e07cc6e7eacb542db88d812bde2475973129.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch02_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the threshold of design.</strong> Run <code class="docutils literal notranslate"><span class="pre">color_grid</span></code> with <code class="docutils literal notranslate"><span class="pre">jitter</span></code> at 0.0, 0.05, 0.1, 0.2, 0.3 and 0.4 (same seed each time). Somewhere in that range the grid stops feeling “designed” and starts feeling broken. Where is that threshold for you? Compare with your neighbor: is it the same value? What does that say about where the artwork happens: in the code or in the eye?</p>
+<p><strong>(b) Code modification: Richter’s rule.</strong> Pure chance produces clumps of same-colored neighbors, and viewers read clumps as <em>intent</em>; look for the clumps in <em>4900 Farben</em>, where Richter deliberately let them stand. Suppose you feel differently about your own grid. Implement the constraint: <strong>no two horizontally adjacent cells may share a color.</strong> Start from the stage-2 grid code (the <code class="docutils literal notranslate"><span class="pre">imshow</span></code> version is easier than the Rectangle version): remember the previous cell’s color index, and re-draw while the new index equals it.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">color_grid_no_repeat</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"bauhaus"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="n">PALETTES</span><span class="p">[</span><span class="n">palette_name</span><span class="p">]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="n">previous_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>                       <span class="c1"># no color yet in this row</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>
+            <span class="k">while</span> <span class="n">index</span> <span class="o">==</span> <span class="n">previous_index</span><span class="p">:</span>        <span class="c1"># forbidden? draw again</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">))</span>
+            <span class="n">grid</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">previous_index</span> <span class="o">=</span> <span class="n">index</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">color_grid_no_repeat</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">while</span></code> loop simply re-rolls the dice until the constraint is satisfied, the standard trick for “chance, but not <em>that</em>”. Compare the constrained grid with the free one: most viewers call the constrained one <em>more</em> random, which is this chapter’s paradox in a single image.</p>
+</details>
+<p><strong>(c) Creative challenge: your own chance operation.</strong> Squares are only one vocabulary. Compose a chance work from a different element: dots of random size, short lines at random angles, or letters drawn from your own name. Keep the two Kelly/Richter decisions (a curated palette and a deliberate weighting) and give the piece a title in the Dada spirit.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Herbert Molderings, <em>Duchamp and the Aesthetics of Chance</em> (Columbia UP, 2010): chapter 1 on the <em>3 Standard Stoppages</em> as an “experiment in chance”.</p></li>
+<li><p>Gerhard Richter, <a class="reference external" href="https://gerhard-richter.com/en/art/microsites/4900-colours"><em>4900 Colours</em></a>: the artist’s own microsite; look at the versioning system (the work can be hung in 11 different configurations).</p></li>
+<li><p>Ellsworth Kelly on the Paris chance works: <a class="reference external" href="https://www.moma.org/collection/works/37202"><em>Spectrum Colors Arranged by Chance</em>, MoMA</a>: collection entry with the artist’s account of the lottery procedure.</p></li>
+<li><p>Technical: the <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generator.html">numpy random generator documentation</a>: skim <code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">choice</span></code>, <code class="docutils literal notranslate"><span class="pre">integers</span></code>; these four methods carry the whole course.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-cage1961"></span>Cage, J. (1961). To Describe the Process of Composition Used in <em>Music of Changes</em> and <em>Imaginary Landscape No. 4</em>. In <em>Silence: Lectures and Writings</em>, pp. 57–59. Wesleyan University Press. Cage’s own account of the coin-tossing procedure.</p></li>
+<li><p><span id="ref-gerhardrichter"></span>Gerhard Richter, official website. <em>4900 Colours</em>, microsite. <a class="reference external" href="https://gerhard-richter.com/en/art/microsites/4900-colours">gerhard-richter.com/en/art/microsites/4900-colours</a>. Documents the randomly generated arrangement, the 11 hanging configurations, and the colour charts begun in 1966.</p></li>
+<li><p><span id="ref-molderings2010"></span>Molderings, H. (2010). <em>Duchamp and the Aesthetics of Chance: Art as Experiment</em> (trans. J. Brogden). Columbia University Press.</p></li>
+<li><p><span id="ref-momaarp"></span>Museum of Modern Art. Jean (Hans) Arp, <em>Untitled (Collage with Squares Arranged according to the Law of Chance)</em>, 1916–17, collection entry. <a class="reference external" href="https://www.moma.org/collection/works/37013">moma.org/collection/works/37013</a>. Quotes Hans Richter’s account and notes that the collages’ “relatively ordered appearance” suggests Arp did not fully relinquish control.</p></li>
+<li><p><span id="ref-momakelly"></span>Museum of Modern Art. Ellsworth Kelly, <em>Spectrum Colors Arranged by Chance II</em>, 1951, collection entry. <a class="reference external" href="https://www.moma.org/collection/works/37202">moma.org/collection/works/37202</a>.</p></li>
+<li><p><span id="ref-richter1965"></span>Richter, H. (1965). <em>Dada: Art and Anti-Art</em>. Thames and Hudson. (German original: <em>Dada. Kunst und Antikunst</em>, DuMont Schauberg, 1964.) The source of the dropped-paper story.</p></li>
+<li><p><span id="ref-sfmomachance"></span>San Francisco Museum of Modern Art. Ellsworth Kelly, <em>Spectrum Colors Arranged by Chance</em>, 1951–1953, collection entry. <a class="reference external" href="https://www.sfmoma.org/artwork/99.352/">sfmoma.org/artwork/99.352</a>. The painting that followed the 1951 collage series.</p></li>
+<li><p><span id="ref-sfmomaspectrum"></span>San Francisco Museum of Modern Art. Ellsworth Kelly, <em>Spectrum I</em>, 1953, collection entry. <a class="reference external" href="https://www.sfmoma.org/artwork/99.353/">sfmoma.org/artwork/99.353</a>. The ordered spectral-hue cousin of the chance works.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: a large weighted Richter-style grid</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">color_grid</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">palette_name</span><span class="o">=</span><span class="s2">"kelly"</span><span class="p">,</span>
+                       <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span>
+                       <span class="n">cell_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">4900</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/028d36f70ff4265c9c3167ca29496557ed308597c54930bafc1c06aa2b50e378.png" src="../_images/028d36f70ff4265c9c3167ca29496557ed308597c54930bafc1c06aa2b50e378.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch02_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-random-walks.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. Random Walks: The First Generative System</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-geometric-patterns.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. Geometric Patterns and Symmetry</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-chance-as-anti-composition-and-its-return-through-the-back-door">Context: chance as anti-composition, and its return through the back door</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-kinds-of-randomness">Two kinds of randomness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seeds-repeatable-chance">Seeds: repeatable chance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-choice">Weighted choice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-values-on-the-canvas">Keeping values on the canvas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-up-from-garish-to-composed">Build-up: from garish to composed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#playground">Playground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

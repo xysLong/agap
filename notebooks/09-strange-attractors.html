@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9. Strange Attractors: The Shape of Chaos &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/09-strange-attractors';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Noise and Flow Fields" href="10-noise-and-flow-fields.html" />
+    <link rel="prev" title="8. Fractals: Infinite Detail" href="08-fractals.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>9. Strange Attractors: The Shape of Chaos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-weather-that-would-not-repeat">Context: the weather that would not repeat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-a-map-instead-of-a-walk">The mathematics: a map instead of a walk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitive-dependence-demonstrated">Sensitive dependence, demonstrated</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-million-visits-density-is-the-object">A million visits: density is the object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-safari">The parameter safari</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="strange-attractors-the-shape-of-chaos">
+<h1>9. Strange Attractors: The Shape of Chaos<a class="headerlink" href="#strange-attractors-the-shape-of-chaos" title="Link to this heading">#</a></h1>
+<p>Chapter 8 iterated one formula and colored how fast orbits <em>escaped</em>. Today the opposite temperament: a formula whose orbits never escape and never settle, and whose visits, collected by the million, condense into smoke-like figures that no single point of them ever drew.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>One formula, four numbers, forty-eight million visits. The picture below is not a drawing: nothing in it is a line, a stroke or a shape. It is a <em>census</em>. A point jumps around the plane according to a rule of two sines and two cosines, forever boxed inside a small square, never repeating; we count where it lands, and the counts, glowing by their logarithm, reveal that this restless wandering has an anatomy. The figure is called a strange attractor, and by the end of today you will be catching your own.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch09_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/07d0b6ec91dec3d9fd2931da20f1faed8c84c99170a394bee9b46348b5f7d3bc.png" src="../_images/07d0b6ec91dec3d9fd2931da20f1faed8c84c99170a394bee9b46348b5f7d3bc.png" />
+</div>
+</div>
+</section>
+<section id="context-the-weather-that-would-not-repeat">
+<h2>Context: the weather that would not repeat<a class="headerlink" href="#context-the-weather-that-would-not-repeat" title="Link to this heading">#</a></h2>
+<p>In the winter of 1961, the MIT meteorologist <strong>Edward Lorenz</strong> (1917-2008) was running a toy weather model on a Royal McBee LGP-30, a computer the size of a desk. Wanting to re-examine one run, he restarted it midway, typing in the numbers from a printout. The new weather tracked the old for a while, then drifted, then bore no resemblance to it at all. The cause was almost nothing: the printout showed three decimals (0.506) while the machine’s memory held six (0.506127). A difference of roughly one part in four thousand had, within a simulated month or two, rewritten the weather of the world <a class="cite" href="#ref-gleick1987">(Gleick 1987)</a>. Lorenz had assumed, as everyone did, that small causes have small effects; his 1963 paper <a class="cite" href="#ref-lorenz1963">”Deterministic Nonperiodic Flow”</a> quietly reported otherwise, and with it described the first strange attractor: the butterfly-winged figure his equations traced, on which the weather wanders forever without repeating. The now-famous name arrived in 1972, when Lorenz gave a talk titled “Predictability: Does the Flap of a Butterfly’s Wings in Brazil Set Off a Tornado in Texas?” (he had not supplied a title; the convener Philip Merilees coined it for him; Lorenz’s own earlier image had been a seagull) <a class="cite" href="#ref-lorenz1993">(Lorenz 1993)</a>. <em>Butterfly effect</em> stuck, and the attractor even looks like one.</p>
+<p>For two decades this stayed specialist knowledge. Then came the 1980s, the same decade that hung chapter 8’s fractals in galleries, and chaos went public alongside them: James Gleick’s bestseller <a class="cite" href="#ref-gleick1987"><em>Chaos: Making a New Science</em> (1987)</a> put Lorenz’s story on airport bookshelves while Peitgen and Richter’s fractal renderings, chapter 8’s <em>Frontiers of Chaos</em>, were still touring. And exactly as with fractals, the home computer made chaos something you could <em>do</em>. In <em>Scientific American</em>, A. K. Dewdney’s “Computer Recreations” column (1984-1991) served readers monthly recipes for mathematical pictures, and the July 1987 installment, “Probing the strange attractions of chaos” <a class="cite" href="#ref-dewdney1987">(Dewdney 1987)</a>, printed iteration formulas sent in by readers. One of them, from <strong>Peter de Jong</strong> of Leiden, is the formula this chapter is built on. Clifford Pickover’s <a class="cite" href="#ref-pickover1990"><em>Computers, Pattern, Chaos and Beauty</em> (1990)</a> carried the genre onward, and Paul Bourke’s collection, whose oldest entries date to 1989 and which is still growing, remains the standard archive <a class="cite" href="#ref-bourke">(Bourke, attractor pages)</a> where parameter sets for these figures are traded like pressed flowers. The images in this lineage were made by amateurs on home machines, published by readers’ letters: generative art’s folk tradition.</p>
+<p>Chapter 8 and today are a matched pair. There, we iterated <span class="math notranslate nohighlight">\(z^2 + c\)</span> and asked <em>who leaves</em>: the picture was the boundary of divergence, drawn by escape times. Today nothing leaves. The de Jong map folds the whole plane into a box four units wide, and the question becomes <em>where does a trapped orbit spend its time</em>. The answer, it turns out, is not “everywhere” and not “in a loop”, but a third thing, and drawing that third thing is today’s work.</p>
+</section>
+<section id="the-mathematics-a-map-instead-of-a-walk">
+<h2>The mathematics: a map instead of a walk<a class="headerlink" href="#the-mathematics-a-map-instead-of-a-walk" title="Link to this heading">#</a></h2>
+<p>The rule is a <strong>2D map</strong> (Abbildung): a recipe that takes a point <span class="math notranslate nohighlight">\((x, y)\)</span> and returns the next point. The de Jong family is</p>
+<div class="math notranslate nohighlight">
+\[x' = \sin(a\,y) - \cos(b\,x), \qquad y' = \sin(c\,x) - \cos(d\,y),\]</div>
+<p>read aloud: <em>the new x looks only at the old y (through a sine) and the old x (through a cosine); the new y does the reverse.</em> The four numbers <span class="math notranslate nohighlight">\(a, b, c, d\)</span> are the artwork’s entire genome. Note what the formula promises before we run anything: sines and cosines only ever return values between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>, so each coordinate is always the difference of two such values, trapped between <span class="math notranslate nohighlight">\(-2\)</span> and <span class="math notranslate nohighlight">\(2\)</span> forever. <strong>No orbit can escape.</strong> Chapter 8’s question (who flees to infinity?) is settled in advance; the mystery moves inside the box.</p>
+<p>Iterating is the same mindset as chapter 8, with one honest difference: there we could iterate every pixel of a grid because each pixel asked its own question. Here there is no grid and no pixel, just one orbit hopping through continuous space, so we begin the way chapter 1 began its walks: a plain loop, one step at a time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one orbit of the de Jong map: a plain loop, ten thousand hops</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>                       <span class="c1"># make the course package importable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.1</span>           <span class="c1"># the chapter's house parameters</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#F07B2D"</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cd2410d95795e14de64af94ef3b5aa07557bb0a85409fd957ee96473f3a49003.png" src="../_images/cd2410d95795e14de64af94ef3b5aa07557bb0a85409fd957ee96473f3a49003.png" />
+</div>
+</div>
+<p>Ten thousand hops, and the figure is already there: sweeping veils, dense seams, deliberate empty bays. Watch what did <em>not</em> happen. The orbit did not fill the box uniformly, though it was free to; it did not settle into a repeating loop, though nothing forbade that either. It visits only a particular filigree subset of the box, endlessly, in an order that never repeats. That subset is the <strong>attractor</strong> (Attraktor): orbits from almost any starting point are drawn onto it and then wander it forever. “Strange” is the technical adjective <a class="cite" href="#ref-ruelle1971">(Ruelle and Takens 1971)</a> for attractors like this one, which are neither points nor loops but infinitely detailed folded sheets: fractals, chapter 8’s word, arrived at from a completely different door.</p>
+<p><strong>Try it.</strong> Change the starting point <code class="docutils literal notranslate"><span class="pre">0.1,</span> <span class="pre">0.1</span></code> to anything you like: the same figure appears, minus the first few stray dots. The attractor does not care where you enter from. The four parameters, though, it cares about enormously, and we will spend the second half of today exploiting that.</p>
+</section>
+<section id="sensitive-dependence-demonstrated">
+<h2>Sensitive dependence, demonstrated<a class="headerlink" href="#sensitive-dependence-demonstrated" title="Link to this heading">#</a></h2>
+<p>The Lorenz story makes a claim: two starts differing by almost nothing end up entirely apart. On the attractor we can <em>demonstrate</em> it, not just tell it. Launch two orbits separated by <span class="math notranslate nohighlight">\(10^{-9}\)</span> (a millionth of a millimeter, if the box were a meter wide) and track the distance between them, step by step, on a logarithmic axis, where steady multiplication appears as a steady climb.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two orbits born a billionth apart: the distance between them, step by step</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span>
+<span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="mf">0.1</span>
+<span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">y1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">x1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">y1</span><span class="p">)</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">y2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">y2</span><span class="p">)</span>
+    <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">2.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="s2">"the attractor's span"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"step"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"distance between the twin orbits"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"sensitive dependence: 1e-9 becomes everything in ~45 steps"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d3b4a5145f4de062f07a5ca002be290bdc1ab3f3733d3aa3e4162cbec67fc1ef.png" src="../_images/d3b4a5145f4de062f07a5ca002be290bdc1ab3f3733d3aa3e4162cbec67fc1ef.png" />
+</div>
+</div>
+<p>The climb is a straight line on the log axis until it hits the ceiling: the separation multiplies by a roughly constant factor <em>every step</em> (exponential growth, the same law as chapter 8’s escapes, now acting on the gap between twins rather than on the orbit itself). After about 45 steps the two orbits are as far apart as two independent wanderers on the attractor ever get, and from then on they are strangers, each wandering the same attractor with no memory of having been twins. This is <strong>sensitive dependence on initial conditions</strong> (empfindliche Abhängigkeit von den Anfangsbedingungen), the defining property of chaos, and it is why Lorenz’s three-decimal shortcut rewrote his weather.</p>
+<p>Hold both truths at once, because the artwork lives between them: <em>individually</em> the orbit is unpredictable beyond a few dozen steps, yet <em>statistically</em> it is utterly reliable: every orbit paints the same figure. Chaos destroys the trajectory and preserves the shape.</p>
+</section>
+<section id="a-million-visits-density-is-the-object">
+<h2>A million visits: density is the object<a class="headerlink" href="#a-million-visits-density-is-the-object" title="Link to this heading">#</a></h2>
+<p>A scatter plot spends its beauty quickly: at a hundred thousand dots the veils clot into solid orange, because a scatter can only say <em>visited or not</em>. But the attractor’s anatomy is in <em>how often</em>: some seams are visited a thousand times more than the faint bays beside them. The right object is not the set of points but a <strong>census of visits</strong>: chop the box into a grid of small cells and count the landings per cell.</p>
+<p>NumPy has this census as a single call, and it is worth learning properly because half of Part V will quietly rely on it. <code class="docutils literal notranslate"><span class="pre">np.histogram2d(x,</span> <span class="pre">y,</span> <span class="pre">bins,</span> <span class="pre">range)</span></code> takes the x-coordinates and y-coordinates of any cloud of points and returns a 2D array of counts: element <span class="math notranslate nohighlight">\([i, j]\)</span> holds how many points fell into cell <span class="math notranslate nohighlight">\([i, j]\)</span>. Two habits to fix immediately, both demonstrated below: the first axis of the counts array follows x (so we transpose with <code class="docutils literal notranslate"><span class="pre">.T</span></code> before <code class="docutils literal notranslate"><span class="pre">imshow</span></code>, which wants rows to be y), and passing an explicit <code class="docutils literal notranslate"><span class="pre">range</span></code> keeps the grid identical from run to run whether or not a stray point lands near the edge.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.histogram2d in miniature: six points, a 4x4 grid, counts you can check</span>
+<span class="n">demo_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">])</span>
+<span class="n">demo_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.60</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">])</span>
+<span class="n">counts</span><span class="p">,</span> <span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">demo_x</span><span class="p">,</span> <span class="n">demo_y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                                          <span class="nb">range</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"counts, printed with x as rows (as returned):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"three points near (0.5, 0.5), two near (2.5, 1.5), one at (3.5, 3.5)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>counts, printed with x as rows (as returned):
+[[3 0 0 0]
+ [0 0 0 0]
+ [0 2 0 0]
+ [0 0 0 1]]
+
+three points near (0.5, 0.5), two near (2.5, 1.5), one at (3.5, 3.5)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Read the printed array against the comment below it: the cluster of three sits at <code class="docutils literal notranslate"><span class="pre">counts[0,</span> <span class="pre">0]</span></code> (first x-cell, first y-cell), the pair at <code class="docutils literal notranslate"><span class="pre">counts[2,</span> <span class="pre">1]</span></code>. The convention takes one cup of coffee to absorb and then never surprises you again; the call returns in chapters 23, 25 and 27, each time as this same census move.</p>
+<p>Now the real census. One orbit of twelve million steps would work, but there is a faster route that NumPy prefers: iterate <strong>two hundred thousand orbits in lockstep</strong>, each from its own random start (chapter 2’s seeded generator hands them out), as arrays <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> that hop together. An honesty note before the code, because the picture this makes is <em>exactly</em> the same attractor: we are not changing the mathematics, only visiting the figure with a crowd instead of a lone walker. Each of the 200,000 walkers needs a short <strong>warm-up</strong> (Einschwingphase) of discarded steps while it falls from its random birthplace onto the attractor; counting those transient steps would smear stray dust over the figure. After the warm-up, every further step of every walker is a legitimate visit, and we bin them all.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the vectorized gatherer: 200,000 walkers, 100 warm-up steps, 60 counted ones</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dejong_census</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Accumulate visit counts for the de Jong attractor.</span>
+
+<span class="sd">    quality scales the sample budget: 1.0 means 200k walkers x 60 steps</span>
+<span class="sd">    (12 million visits), 0.25 a quick look, 4.0 a print run.</span>
+<span class="sd">    """</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">n_walkers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">200_000</span> <span class="o">*</span> <span class="n">quality</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_walkers</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_walkers</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">bins</span><span class="p">,</span> <span class="n">bins</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">60</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>                     <span class="c1"># warm-up over: these visits count</span>
+            <span class="n">h</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span>
+                                     <span class="nb">range</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">]])</span>
+            <span class="n">counts</span> <span class="o">+=</span> <span class="n">h</span>
+    <span class="k">return</span> <span class="n">counts</span>
+
+<span class="n">census</span> <span class="o">=</span> <span class="n">dejong_census</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">census</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> visits counted"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"busiest cell: </span><span class="si">{</span><span class="n">census</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> visits; "</span>
+      <span class="sa">f</span><span class="s2">"empty cells: </span><span class="si">{</span><span class="p">(</span><span class="n">census</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2"> of the grid"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12,000,000 visits counted
+busiest cell: 5,636 visits; empty cells: 36% of the grid
+</pre></div>
+</div>
+</div>
+</div>
+<p>Twelve million visits, and the busiest single cell took thousands of them while most of the grid took none. That spread is the problem the next cell solves. Mapped straight to a colormap, a handful of blazing cells would use up the entire bright end and everything else would sit in the bottom few percent: near-black, structure lost. The cure is the logarithm again (it already earned its keep in the sensitivity plot, and chapter 8’s smooth-coloring exercise leaned on it too): <code class="docutils literal notranslate"><span class="pre">np.log1p(counts)</span></code>, which is <span class="math notranslate nohighlight">\(\ln(1 + \text{counts})\)</span>, compresses thousands-to-one ratios into a range a colormap can spend sensibly, and its built-in <span class="math notranslate nohighlight">\(+1\)</span> politely maps empty cells to exactly zero, keeping the ground truly dark.</p>
+<p>The colormap itself is the same judgment call as chapter 8’s four-panel comparison: the counts are the structure, the colormap is the mood. Attractors, like fractals, tend to reward darkness: the figure is made of <em>light</em> (accumulated visits), and light reads best against night.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># density -&gt; log1p -&gt; colormap: the attractor as long-exposure photograph</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_census</span><span class="p">(</span><span class="n">census</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">census</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>                <span class="c1"># log tames the range; .T flips x/y</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"bilinear"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="s2">"magma"</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">,</span> <span class="s2">"viridis"</span><span class="p">]):</span>
+    <span class="n">show_census</span><span class="p">(</span><span class="n">census</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3e772aad554c1eb7bcd6965a0bef2df5d6a9f3d3b94daa256caec5b1485cb67d.png" src="../_images/3e772aad554c1eb7bcd6965a0bef2df5d6a9f3d3b94daa256caec5b1485cb67d.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Same census three times. <code class="docutils literal notranslate"><span class="pre">magma</span></code> reads as smoke lit from below, <code class="docutils literal notranslate"><span class="pre">gray</span></code> as a long-exposure photograph from some impossible observatory, <code class="docutils literal notranslate"><span class="pre">viridis</span></code> as scientific instrumentation. And notice what the logarithm rescued: the faint outer veils, thousands of times less visited than the seams, are <em>there</em> in all three panels. Comment out the <code class="docutils literal notranslate"><span class="pre">np.log1p</span></code> (replace <code class="docutils literal notranslate"><span class="pre">img</span></code> with <code class="docutils literal notranslate"><span class="pre">census.T</span></code>) and rerun to see what the raw counts look like: a few white-hot threads on black, the rest of the anatomy gone.</p>
+<p><strong>Try it.</strong> <code class="docutils literal notranslate"><span class="pre">bins=800</span></code> decides the grain. Drop to 200: the figure goes soft, like a photograph enlarged past its resolution. The census machinery does not care; only the census’s <em>display</em> does.</p>
+</section>
+<section id="the-parameter-safari">
+<h2>The parameter safari<a class="headerlink" href="#the-parameter-safari" title="Link to this heading">#</a></h2>
+<p>Four numbers, one picture each: the de Jong family is less a formula than a continent, and <span class="math notranslate nohighlight">\((a, b, c, d)\)</span> are coordinates in it. Below, four documented locations (all four circulate in Paul Bourke’s archive, the genre’s herbarium) plus one deliberately dull one. The names are ours; the continent has no signposts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># five expeditions: four strange attractors and one that is not</span>
+<span class="n">PRESETS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"fog"</span><span class="p">:</span>    <span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.1</span><span class="p">),</span>       <span class="c1"># today's house parameters</span>
+    <span class="s2">"crab"</span><span class="p">:</span>   <span class="p">(</span><span class="mf">2.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.53</span><span class="p">,</span> <span class="mf">1.61</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.33</span><span class="p">),</span>
+    <span class="s2">"cage"</span><span class="p">:</span>   <span class="p">(</span><span class="o">-</span><span class="mf">2.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.09</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.86</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.2</span><span class="p">),</span>
+    <span class="s2">"veil"</span><span class="p">:</span>   <span class="p">(</span><span class="mf">0.970</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.899</span><span class="p">,</span> <span class="mf">1.381</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.506</span><span class="p">),</span>
+    <span class="s2">"asleep"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>         <span class="c1"># the dull control</span>
+<span class="p">}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">PRESETS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">show_census</span><span class="p">(</span><span class="n">dejong_census</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mf">0.25</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8e9b6d8a1427f96dec339f2288e2d1c80d1f0711afeb0e00c215d53a852b6b1a.png" src="../_images/8e9b6d8a1427f96dec339f2288e2d1c80d1f0711afeb0e00c215d53a852b6b1a.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Four strange attractors, four unrelated anatomies: billowing fog, a swept claw, a wiry cage, a hanging veil, all from the same two lines of trigonometry. And then the fifth panel: at <span class="math notranslate nohighlight">\((0.1, 0.1, 0.1, 0.1)\)</span> every walker slides into the same single point and stays, a <strong>fixed point</strong> (Fixpunkt); fifty thousand walkers end up in one single cell of the census, and at this scale the panel simply goes black. That dull black square is the most instructive of the five. Chaos is not what iteration <em>does</em>; it is a special condition that some parameters reach and most do not. The continent is mostly desert (fixed points and short repeating cycles), threaded with regions where the folding becomes intricate enough to trap orbits in endless novelty. Finding the good regions is prospecting, and exercise (c) hands you the pan.</p>
+<p><strong>Try it.</strong> Nudge one number of <code class="docutils literal notranslate"><span class="pre">fog</span></code> by 0.05 and rerun. Some nudges redecorate the figure; some collapse it entirely. (After the sensitivity demo, this should feel familiar: parameter space, too, has its butterflies.)</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Pick a preset (or your own four numbers), a colormap, and a sample budget. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the census lands in the gallery folder at print quality.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR attractor: choose parameters and colormap, replace 'yourname'</span>
+<span class="n">my_census</span> <span class="o">=</span> <span class="n">dejong_census</span><span class="p">(</span><span class="o">*</span><span class="n">PRESETS</span><span class="p">[</span><span class="s2">"veil"</span><span class="p">],</span> <span class="n">quality</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">my_artwork</span><span class="p">,</span> <span class="n">my_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#0B0604"</span><span class="p">)</span>
+<span class="n">show_census</span><span class="p">(</span><span class="n">my_census</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">my_ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a6d05e67b814da9f0a1f2515d8c0848a651dd61b170c938fb964cd0d26d9b504.png" src="../_images/a6d05e67b814da9f0a1f2515d8c0848a651dd61b170c938fb964cd0d26d9b504.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch09_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: one valley of the continent.</strong> Fix <span class="math notranslate nohighlight">\(c = 2.4\)</span> and <span class="math notranslate nohighlight">\(d = -2.1\)</span> (the <code class="docutils literal notranslate"><span class="pre">fog</span></code> values) and render a 3 by 3 grid sweeping <span class="math notranslate nohighlight">\(a\)</span> over <span class="math notranslate nohighlight">\(\{1.2, 1.4, 1.6\}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> over <span class="math notranslate nohighlight">\(\{-2.5, -2.3, -2.1\}\)</span> at <code class="docutils literal notranslate"><span class="pre">quality=0.1</span></code>. Describe the families you see: which neighbors are clearly relatives, and where does the character break? One sentence per row is plenty.</p>
+<p><strong>(b) Code modification: the Clifford attractor.</strong> Peter de Jong’s map has a sibling, attributed to Clifford Pickover <a class="cite" href="#ref-bourke">(Bourke, attractor pages)</a>:</p>
+<div class="math notranslate nohighlight">
+\[x' = \sin(a\,y) + c\cdot\cos(a\,x), \qquad y' = \sin(b\,x) + d\cdot\cos(b\,y).\]</div>
+<p>Note the differences: the second term is <em>scaled</em> by <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(d\)</span> rather than driven by them, and each line reuses one parameter twice. Write <code class="docutils literal notranslate"><span class="pre">clifford_census</span></code> (one formula swap in the gatherer; mind the wider range: coordinates can now reach <span class="math notranslate nohighlight">\(\pm(1 + |c|)\)</span> and <span class="math notranslate nohighlight">\(\pm(1 + |d|)\)</span>) and render the documented set <span class="math notranslate nohighlight">\((-1.4, 1.6, 1.0, 0.7)\)</span>.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">clifford_census</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">n_walkers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">200_000</span> <span class="o">*</span> <span class="n">quality</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_walkers</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_walkers</span><span class="p">)</span>
+    <span class="n">reach_x</span><span class="p">,</span> <span class="n">reach_y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">bins</span><span class="p">,</span> <span class="n">bins</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">60</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">h</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span>
+                                     <span class="nb">range</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="n">reach_x</span><span class="p">,</span> <span class="n">reach_x</span><span class="p">],</span>
+                                            <span class="p">[</span><span class="o">-</span><span class="n">reach_y</span><span class="p">,</span> <span class="n">reach_y</span><span class="p">]])</span>
+            <span class="n">counts</span> <span class="o">+=</span> <span class="n">h</span>
+    <span class="k">return</span> <span class="n">counts</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="n">show_census</span><span class="p">(</span><span class="n">clifford_census</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The Clifford family tends toward blockier, more architectural figures than de Jong’s veils; with <span class="math notranslate nohighlight">\((-1.4, 1.6, 1.0, 0.7)\)</span> you should see a folded ribbon with four dense knots. The only genuine trap is the <code class="docutils literal notranslate"><span class="pre">range</span></code>: reuse de Jong’s <span class="math notranslate nohighlight">\(\pm 2.1\)</span> box and the figure gets cropped mid-wing.</p>
+</details>
+<p><strong>(c) Creative challenge: prospecting.</strong> Draw four numbers at random from <span class="math notranslate nohighlight">\([-3, 3]\)</span> (seed your generator, chapter 2, so you can refind what you find), render at <code class="docutils literal notranslate"><span class="pre">quality=0.1</span></code>, and repeat until something strange looks back. Expect mostly desert: dots, rings, thin scribbles. When an attractor appears, render it at full quality, name the creature, and export it with <code class="docutils literal notranslate"><span class="pre">save_artwork</span></code>. Keep the numbers in the filename or a comment; discoverers who lose their coordinates have to rediscover them the hard way.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Edward N. Lorenz, “Deterministic Nonperiodic Flow”, <em>Journal of the Atmospheric Sciences</em> 20, no. 2 (1963): 130-141: the founding paper, and unusually readable as founding papers go; the attractor figures are hand-plotted.</p></li>
+<li><p>James Gleick, <em>Chaos: Making a New Science</em> (Viking, 1987): the book that made Lorenz’s printout famous; chapter 1 tells the rounded-number story at full length.</p></li>
+<li><p>A. K. Dewdney, “Probing the strange attractions of chaos”, <em>Scientific American</em> 257, no. 1 (July 1987): the column that printed Peter de Jong’s formula, and a period piece of the readers-with-home-computers culture this chapter descends from.</p></li>
+<li><p>Clifford A. Pickover, <em>Computers, Pattern, Chaos and Beauty</em> (St. Martin’s Press, 1990): recipes and exhortations from the genre’s most prolific popularizer.</p></li>
+<li><p>Paul Bourke’s attractor pages at <a class="reference external" href="http://paulbourke.net">paulbourke.net</a> (oldest entries dated 1989): the living archive of parameter sets, including the de Jong and Clifford galleries this chapter’s presets come from.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-bourke"></span>Bourke, P. (1989 onward). Peter de Jong attractors; Clifford attractors. <a class="reference external" href="https://paulbourke.net/fractals/peterdejong/">paulbourke.net/fractals/peterdejong/</a>, <a class="reference external" href="https://paulbourke.net/fractals/clifford/">paulbourke.net/fractals/clifford/</a>. The living archive of parameter sets this chapter’s presets come from; the de Jong page dates to January 1989.</p></li>
+<li><p><span id="ref-dewdney1987"></span>Dewdney, A. K. (1987). Computer recreations: Probing the strange attractions of chaos. <em>Scientific American</em>, 257(1), 108–111. The column that printed Peter de Jong’s formula.</p></li>
+<li><p><span id="ref-gleick1987"></span>Gleick, J. (1987). <em>Chaos: Making a New Science</em>. Viking, New York. Chapter 1 tells the rounded-printout story at full length.</p></li>
+<li><p><span id="ref-lorenz1963"></span>Lorenz, E. N. (1963). Deterministic nonperiodic flow. <em>Journal of the Atmospheric Sciences</em>, 20(2), 130–141. <a class="reference external" href="https://doi.org/10.1175/1520-0469(1963)020%3C0130:DNF%3E2.0.CO;2">doi:10.1175/1520-0469(1963)020&lt;0130:DNF&gt;2.0.CO;2</a>. The founding paper, with the first strange attractor.</p></li>
+<li><p><span id="ref-lorenz1993"></span>Lorenz, E. N. (1993). <em>The Essence of Chaos</em>. University of Washington Press, Seattle. Lorenz’s own account of the butterfly title, Merilees’ coinage, and the earlier seagull; the 1972 talk is reprinted as an appendix.</p></li>
+<li><p><span id="ref-pickover1990"></span>Pickover, C. A. (1990). <em>Computers, Pattern, Chaos and Beauty: Graphics from an Unseen World</em>. St. Martin’s Press, New York. The genre’s most prolific popularizer.</p></li>
+<li><p><span id="ref-ruelle1971"></span>Ruelle, D., and Takens, F. (1971). On the nature of turbulence. <em>Communications in Mathematical Physics</em>, 20(3), 167–192. <a class="reference external" href="https://doi.org/10.1007/BF01646553">doi:10.1007/BF01646553</a>. The paper that coined the term <em>strange attractor</em>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image at the top of the notebook: the <code class="docutils literal notranslate"><span class="pre">fog</span></code> parameters, 48 million visits (quality 4) on a 2000 by 2000 census, rendered through a custom four-stop ember colormap: near-black, deep rust, ember orange, pale gold. It runs automatically with <em>Restart &amp; Run All</em> and takes about 15 seconds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: fog, 48 million visits, ember light</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+
+<span class="n">EMBER</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+    <span class="s2">"ember"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"#0B0604"</span><span class="p">,</span> <span class="s2">"#8C2703"</span><span class="p">,</span> <span class="s2">"#F07B2D"</span><span class="p">,</span> <span class="s2">"#FFE8B0"</span><span class="p">])</span>
+
+<span class="n">sp_census</span> <span class="o">=</span> <span class="n">dejong_census</span><span class="p">(</span><span class="o">*</span><span class="n">PRESETS</span><span class="p">[</span><span class="s2">"fog"</span><span class="p">],</span> <span class="n">quality</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">showpiece</span><span class="p">,</span> <span class="n">sp_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#0B0604"</span><span class="p">)</span>
+<span class="n">show_census</span><span class="p">(</span><span class="n">sp_census</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">EMBER</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">sp_ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/532c358051818e382a53190dc3615168f74c806882878aefd7163b853686b844.png" src="../_images/532c358051818e382a53190dc3615168f74c806882878aefd7163b853686b844.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch09_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08-fractals.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">8. Fractals: Infinite Detail</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="10-noise-and-flow-fields.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">10. Noise and Flow Fields</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-weather-that-would-not-repeat">Context: the weather that would not repeat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-a-map-instead-of-a-walk">The mathematics: a map instead of a walk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitive-dependence-demonstrated">Sensitive dependence, demonstrated</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-million-visits-density-is-the-object">A million visits: density is the object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-safari">The parameter safari</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

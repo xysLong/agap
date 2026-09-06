@@ -1,0 +1,981 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>22. Differential Growth: The Restless Line &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/22-differential-growth';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="23. Evolving Images: Breeding as Composition" href="23-evolving-images.html" />
+    <link rel="prev" title="21. Physarum: The Trail-Laying Swarm" href="21-physarum.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>22. Differential Growth: The Restless Line</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-jewelry-plotters-and-the-hem-of-the-kale-leaf">Context: jewelry, plotters, and the hem of the kale leaf</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-three-rules-and-an-inevitability">The mathematics: three rules and an inevitability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-two-strangers-keep-their-distance">Rule two: strangers keep their distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-dials-three-species">Two dials, three species</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-packed-labyrinth">The packed labyrinth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="differential-growth-the-restless-line">
+<h1>22. Differential Growth: The Restless Line<a class="headerlink" href="#differential-growth-the-restless-line" title="Link to this heading">#</a></h1>
+<p>Part V has given us agents that fly (chapter 19), freeze on contact (20), and follow each other’s trails (21). Today the strangest crowd of all: agents chained into a single closed line, each negotiating every move with two permanent neighbors, while the chain itself grows. The result is a line that cannot sit still and cannot cross itself, so it does the only thing left: it ruffles.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>One line. The showpiece below contains a single closed loop of ink, no branches, no crossings, drawn by no hand: it began as a circle of fifty points and grew, node by node, edge by edge, into a labyrinth packed against a circular wall, the way a kale leaf packs its hem or a brain packs its cortex. By the end of today you will grow these yourself, steer them between lettuce and coral with two dials, and know why the buckling is not a choice but a mathematical inevitability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch22_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/226e597cf25680200a2926b6d29bf8c8ed70f1f93f1ca81eb110a7362b8eb738.png" src="../_images/226e597cf25680200a2926b6d29bf8c8ed70f1f93f1ca81eb110a7362b8eb738.png" />
+</div>
+</div>
+</section>
+<section id="context-jewelry-plotters-and-the-hem-of-the-kale-leaf">
+<h2>Context: jewelry, plotters, and the hem of the kale leaf<a class="headerlink" href="#context-jewelry-plotters-and-the-hem-of-the-kale-leaf" title="Link to this heading">#</a></h2>
+<p>In the studio economy of generative art, differential growth is the technique that most visibly <em>left the screen</em>. <strong>Nervous System</strong>, the studio Jessica Rosenkrantz and Jesse Louis-Rosenberg founded in 2007 <a class="cite" href="#ref-nervabout">(Nervous System, about page)</a>, has been turning growth simulations into physical objects for over a decade: their <em>Hyphae</em> lamps (2011) grew like leaf veins <a class="cite" href="#ref-nervhyphae">(Nervous System, <em>Hyphae</em> project page)</a>, and <em>Floraform</em>, begun in 2014, simulates a differentially growing elastic <em>surface</em>, inspired by blooming flowers and the cockscomb flower’s ruffled crest <a class="cite" href="#ref-nervfloraform">(Nervous System, <em>Floraform</em> essay)</a>, then 3D-prints the results as jewelry and sculpture. What we build today is that idea’s planar cousin and the creative-coding community’s standard form of it: not a growing surface but a growing <em>line</em> in the plane, the “differential line” that the Norwegian artist <strong>Anders Hoff</strong>, writing as <em>inconvergent</em>, documented in an influential series of essays around 2015-16 <a class="cite" href="#ref-hoff">(Hoff, <em>Differential Line</em> essay)</a>. Hoff’s grown lines, drawn by pen plotters in unbroken strokes, did much to shape the whole plotter-era aesthetic; chapter 26 will put the machinery for that on your desk, and today’s single-line artwork is, not coincidentally, the most plottable image this book produces.</p>
+<p>The pattern itself is much older than either studio, because biology got there first. Look at the hem of a kale or lettuce leaf: it ripples. The physics is well studied (Eran Sharon and colleagues showed it in <em>Nature</em> in 2002 <a class="cite" href="#ref-sharon2002">(Sharon et al. 2002)</a> with nothing but torn plastic sheets): when an edge grows <em>faster than the interior it is attached to</em>, the extra length has nowhere to lie flat, so it buckles out into waves, and waves upon the waves. No genetic blueprint for the ruffle is needed, only a growth rate and elasticity. Coral frills, the crest of the cockscomb, the folded cortex of the brain you are reading this with (a leading mechanical model, published by <a class="cite" href="#ref-tallinen2016">Tallinen and colleagues in 2016</a>, generates realistic cortical folds from differential growth alone): one mechanism, many bodies. And presiding over the whole chapter, back from chapter 7, stands <strong>D’Arcy Thompson</strong>, whose <em>On Growth and Form</em> (1917) insisted that biological shape is physics and mathematics at work <a class="cite" href="#ref-thompson1917">(Thompson 1917)</a>. In his day that was an argument conducted in prose and measurement; today it compiles. We write the three rules, and the leaf appears.</p>
+</section>
+<section id="the-mathematics-three-rules-and-an-inevitability">
+<h2>The mathematics: three rules and an inevitability<a class="headerlink" href="#the-mathematics-three-rules-and-an-inevitability" title="Link to this heading">#</a></h2>
+<p>The organism is a <strong>closed polyline</strong> (geschlossener Polygonzug): an ordered array of node positions where node <span class="math notranslate nohighlight">\(i\)</span> is chained to <span class="math notranslate nohighlight">\(i-1\)</span> and <span class="math notranslate nohighlight">\(i+1\)</span>, and the last node loops back to the first. Three local rules act every step:</p>
+<ol class="arabic simple">
+<li><p><strong>Cohesion.</strong> Each node is pulled toward the midpoint of its two chain neighbors: a spring along the chain, <span class="math notranslate nohighlight">\(F_{\text{coh}} = k_c \,(p_{i-1} + p_{i+1} - 2 p_i)\)</span>, read aloud: <em>where my neighbors’ average is, minus where I am.</em> It keeps the chain taut and smooth. (It is chapter 19’s cohesion rule with the flock shrunk to a family of two.)</p></li>
+<li><p><strong>Repulsion.</strong> Each node pushes away from <em>every</em> node that strays inside its personal radius, chain neighbors excepted; this is chapter 19’s separation rule, unchanged. Repulsion is what makes the line refuse to cross itself: a stranger’s approach is repelled before contact.</p></li>
+<li><p><strong>Growth.</strong> New nodes arrive two ways, both by <code class="docutils literal notranslate"><span class="pre">np.insert</span></code> on the coordinate array: wherever an edge stretches past a threshold, its midpoint becomes a node, and on top of that a steady random drip of extra midpoints lands each step (the <code class="docutils literal notranslate"><span class="pre">sprout_rate</span></code> dial, the organism’s growth hormone). New material arrives <em>in</em> the line, not at its ends; a closed loop has no ends. A small housekeeping rule runs alongside: nodes sitting on near-zero edges are dropped, so the chain never clogs (resampling, for numerical health).</p></li>
+</ol>
+<p>Why must this buckle? Count what each side of the bargain can offer. Growth never stops: every step adds nodes, so the perimeter climbs without pause, several units a step, without bound. But the line lives in a bounded patch of plane, and a plane can only host so much non-crossing curve per unit area: repulsion enforces a minimum lane spacing, so available room is fixed by <em>area</em>. Perimeter that grows without bound, room that does not: the surplus must fold, and fold again, at every scale. Buckling is not an aesthetic we chose; it is the only exit the arithmetic leaves open. That is the deep kinship with the kale leaf, whose hem also grows faster than the plane it is stitched to.</p>
+<p>One engineering note before the code, stated once and honestly: we implement everything as flock-style NumPy position arrays (no classes; chapter 19 taught the idiom), and for the “who is near me” question we use chapter 15’s <code class="docutils literal notranslate"><span class="pre">cKDTree</span></code>, rebuilt every five steps (and immediately after any step that inserted or pruned nodes) rather than every step. A five-step-old tree occasionally misses a brand-new neighbor for a few frames; at our step sizes nothing visible goes wrong, and the run is several times faster. Simulation is full of such documented small dishonesties; the craft is keeping them small and documented.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the organism at rest: a circle of forty nodes, springs only</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>                       <span class="c1"># make the course package importable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_loop</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">wobble</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)])</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="k">return</span> <span class="n">loop</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wobble</span><span class="p">,</span> <span class="n">loop</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># crumple it a little</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cohesion_force</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.22</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pos</span><span class="p">)</span>
+
+<span class="n">crumpled</span> <span class="o">=</span> <span class="n">make_loop</span><span class="p">()</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">crumpled</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">cohesion_force</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">crumpled</span><span class="p">,</span> <span class="s2">"born crumpled"</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pos</span><span class="p">,</span> <span class="s2">"300 steps of springs: it sits still"</span><span class="p">)]:</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">loop</span><span class="p">,</span> <span class="n">loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/07d17ec6e41a17a6a38c24f1394824a2f1a43784a66dd2cfe42cbc230f133294.png" src="../_images/07d17ec6e41a17a6a38c24f1394824a2f1a43784a66dd2cfe42cbc230f133294.png" />
+</div>
+</div>
+<p>The negative control, and worth its cell: springs alone are an <em>anti</em>-generative force. They iron out the crumples, shrink the loop a little (each node forever chasing its neighbors’ midpoint), and deliver a tidy ring that will now sit unchanged until the sun burns out. Every interesting thing in this chapter comes from the other two rules; the springs are there so that what grows stays a <em>line</em> instead of dissolving into a swarm.</p>
+</section>
+<section id="rule-two-strangers-keep-their-distance">
+<h2>Rule two: strangers keep their distance<a class="headerlink" href="#rule-two-strangers-keep-their-distance" title="Link to this heading">#</a></h2>
+<p>Repulsion needs to know who is near. The honest first version asks everyone about everyone: compute the full table of pairwise offsets with broadcasting (every node minus every node, an <span class="math notranslate nohighlight">\(n \times n \times 2\)</span> array), find the pairs closer than the radius, and push them apart. At forty nodes that table has 1,600 entries and costs nothing; at four thousand it would have sixteen million, which is why the fast version follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># repulsion, brute force: the full pairwise table (fine at small n)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">repulsion_force_slow</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.55</span><span class="p">):</span>
+    <span class="n">offsets</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>      <span class="c1"># every node minus every node</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">offsets</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">offsets</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1e-9</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">index_gap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">strangers</span> <span class="o">=</span> <span class="p">(</span><span class="n">distances</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">index_gap</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">index_gap</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">falloff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">strangers</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">distances</span> <span class="o">/</span> <span class="n">radius</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">offsets</span> <span class="o">/</span> <span class="n">distances</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">falloff</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="n">crumpled</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">cohesion_force</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">+</span> <span class="n">repulsion_force_slow</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pos</span><span class="p">,</span> <span class="n">pos</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"springs + repulsion: taut, evenly spaced, still a circle"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c1f5f49ffaa4615a1c26c4cc88ebcceab7b87fecfeddfb6b27987c5384c00298.png" src="../_images/c1f5f49ffaa4615a1c26c4cc88ebcceab7b87fecfeddfb6b27987c5384c00298.png" />
+</div>
+</div>
+<p>Springs pull the chain together, repulsion holds strangers apart, and the two negotiate a clean, evenly-spaced circle: an organism in equilibrium, alive but not yet growing. (The <code class="docutils literal notranslate"><span class="pre">index_gap</span> <span class="pre">&gt;</span> <span class="pre">2</span></code> line exempts each node’s immediate chain family from repulsion; family is held by springs, repulsion is foreign policy.)</p>
+<p>The fast version replaces the all-pairs table with chapter 15’s <code class="docutils literal notranslate"><span class="pre">cKDTree</span></code>, which hands us exactly the pairs within the radius and nothing else. Same physics, new bookkeeping, so it earns its own function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># repulsion, fast: same physics, cKDTree pairs instead of the full table</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">repulsion_force</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.55</span><span class="p">):</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_pairs</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">"ndarray"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pairs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pairs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">gap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">strangers</span> <span class="o">=</span> <span class="p">(</span><span class="n">gap</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gap</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>       <span class="c1"># family is exempt, as before</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">strangers</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">strangers</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="n">offsets</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">offsets</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">offsets</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1e-9</span>
+            <span class="n">push</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">radius</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">offsets</span> <span class="o">/</span> <span class="n">dist</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">*</span> <span class="n">k</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">push</span><span class="p">)</span>               <span class="c1"># accumulate, pair by pair</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="n">push</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">force</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the growth engine, complete: cohesion + repulsion + growth + housekeeping</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">start_nodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span> <span class="n">cohesion</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span>
+         <span class="n">repulsion</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">edge_max</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">edge_min</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+         <span class="n">jitter</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">sprout_rate</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">snapshots</span><span class="o">=</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">"""Differential growth of a closed line; returns final loop + snapshots.</span>
+
+<span class="sd">    sprout_rate: average random midpoint insertions per step (the growth</span>
+<span class="sd">    hormone); edge_max: stretch threshold for forced insertion; boundary:</span>
+<span class="sd">    radius of a soft circular wall, or None for open water.</span>
+<span class="sd">    """</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">start_nodes</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)])</span> <span class="o">*</span> <span class="mi">16</span>
+    <span class="n">tree</span><span class="p">,</span> <span class="n">tree_age</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="mi">0</span>
+    <span class="n">shots</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tree_age</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="ow">or</span> <span class="n">tree</span><span class="o">.</span><span class="n">n</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>            <span class="c1"># stale or wrong-sized tree</span>
+            <span class="n">tree</span><span class="p">,</span> <span class="n">tree_age</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="mi">0</span>
+        <span class="n">tree_age</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="p">(</span><span class="n">cohesion</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                             <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pos</span><span class="p">)</span>
+                 <span class="o">+</span> <span class="n">repulsion_force</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">repel_radius</span><span class="p">,</span> <span class="n">repulsion</span><span class="p">))</span>
+        <span class="n">force</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># the tremble that seeds waves</span>
+        <span class="k">if</span> <span class="n">boundary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                    <span class="c1"># soft circular wall (ch19 idiom)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">pos</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">outside</span> <span class="o">=</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">boundary</span>
+            <span class="k">if</span> <span class="n">outside</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="n">overshoot</span> <span class="o">=</span> <span class="p">((</span><span class="n">r</span><span class="p">[</span><span class="n">outside</span><span class="p">]</span> <span class="o">-</span> <span class="n">boundary</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">force</span><span class="p">[</span><span class="n">outside</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">overshoot</span> <span class="o">*</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">outside</span><span class="p">]</span>
+                                                     <span class="o">/</span> <span class="n">r</span><span class="p">[</span><span class="n">outside</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">force</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">mutated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">max_nodes</span><span class="p">:</span>                           <span class="c1"># rule three: growth</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">pos</span>
+            <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">lengths</span> <span class="o">&gt;</span> <span class="n">edge_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sprouts</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">sprout_rate</span><span class="p">)</span>      <span class="c1"># steady random insertions</span>
+            <span class="k">if</span> <span class="n">sprouts</span><span class="p">:</span>
+                <span class="n">split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">split</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sprouts</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
+                <span class="n">midpoints</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">split</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="n">split</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">split</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">midpoints</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">mutated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">pos</span>      <span class="c1"># resampling for health:</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="n">lengths</span> <span class="o">&gt;</span> <span class="n">edge_min</span>                   <span class="c1"># drop nodes on tiny edges</span>
+        <span class="k">if</span> <span class="n">keep</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">keep</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+            <span class="n">mutated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">mutated</span><span class="p">:</span>
+            <span class="n">tree_age</span> <span class="o">=</span> <span class="mi">5</span>                            <span class="c1"># indices shifted: fresh tree</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">:</span>
+            <span class="n">shots</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pos</span><span class="p">,</span> <span class="n">shots</span>
+
+<span class="n">final</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">2600</span><span class="p">,</span>
+                    <span class="n">snapshots</span><span class="o">=</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"final: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">final</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>final: 2602 nodes
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the filmstrip: one organism, five ages</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shots</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="p">[(</span><span class="mi">900</span><span class="p">,</span> <span class="n">final</span><span class="p">)]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">ages</span><span class="p">):</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">loop</span><span class="p">,</span> <span class="n">loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a43c65028794e696dc3224204535972c31a66628e515d1a7b366395d897886b.png" src="../_images/8a43c65028794e696dc3224204535972c31a66628e515d1a7b366395d897886b.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The frill erupts. For its first hundred steps the loop is a slightly nervous circle; then a few waves find each other, the waves sprout waves, and by step 650 the organism is a meandering coastline that no longer remembers being round. The filmstrip is chapter 14’s trick for watching a process instead of a result, and the resemblance to that chapter’s chemistry is not a coincidence we will let pass unremarked (it gets its sentence at the labyrinth below).</p>
+<p>The inevitability argument made one measurable promise: the perimeter should climb without pause. Let us check it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the promise, audited: perimeter over time</span>
+<span class="n">lengths_by_age</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">age</span><span class="p">,</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">:</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">loop</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">loop</span>
+    <span class="n">lengths_by_age</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">],</span> <span class="n">lengths_by_age</span><span class="p">,</span> <span class="s2">"o-"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"step"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"perimeter of the loop"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"growth without pause: the perimeter climbs steadily"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cf3f6ebf5191d93a8f11b14f146f62c3d21ec493d4975b9d5529168d9d95a7f6.png" src="../_images/cf3f6ebf5191d93a8f11b14f146f62c3d21ec493d4975b9d5529168d9d95a7f6.png" />
+</div>
+</div>
+</section>
+<section id="two-dials-three-species">
+<h2>Two dials, three species<a class="headerlink" href="#two-dials-three-species" title="Link to this heading">#</a></h2>
+<p>Everything the organism <em>is</em> lives in the balance between how fast it grows (<code class="docutils literal notranslate"><span class="pre">sprout_rate</span></code>) and how far its skin senses strangers (<code class="docutils literal notranslate"><span class="pre">repel_radius</span></code>). Three presets, honestly labeled, the third one a failure kept on purpose.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># kale, coral, scribble: the personality space of two dials</span>
+<span class="n">species</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"kale: fast growth, short senses"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sprout_rate</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                                             <span class="n">edge_max</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">2600</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"coral: slow growth, long senses"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sprout_rate</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span>
+                                             <span class="n">edge_max</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">2600</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"scribble: growth outruns the skin"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sprout_rate</span><span class="o">=</span><span class="mf">9.0</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+                                               <span class="n">edge_max</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                                               <span class="n">max_nodes</span><span class="o">=</span><span class="mi">2600</span><span class="p">)),</span>
+<span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">species</span><span class="p">):</span>
+    <span class="n">loop</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">loop</span><span class="p">,</span> <span class="n">loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3701437a86fda960e16aadc92eb62651d423eabf27a04ecdb4b4241fa5586a95.png" src="../_images/3701437a86fda960e16aadc92eb62651d423eabf27a04ecdb4b4241fa5586a95.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Kale’s short-sighted, fast-growing line packs tight, even ruffles: the hem of the leaf. Coral, growing slowly with long-range repulsion, holds wide, smooth lobes apart like fan coral in a current. And the scribble is what failure looks like in this system, shown because you will meet it the moment you explore on your own: grow faster than repulsion can organize (here with the tremble turned up as well) and the line crumples into overlapping chaos, no longer a drawing of anything. The lesson generalizes across Part V: every agent system has a regime where its negotiation machinery keeps up, and a cliff where it does not.</p>
+<p><strong>Try it.</strong> <code class="docutils literal notranslate"><span class="pre">seed=5</span></code> grew all three; change it and the species keep their characters while every individual differs: genotype in the dials, biography in the seed (chapter 2’s oldest lesson, still true at four thousand nodes).</p>
+</section>
+<section id="the-packed-labyrinth">
+<h2>The packed labyrinth<a class="headerlink" href="#the-packed-labyrinth" title="Link to this heading">#</a></h2>
+<p>One more ingredient and we reach the showpiece: a wall. Chapter 19 cushioned its flock inside a box with a soft push; the same idiom, aimed inward from a circle, pens the growing line into a fixed arena. Growth does not stop at the wall, it <em>accumulates</em> against it, and the frill, denied outward escape, folds inward until it has paved the disk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># growth under confinement: the line paves its cage</span>
+<span class="n">caged</span><span class="p">,</span> <span class="n">cage_shots</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">1400</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+                         <span class="n">snapshots</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">600</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">stages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cage_shots</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="p">[(</span><span class="mi">1400</span><span class="p">,</span> <span class="n">caged</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">stages</span><span class="p">):</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">loop</span><span class="p">,</span> <span class="n">loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">80</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">,</span>
+                            <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ce0fc8ec2138afb06462b0e82721ed77590080e6acd117645ae2da84daa69da0.png" src="../_images/ce0fc8ec2138afb06462b0e82721ed77590080e6acd117645ae2da84daa69da0.png" />
+</div>
+</div>
+<p><strong>Look and compare</strong> the right panel with chapter 14’s showpiece, the reaction-diffusion labyrinth. Two systems with nothing in common mechanically, one a field of simulated chemistry, the other a single elastic line, arrive at the <em>same look</em>: meandering lanes at a uniform spacing, filling a region wall to wall. That convergence is the punchline Parts III to V have been building: labyrinths appear wherever something grows or reacts under two constraints, <em>fill the space</em> and <em>keep your distance</em>, and the universe does not much care whether chemistry, geometry, or a flock of birds does the negotiating. When two of your systems agree this well, you have not repeated yourself; you have found a law.</p>
+<p><strong>Try it.</strong> Halve the wall radius to 40 and rerun: same growth, a quarter of the floor space. How much sooner is the disk paved, and what happens to the width of the lanes?</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Grow your own: choose a species preset (or your own dials), a wall radius or open water, a seed, and ink it. The single-line constraint rewards restraint: one color, thin pen, paper ground.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR organism: tune dials, replace 'yourname', run</span>
+<span class="n">my_loop</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">1100</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+                  <span class="n">sprout_rate</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">my_artwork</span><span class="p">,</span> <span class="n">my_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">my_closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">my_loop</span><span class="p">,</span> <span class="n">my_loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">my_closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">my_closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">88</span><span class="p">,</span> <span class="mi">88</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">88</span><span class="p">,</span> <span class="mi">88</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a3fdd554dc85d528b89c86e02e1f265652c8d6798a9fb07e6eba25f78ae71f55.png" src="../_images/a3fdd554dc85d528b89c86e02e1f265652c8d6798a9fb07e6eba25f78ae71f55.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch22_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the kale-coral-scribble axis.</strong> Render a 3 by 3 grid crossing <code class="docutils literal notranslate"><span class="pre">sprout_rate</span></code> <span class="math notranslate nohighlight">\(\in \{0.4, 1.5, 6.0\}\)</span> with <code class="docutils literal notranslate"><span class="pre">repel_radius</span></code> <span class="math notranslate nohighlight">\(\in \{4, 10, 18\}\)</span> (steps around 600 and <code class="docutils literal notranslate"><span class="pre">max_nodes=1500</span></code> keep the grid quick). One sentence per cell: name each regime’s character, and mark where the scribble cliff runs through the grid.</p>
+<p><strong>(b) Code modification: the hanging frill.</strong> Growth on an <em>open</em> curve: a horizontal line of nodes whose two endpoints are pinned like the corners of a clothesline, everything between free to grow and sag. Copy <code class="docutils literal notranslate"><span class="pre">grow</span></code> into <code class="docutils literal notranslate"><span class="pre">grow_open</span></code> with four changes: build the starting positions as a line instead of a circle; replace the rolled (wrap-around) neighbor arithmetic for cohesion, edges and the stranger test with their open-chain versions; after each step, snap the two endpoints back to their pinned positions; and add a pinch of downward gravity, so the surplus drapes instead of rippling in place. Grow it and watch a curtain frill fall out of the line.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">grow_open</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">n_start</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">2200</span><span class="p">,</span>
+              <span class="n">cohesion</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">repulsion</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+              <span class="n">edge_max</span><span class="o">=</span><span class="mf">2.4</span><span class="p">,</span> <span class="n">edge_min</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">sprout_rate</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+              <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_start</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_start</span><span class="p">)])</span>
+    <span class="n">pin_left</span><span class="p">,</span> <span class="n">pin_right</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">force</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cohesion</span> <span class="o">*</span> <span class="p">(</span><span class="n">pos</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>                    <span class="c1"># rebuilt every step: simpler</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_pairs</span><span class="p">(</span><span class="n">repel_radius</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">"ndarray"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pairs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pairs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">strangers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span>      <span class="c1"># no wrap-around on an open chain</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">strangers</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">strangers</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">offsets</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">offsets</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">offsets</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1e-9</span>
+                <span class="n">push</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">repel_radius</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+                        <span class="o">*</span> <span class="n">offsets</span> <span class="o">/</span> <span class="n">dist</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">*</span> <span class="n">repulsion</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">push</span><span class="p">)</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="n">push</span><span class="p">)</span>
+        <span class="n">force</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">force</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.01</span>                    <span class="c1"># a little gravity: it is laundry</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">force</span>
+        <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pin_left</span><span class="p">,</span> <span class="n">pin_right</span>  <span class="c1"># the pins</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_nodes</span><span class="p">:</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>         <span class="c1"># open chain: n-1 edges, no roll</span>
+            <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">lengths</span> <span class="o">&gt;</span> <span class="n">edge_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sprouts</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">sprout_rate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sprouts</span><span class="p">:</span>
+                <span class="n">split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">split</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sprouts</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">):</span>
+                <span class="n">midpoints</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">split</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos</span><span class="p">[</span><span class="n">split</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">split</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">midpoints</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="kc">True</span><span class="p">],</span> <span class="n">lengths</span> <span class="o">&gt;</span> <span class="n">edge_min</span><span class="p">])</span>
+        <span class="n">keep</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>                        <span class="c1"># never drop the pinned ends</span>
+        <span class="k">if</span> <span class="n">keep</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">keep</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pos</span>
+
+<span class="n">curtain</span> <span class="o">=</span> <span class="n">grow_open</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">curtain</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">curtain</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">curtain</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">curtain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">curtain</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">curtain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+        <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The middle grows, the ends cannot, and the surplus length sags and ruffles downward into a hanging frill (the pinch of gravity makes it drape instead of exploding evenly). This is the kale hem in its purest form: growth between fixed boundaries, with the buckling pushed to where the growing is.</p>
+</details>
+<p><strong>(c) Creative challenge: grow from a silhouette.</strong> The starting loop need not be a circle. Seed it from a shape you care about: a large letterform (render text to pixels, threshold it, and walk the outline), or an outline sampled with chapter 15’s machinery, and let the growth erupt from <em>that</em>, gently (low <code class="docutils literal notranslate"><span class="pre">sprout_rate</span></code>, a few hundred steps), so the original shape remains legible under the frill, a word becoming a reef. Or take today’s finished labyrinth to chapter 26’s plotter discipline: sort nothing, optimize nothing, the artwork is already one continuous line, the plotter’s dream, and draw it in a single unbroken stroke of real ink.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>D’Arcy Wentworth Thompson, <em>On Growth and Form</em> (1917; expanded edition 1942): the ancestral text for everything in this chapter, and still a pleasure to read on its own terms.</p></li>
+<li><p>Eran Sharon, Benoît Roman, Michael Marder, Gyu-Seung Shin and Harry L. Swinney, “Buckling cascades in free sheets”, <em>Nature</em> 419 (2002): the torn-plastic experiment showing that a fast-growing edge buckles into waves upon waves, no blueprint required.</p></li>
+<li><p>Tuomas Tallinen and colleagues, “On the growth and form of cortical convolutions”, <em>Nature Physics</em> 12 (2016): differential growth folding a gel-brain, with the title’s bow to Thompson.</p></li>
+<li><p>Anders Hoff’s essay series on generative algorithms at <a class="reference external" href="http://inconvergent.net">inconvergent.net</a>, especially “Differential Line”: the canonical creative-coding treatment this chapter’s engine descends from.</p></li>
+<li><p>Nervous System’s project pages and blog at <a class="reference external" href="http://n-e-r-v-o-u-s.com">n-e-r-v-o-u-s.com</a> document <em>Hyphae</em> and <em>Floraform</em>, where these simulations become objects you can wear.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-hoff"></span>Hoff, A. (n.d.). On generative algorithms: Differential line. <a class="reference external" href="https://inconvergent.net/generative/differential-line/">inconvergent.net/generative/differential-line</a>. The canonical creative-coding essay on the growing line, from the essay series this chapter’s engine descends from.</p></li>
+<li><p><span id="ref-nervabout"></span>Nervous System. About us. <a class="reference external" href="https://n-e-r-v-o-u-s.com/about_us.php">n-e-r-v-o-u-s.com/about_us.php</a>. “Founded in 2007 by Jessica Rosenkrantz and Jesse Louis-Rosenberg.”</p></li>
+<li><p><span id="ref-nervfloraform"></span>Nervous System (Rosenkrantz, J., and Louis-Rosenberg, J.) (2015). Floraform: An exploration of differential growth. Nervous System blog, 22 June 2015. <a class="reference external" href="https://n-e-r-v-o-u-s.com/blog/?p=6721">n-e-r-v-o-u-s.com/blog</a>. The studio’s own essay on the growing-surface simulation (project year 2014), begun with the ruffled blooms of <em>Celosia cristata</em>, the cockscomb.</p></li>
+<li><p><span id="ref-nervhyphae"></span>Nervous System (2011). Hyphae lamps, project page. <a class="reference external" href="https://n-e-r-v-o-u-s.com/projects/sets/hyphae/">n-e-r-v-o-u-s.com/projects/sets/hyphae</a>. “Generative lamps inspired by how veins form in leaves”, year 2011.</p></li>
+<li><p><span id="ref-sharon2002"></span>Sharon, E., Roman, B., Marder, M., Shin, G.-S., and Swinney, H. L. (2002). Buckling cascades in free sheets. <em>Nature</em>, 419, 579. <a class="reference external" href="https://doi.org/10.1038/419579a">doi:10.1038/419579a</a>. The torn-plastic experiment: a fast-growing edge buckles into waves upon waves.</p></li>
+<li><p><span id="ref-tallinen2016"></span>Tallinen, T., Chung, J. Y., Rousseau, F., Girard, N., Lefèvre, J., and Mahadevan, L. (2016). On the growth and form of cortical convolutions. <em>Nature Physics</em>, 12, 588–593. <a class="reference external" href="https://doi.org/10.1038/nphys3632">doi:10.1038/nphys3632</a>. Differential growth folding a gel brain into realistic cortical convolutions.</p></li>
+<li><p><span id="ref-thompson1917"></span>Thompson, D’A. W. (1917). <em>On Growth and Form</em>. Cambridge University Press (expanded edition 1942). The ancestral argument that biological shape is physics and mathematics at work.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image at the top of the notebook: one closed line grown for 1600 steps to nearly three thousand nodes inside a soft circular wall, ink on paper, fixed seed. About 15 seconds; it runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the packed labyrinth, one line of ink</span>
+<span class="n">sp_loop</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grow</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">1600</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">max_nodes</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+                  <span class="n">sprout_rate</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">repel_radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">showpiece</span><span class="p">,</span> <span class="n">sp_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="n">sp_closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">sp_loop</span><span class="p">,</span> <span class="n">sp_loop</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sp_closed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sp_closed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">92</span><span class="p">,</span> <span class="mi">92</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">92</span><span class="p">,</span> <span class="mi">92</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sp_loop</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes, one unbroken line"</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/539168264c9265abbe584506fac6eb95c4faff83798adfc5f670308ea41308f4.png" src="../_images/539168264c9265abbe584506fac6eb95c4faff83798adfc5f670308ea41308f4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2859 nodes, one unbroken line
+saved: assets/outputs/ch22_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="21-physarum.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">21. Physarum: The Trail-Laying Swarm</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="23-evolving-images.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">23. Evolving Images: Breeding as Composition</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-jewelry-plotters-and-the-hem-of-the-kale-leaf">Context: jewelry, plotters, and the hem of the kale leaf</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mathematics-three-rules-and-an-inevitability">The mathematics: three rules and an inevitability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-two-strangers-keep-their-distance">Rule two: strangers keep their distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-dials-three-species">Two dials, three species</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-packed-labyrinth">The packed labyrinth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

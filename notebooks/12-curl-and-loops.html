@@ -1,0 +1,973 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12. Curl and the Endless Loop: Fields in Motion &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/12-curl-and-loops';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Cellular Automata and Emergence" href="13-cellular-automata.html" />
+    <link rel="prev" title="11. Deeper Noise: Cells, Ridges, and Warped Space" href="11-deeper-noise.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>12. Curl and the Endless Loop: Fields in Motion</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-smoke-for-the-movies-and-the-wheel-of-life">Context: smoke for the movies, and the wheel of life</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gradient-at-last">The gradient, at last</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-quarter-turn">The quarter turn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-empirical-proof-clumps-vs-evenness">The empirical proof: clumps vs evenness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-long-exposure-without-gutters">The long exposure, without gutters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-as-a-circle">Time as a circle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies-the-breath-and-the-churn">Parameter studies: the breath and the churn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="curl-and-the-endless-loop-fields-in-motion">
+<h1>12. Curl and the Endless Loop: Fields in Motion<a class="headerlink" href="#curl-and-the-endless-loop-fields-in-motion" title="Link to this heading">#</a></h1>
+<p>Chapter 10’s wind had a flaw you could see: particles piled up in channels and blew out of the frame, and every run was a one-way journey. Today we fix both, with one quarter turn of mathematics: flow that never pools, and then, with one more trick, time that never ends.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>Two artworks, one still and one moving. The still: a long exposure of thousands of particles riding a curl field, closed currents swirling in glacier light, the whole frame evenly alive because this flow <em>cannot</em> abandon a region or flood one. The moving: an animated loop of the field itself, breathing, whose last frame is its first frame, so it circles forever without a visible seam, the oldest form of moving image reborn as a GIF. Both come from the same idea: do not use noise as a velocity, use it as a <em>potential</em>, and let the velocity be its curl.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch12_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/45b959e32090d5875e9ed89a59dc7107fc29df82aa941f837d38cc1fb39aed6f.png" src="../_images/45b959e32090d5875e9ed89a59dc7107fc29df82aa941f837d38cc1fb39aed6f.png" />
+</div>
+</div>
+</section>
+<section id="context-smoke-for-the-movies-and-the-wheel-of-life">
+<h2>Context: smoke for the movies, and the wheel of life<a class="headerlink" href="#context-smoke-for-the-movies-and-the-wheel-of-life" title="Link to this heading">#</a></h2>
+<p>The fix for pooling particles has an exact address: Robert Bridson, Jim Hourihan and Marcus Nordenstam, “Curl-Noise for Procedural Fluid Flow”, SIGGRAPH 2007, four pages written for film-effects artists who needed smoke and ink that swirl convincingly without running a physics simulation. Their diagnosis of naive noise-driven motion is our chapter 10 exactly: such fields “contain many sinks (‘gutters’ where particles accumulate)” <a class="cite" href="#ref-bridson2007">(Bridson et al. 2007)</a>, their word for the bright channels of our ember showpiece. Their cure is a classic vector-calculus identity: the curl of a potential field is automatically divergence-free, no sources, no sinks, no gutters possible, and film pipelines have breathed with it ever since. It is also, once more, the marbler’s chapter: a comb dragged through the bath pushes pigment aside and the bath closes behind it, because the liquid is incompressible; chapter 11 borrowed marbling’s <em>look</em> by warping space, and today we borrow its <em>physics</em>.</p>
+<p>The loop’s lineage is older than cinema. In the winter of 1832-33, the Belgian physicist <strong>Joseph Plateau</strong> and the Austrian <strong>Simon Stampfer</strong> independently built the same toy: a spinning disc of sequential drawings viewed through slits, the phenakistiscope, the first widely sold device to make drawings <em>move</em> <a class="cite" href="#ref-mannoni2000">(Mannoni 2000)</a>. William George Horner bent the disc into a drum in 1834 <a class="cite" href="#ref-horner1834">(Horner 1834)</a>, and in 1865 the eighteen-year-old <strong>William E. Lincoln</strong> perfected that drum as the zoetrope, the “wheel of life”, licensed to the game maker Milton Bradley <a class="cite" href="#ref-lincoln1867">(Lincoln 1867)</a>. Notice what all these machines have in common, forced on them by their circular geometry: <strong>the last drawing must lead back into the first.</strong> On a spinning disc or drum the moving image was <em>necessarily</em> a seamless loop; open-ended time arrived with the filmstrip. When the GIF (born 1987 at CompuServe, looping since a Netscape extension of 1995; <a class="cite" href="#ref-eppink2014">Eppink 2014</a>) became the web’s folk format for short repeating animations, the zoetrope’s constraint returned as an aesthetic: the good GIF, like the good zoetrope strip, hides its seam. Today’s second artwork honors that hundred-and-ninety-year-old discipline with a mathematical guarantee: frame <span class="math notranslate nohighlight">\(N\)</span> will not just resemble frame 0, it will <em>equal</em> it.</p>
+</section>
+<section id="the-gradient-at-last">
+<h2>The gradient, at last<a class="headerlink" href="#the-gradient-at-last" title="Link to this heading">#</a></h2>
+<p>We have skirted this tool for eleven chapters; it becomes ours today. For a field of values <span class="math notranslate nohighlight">\(\psi\)</span> (a grid, in our world), the <strong>gradient</strong> asks at every point: <em>which way is uphill, and how steep?</em> On a grid the answer is a difference of neighbors. NumPy’s <code class="docutils literal notranslate"><span class="pre">np.gradient</span></code> uses the <strong>central difference</strong>: the slope at cell <span class="math notranslate nohighlight">\(i\)</span> is the neighbor ahead minus the neighbor behind, divided by the two steps between them,</p>
+<div class="math notranslate nohighlight">
+\[\text{slope}_i \approx \frac{\psi_{i+1} - \psi_{i-1}}{2}.\]</div>
+<p>Feed it a 2D grid and it returns <em>two</em> grids: the slope along the rows and the slope along the columns, together a little arrow <span class="math notranslate nohighlight">\(\nabla\psi\)</span> at every cell pointing uphill. The three-line example below is worth running slowly; every use of <code class="docutils literal notranslate"><span class="pre">np.gradient</span></code> from here to chapter 27 is this example at scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.gradient in miniature: five values, slopes you can check by eye</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">])</span>     <span class="c1"># a parabola, sampled</span>
+<span class="n">slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">slopes</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"height </span><span class="si">{</span><span class="n">h</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2">   slope </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"interior slopes are (next - previous) / 2; the two ends use their"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"single available neighbor, which is why 1.0 and 7.0 break the pattern"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>height   0.0   slope   1.0
+height   1.0   slope   2.0
+height   4.0   slope   4.0
+height   9.0   slope   6.0
+height  16.0   slope   7.0
+
+interior slopes are (next - previous) / 2; the two ends use their
+single available neighbor, which is why 1.0 and 7.0 break the pattern
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the same on a real field. We rebuild chapter 10’s fbm in three condensed lines (octaves of <code class="docutils literal notranslate"><span class="pre">noise2array</span></code>, stacked with halving amplitudes; that chapter has the slow story) and ask for its gradient. One care with directions, worth a comment in every notebook you ever write: for an image-like grid, <code class="docutils literal notranslate"><span class="pre">np.gradient</span></code> returns the slopes in <em>row</em> order first, and rows are the y-axis, so the pair arrives as <span class="math notranslate nohighlight">\((\partial\psi/\partial y, \partial\psi/\partial x)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a potential field and its uphill arrows</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opensimplex</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>                       <span class="c1"># make the course package importable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fbm</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">persistence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lacunarity</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="c1"># chapter 10's octave_noise, condensed</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+    <span class="n">amplitude</span><span class="p">,</span> <span class="n">frequency</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">octaves</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">ys</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="n">amplitude</span> <span class="o">*=</span> <span class="n">persistence</span>
+        <span class="n">frequency</span> <span class="o">*=</span> <span class="n">lacunarity</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+
+<span class="n">GRID</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">GRID</span><span class="p">)</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>                       <span class="c1"># the potential (Potentialfeld)</span>
+<span class="n">dpsi_dy</span><span class="p">,</span> <span class="n">dpsi_dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>         <span class="c1"># row-slopes first: y, then x</span>
+
+<span class="n">coarse</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>              <span class="c1"># every 16th cell: readable arrows</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">GRID</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">GRID</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">],</span>
+          <span class="n">dpsi_dx</span><span class="p">[</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">],</span> <span class="n">dpsi_dy</span><span class="p">[</span><span class="n">coarse</span><span class="p">,</span> <span class="n">coarse</span><span class="p">],</span>
+          <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"the gradient: every arrow points uphill, toward bright"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/09e4650a385cffab83b2bcd594d34fc9f1b9c28d032bede10f8ab46d199ce559.png" src="../_images/09e4650a385cffab83b2bcd594d34fc9f1b9c28d032bede10f8ab46d199ce559.png" />
+</div>
+</div>
+<p>Arrows climb toward the bright hills and flee the dark basins; where the field is flat, they shrink to dots. A particle <em>following</em> these arrows would run uphill, gather at the summits, and stop: the gradient makes sinks by design. (Chapter 15 will point such arrows at image edges to place mosaic seeds; you will already own the machinery when it does.)</p>
+</section>
+<section id="the-quarter-turn">
+<h2>The quarter turn<a class="headerlink" href="#the-quarter-turn" title="Link to this heading">#</a></h2>
+<p>Here is the whole trick of the Bridson paper, in one move a compass can perform. <strong>Rotate every arrow a quarter turn.</strong> A rotated arrow no longer climbs the hill; it walks <em>around</em> it, along the contour line it stands on. In coordinates, turning <span class="math notranslate nohighlight">\((\partial\psi/\partial x, \partial\psi/\partial y)\)</span> by 90 degrees gives the <strong>curl field</strong> (in 2D, the curl of the scalar potential):</p>
+<div class="math notranslate nohighlight">
+\[v \;=\; \Big(\frac{\partial \psi}{\partial y},\; -\frac{\partial \psi}{\partial x}\Big),\]</div>
+<p>read aloud: <em>swap the two slopes and negate one.</em> Why this cannot pool is best said visually, and the figure below says it: the velocity is everywhere parallel to the contour lines of <span class="math notranslate nohighlight">\(\psi\)</span>, so every particle is condemned to orbit its own level set, around and around, like a skater on a closed rink. Piling up would require <em>crossing</em> contours, and the field never points that way. (The formal statement is that this field’s divergence is zero, “divergence-free” (quellenfrei); the picture is the proof we will trust.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># THE figure: contours of the potential, and particles riding the curl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">map_coordinates</span>
+
+<span class="n">curl_x</span><span class="p">,</span> <span class="n">curl_y</span> <span class="o">=</span> <span class="n">dpsi_dy</span><span class="p">,</span> <span class="o">-</span><span class="n">dpsi_dx</span>          <span class="c1"># the quarter turn, verbatim</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ride</span><span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="n">vy_grid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">unit_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Advect points through a velocity grid; positions in pixel units.</span>
+<span class="sd">    Velocities between pixels come from chapter 11's between-the-pixels</span>
+<span class="sd">    reader, map_coordinates."""</span>
+    <span class="n">path_x</span><span class="p">,</span> <span class="n">path_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()],</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">vy_grid</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit_speed</span><span class="p">:</span>                       <span class="c1"># keep everyone moving equally fast</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">ux</span><span class="p">,</span> <span class="n">uy</span><span class="p">)</span>
+            <span class="n">norm</span><span class="p">[</span><span class="n">norm</span> <span class="o">&lt;</span> <span class="mf">1e-9</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-9</span>
+            <span class="n">ux</span><span class="p">,</span> <span class="n">uy</span> <span class="o">=</span> <span class="n">ux</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span> <span class="n">uy</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ux</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">uy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">path_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">path_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path_x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path_y</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">start_x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">start_y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">paths_x</span><span class="p">,</span> <span class="n">paths_y</span> <span class="o">=</span> <span class="n">ride</span><span class="p">(</span><span class="n">curl_x</span><span class="p">,</span> <span class="n">curl_y</span><span class="p">,</span> <span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">"#9C9C9C"</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths_x</span><span class="p">,</span> <span class="n">paths_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"gray: contour lines of the potential; blue: where the curl carries you"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/05bfbdc9b680a92644f9535a9d5eb44a5ec289bacc765bb1d1fdc71042604003.png" src="../_images/05bfbdc9b680a92644f9535a9d5eb44a5ec289bacc765bb1d1fdc71042604003.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The blue trajectories trace the gray contours: sixty particles dropped at random (red dots), and each one settles into circling whatever level set it landed on. Some rinks are small and busy, some are lazy province-sized loops, and none of them ends anywhere.</p>
+</section>
+<section id="the-empirical-proof-clumps-vs-evenness">
+<h2>The empirical proof: clumps vs evenness<a class="headerlink" href="#the-empirical-proof-clumps-vs-evenness" title="Link to this heading">#</a></h2>
+<p>Chapter 10’s field turned noise directly into an <em>angle</em>; today’s turns it into a potential and takes the curl. Same noise, two philosophies. Let us give both the same thirty thousand particles, the same three hundred steps, and count heads per cell afterwards with chapter 9’s census.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one potential, two flows: where is everybody after 300 steps?</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">survivors</span><span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="n">vy_grid</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">30_000</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">alive</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">vy_grid</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">ux</span><span class="p">,</span> <span class="n">uy</span><span class="p">)</span>
+        <span class="n">norm</span><span class="p">[</span><span class="n">norm</span> <span class="o">&lt;</span> <span class="mf">1e-9</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-9</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">ux</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">uy</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">alive</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">alive</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">alive</span><span class="p">],</span> <span class="n">alive</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">angle</span> <span class="o">=</span> <span class="n">psi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>                          <span class="c1"># chapter 10's move: noise as angle</span>
+<span class="n">angle_x</span><span class="p">,</span> <span class="n">angle_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#111111"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="n">vy_grid</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">angle_x</span><span class="p">,</span> <span class="n">angle_y</span><span class="p">,</span> <span class="s2">"noise as angle (chapter 10)"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">curl_x</span><span class="p">,</span> <span class="n">curl_y</span><span class="p">,</span> <span class="s2">"noise as potential, curl taken"</span><span class="p">)]):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">stayed</span> <span class="o">=</span> <span class="n">survivors</span><span class="p">(</span><span class="n">vx_grid</span><span class="p">,</span> <span class="n">vy_grid</span><span class="p">)</span>
+    <span class="n">census</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                                  <span class="nb">range</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="p">(</span><span class="n">census</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">census</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">stayed</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2"> still in frame, </span><span class="si">{</span><span class="n">empty</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2"> of cells empty"</span><span class="p">,</span>
+                 <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#CFCFCF"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/07a22872889ee070917203f3574cdbd202a00857b4f3e3eca098a5f7f989ab42.png" src="../_images/07a22872889ee070917203f3574cdbd202a00857b4f3e3eca098a5f7f989ab42.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> This is the chapter’s argument in one census. Left, the angle field: more than half the particles have been blown out of the frame, and the rest have collapsed into a single incandescent channel, Bridson’s “gutter”, with over nine in ten cells standing empty. Right, the curl field: a clear majority is still here, still circulating (the leavers rode contour loops that the frame’s edge cuts open), and the stayers spread across the whole territory of swirls. Neither picture is <em>wrong</em>, chapter 10’s gutters made handsome art, but they are different instruments: the angle field is weather that carries things away, the curl field is a sealed aquarium.</p>
+<p><strong>Try it.</strong> Raise <code class="docutils literal notranslate"><span class="pre">steps</span></code> to 900 and rerun: the left panel empties almost completely, the right keeps circulating. Time is on the curl field’s side; that fact becomes the whole last act of this chapter.</p>
+</section>
+<section id="the-long-exposure-without-gutters">
+<h2>The long exposure, without gutters<a class="headerlink" href="#the-long-exposure-without-gutters" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the still artwork: thousands of skaters, glacier light on deep water</span>
+<span class="n">GLACIER</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#7FD4E6"</span><span class="p">,</span> <span class="s2">"#4FA3D1"</span><span class="p">,</span> <span class="s2">"#2E6FA3"</span><span class="p">,</span> <span class="s2">"#BFE8F2"</span><span class="p">,</span> <span class="s2">"#EAF6FF"</span><span class="p">]</span>
+
+<span class="n">n_skaters</span> <span class="o">=</span> <span class="mi">2600</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">sk_x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_skaters</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sk_y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_skaters</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">trail_x</span><span class="p">,</span> <span class="n">trail_y</span> <span class="o">=</span> <span class="n">ride</span><span class="p">(</span><span class="n">curl_x</span><span class="p">,</span> <span class="n">curl_y</span><span class="p">,</span> <span class="n">sk_x</span><span class="p">,</span> <span class="n">sk_y</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineCollection</span>
+<span class="n">trails</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">trail_x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">trail_y</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">GLACIER</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">GLACIER</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_skaters</span><span class="p">)]</span>
+<span class="n">widths</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_skaters</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">trails</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">widths</span><span class="p">,</span>
+                                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.16</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/901a83039e94a85b530906a61ed41fee98769476055d859648e015b2bc41dc28.png" src="../_images/901a83039e94a85b530906a61ed41fee98769476055d859648e015b2bc41dc28.png" />
+</div>
+</div>
+<p><strong>Look and compare</strong> this against chapter 10’s ember showpiece, its closest relative in the book. There, currents converged into a few blazing rivers with dark banks: gutters, glorified. Here the frame is evenly inhabited from corner to corner, and every current is <em>closed</em>: follow any bright loop and it returns. Same particle-tracing machinery, one quarter turn apart. (The palette pulls its weight in the differentiation too: ember heat for the one-way wind, glacier cold for the sealed rink.)</p>
+</section>
+<section id="time-as-a-circle">
+<h2>Time as a circle<a class="headerlink" href="#time-as-a-circle" title="Link to this heading">#</a></h2>
+<p>Now the loop. A field that <em>moves</em> needs noise that varies with time: give <code class="docutils literal notranslate"><span class="pre">noise</span></code> a third coordinate and slide along it, and the field evolves. But slide along a <em>line</em> and the animation, like chapter 10’s wind, is a one-way journey: frame 300 resembles frame 0 not at all, and the GIF jumps at the wraparound. The zoetrope’s discipline demands something better, and the fix is one of the loveliest ideas in the generative folk canon <a class="cite" href="#ref-jacob2017">(Jacob 2017)</a>: <strong>walk a circle, not a line.</strong> Take <em>four</em>-dimensional noise and evaluate it at</p>
+<div class="math notranslate nohighlight">
+\[\text{field}(x, y, \theta) = \text{noise}\big(x,\; y,\; R\cos\theta,\; R\sin\theta\big),\]</div>
+<p>sweeping <span class="math notranslate nohighlight">\(\theta\)</span> from 0 to <span class="math notranslate nohighlight">\(2\pi\)</span> across the frames. The two extra coordinates trace a closed circle of radius <span class="math notranslate nohighlight">\(R\)</span> through noise space, so frame <span class="math notranslate nohighlight">\(N\)</span> <em>is</em> frame 0, exactly, and the seam does not exist. (Why four dimensions and not three: the animated <em>image</em> already spends two, and a closed circle always needs two of its own.) The radius <span class="math notranslate nohighlight">\(R\)</span> is a wonderful dial: how far the circle strays from home is how <em>much</em> the field changes mid-loop, so small <span class="math notranslate nohighlight">\(R\)</span> breathes and large <span class="math notranslate nohighlight">\(R\)</span> churns, and either way it comes home.</p>
+<p>One export tool, new today and used for every animation this book makes from here on: <strong><code class="docutils literal notranslate"><span class="pre">imageio</span></code></strong>, whose <code class="docutils literal notranslate"><span class="pre">mimsave</span></code> writes a stack of frames as an animated GIF, the web’s folk format for exactly this kind of short, seamless, endlessly repeating sketch. <code class="docutils literal notranslate"><span class="pre">fps</span></code> sets the tempo and <code class="docutils literal notranslate"><span class="pre">loop=0</span></code> means “forever”, which after nearly two centuries of spinning discs feels like the only honest setting. (This is the notebook’s slowest cell, about 45 seconds: 48 separate field evaluations.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the endless loop: frames around a circle in noise space, as a function</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">imageio.v2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">imageio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">GifImage</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">noise_loop</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+               <span class="n">path</span><span class="o">=</span><span class="s2">"../assets/outputs/ch12_loop.gif"</span><span class="p">):</span>
+    <span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span>
+    <span class="n">loop_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+    <span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># last -&gt; first</span>
+    <span class="n">gif_frames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">thetas</span><span class="p">:</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise4array</span><span class="p">(</span><span class="n">loop_axis</span><span class="p">,</span> <span class="n">loop_axis</span><span class="p">,</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)]))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">brightness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">field</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span>    <span class="c1"># 13 levels: small file</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">magma</span><span class="p">(</span><span class="n">brightness</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="c1"># np.kron: enlarge every pixel to a 3x3 block (chapter 13 makes</span>
+        <span class="c1"># friends with it properly)</span>
+        <span class="n">gif_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+    <span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">gif_frames</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">frames</span><span class="si">}</span><span class="s2"> frames, </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+<span class="n">gif_path</span> <span class="o">=</span> <span class="n">noise_loop</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">GifImage</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gif_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>48 frames, 0.52 MB
+</pre></div>
+</div>
+<img alt="../_images/058bdb3a334abb7dc455f0bb46dca0747ce3031692d5a415643b24a5f1e418e6.gif" src="../_images/058bdb3a334abb7dc455f0bb46dca0747ce3031692d5a415643b24a5f1e418e6.gif" />
+</div>
+</div>
+<p>Watch it for a few cycles (it costs nothing; it will run all day) and try to find the seam. There is none to find: the restart is not <em>hidden</em>, it is <em>absent</em>, the way a circle has no corner. This one runs at radius 0.6, a calm breather.</p>
+</section>
+<section id="parameter-studies-the-breath-and-the-churn">
+<h2>Parameter studies: the breath and the churn<a class="headerlink" href="#parameter-studies-the-breath-and-the-churn" title="Link to this heading">#</a></h2>
+<p>A GIF per parameter setting would bloat the page, so we study the loop the way a zoetrope maker would, by laying strips of frames side by side: three moments (start, quarter turn, half turn) for a small radius and a large one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two loop radii, three moments each: how far does the field stray?</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">8.4</span><span class="p">))</span>
+<span class="n">study_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">radius</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">theta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">]):</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise4array</span><span class="p">(</span><span class="n">study_axis</span><span class="p">,</span> <span class="n">study_axis</span><span class="p">,</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)]))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span>
+                              <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"R = </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s2">, theta = </span><span class="si">{</span><span class="p">[</span><span class="s1">'0'</span><span class="p">,</span><span class="w"> </span><span class="s1">'pi/2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'pi'</span><span class="p">][</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a38434c02192d7d2ebc1c2358d1a9a411ce236c151eace8232b8829891df4952.png" src="../_images/a38434c02192d7d2ebc1c2358d1a9a411ce236c151eace8232b8829891df4952.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Top row, <span class="math notranslate nohighlight">\(R = 0.25\)</span>: the three moments are siblings, the loop will read as one image gently breathing. Bottom row, <span class="math notranslate nohighlight">\(R = 1.4\)</span>: by the half turn the field has forgotten itself completely, and the loop will read as churning weather that happens, miraculously, to come home. Frame count is the third dial: more frames around the same circle means slower, smoother travel (48 at 16 fps is three seconds; 96 would be six). None of these dials can break the seam, which is the luxury of the method: aesthetics and correctness live on different axes.</p>
+<p><strong>Try it.</strong> <code class="docutils literal notranslate"><span class="pre">noise_loop(radius=1.4,</span> <span class="pre">path=&quot;../assets/outputs/ch12_loop_wild.gif&quot;)</span></code>, then open the file: same seam-free guarantee, entirely different weather, and the strips above predict exactly what you will see.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Your turn on the ice: re-seed the potential, pick your own palette and skater count, and export a curl long exposure. (For a <em>moving</em> export, exercise (c) awaits.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR curl field: new seed, your palette, your crowd</span>
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">77</span><span class="p">)</span>                        <span class="c1"># change me</span>
+<span class="n">my_psi</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="n">my_dy</span><span class="p">,</span> <span class="n">my_dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">my_psi</span><span class="p">)</span>
+<span class="n">my_curl_x</span><span class="p">,</span> <span class="n">my_curl_y</span> <span class="o">=</span> <span class="n">my_dy</span><span class="p">,</span> <span class="o">-</span><span class="n">my_dx</span>
+
+<span class="n">my_rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">my_x</span> <span class="o">=</span> <span class="n">my_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2200</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">my_y</span> <span class="o">=</span> <span class="n">my_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2200</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">my_tx</span><span class="p">,</span> <span class="n">my_ty</span> <span class="o">=</span> <span class="n">ride</span><span class="p">(</span><span class="n">my_curl_x</span><span class="p">,</span> <span class="n">my_curl_y</span><span class="p">,</span> <span class="n">my_x</span><span class="p">,</span> <span class="n">my_y</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">380</span><span class="p">)</span>
+
+<span class="n">my_artwork</span><span class="p">,</span> <span class="n">my_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#141414"</span><span class="p">)</span>
+<span class="n">my_trails</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">my_tx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">my_ty</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">my_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"kelly"</span><span class="p">][</span><span class="n">i</span> <span class="o">%</span> <span class="mi">8</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2200</span><span class="p">)]</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">my_trails</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">my_colors</span><span class="p">,</span>
+                                    <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.14</span><span class="p">))</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">"#141414"</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">my_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/27b51df72e8d08a1a8e6871037766d95a1596fc6432553100d51ecb9d8358322.png" src="../_images/27b51df72e8d08a1a8e6871037766d95a1596fc6432553100d51ecb9d8358322.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch12_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the radius dial.</strong> Render short loops with <code class="docutils literal notranslate"><span class="pre">noise_loop</span></code> (24 frames at <code class="docutils literal notranslate"><span class="pre">grid=120</span></code>, and a distinct <code class="docutils literal notranslate"><span class="pre">path</span></code> per radius, keep each one quick) at <span class="math notranslate nohighlight">\(R \in \{0.1, 0.3, 0.6, 1.0, 2.0\}\)</span> and watch each for a few cycles. One sentence per radius: what is the field’s <em>gait</em> (breathing, swaying, boiling, strobing)? Somewhere in that range the loop stops reading as one object changing and starts reading as different objects taking turns; note where that happens for you.</p>
+<p><strong>(b) Code modification: curl of the ridges.</strong> The potential need not be smooth fbm. Fold it, chapter 11 style (<span class="math notranslate nohighlight">\(1 - |\text{octave}|\)</span>, summed), take the curl of <em>that</em>, and trace the long exposure. Predict before you run: the ridged field’s sharp crests are cliffs of the potential, and flow follows contours, so where will the skaters bunch their lanes?</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ridged</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">octaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">persistence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lacunarity</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="c1"># chapter 11's fold, condensed</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+    <span class="n">amplitude</span><span class="p">,</span> <span class="n">frequency</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">octaves</span><span class="p">):</span>
+        <span class="n">octave</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">ys</span> <span class="o">*</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">octave</span><span class="p">))</span>
+        <span class="n">amplitude</span> <span class="o">*=</span> <span class="n">persistence</span>
+        <span class="n">frequency</span> <span class="o">*=</span> <span class="n">lacunarity</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ridge_psi</span> <span class="o">=</span> <span class="n">ridged</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="n">r_dy</span><span class="p">,</span> <span class="n">r_dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ridge_psi</span><span class="p">)</span>
+<span class="n">ridge_curl_x</span><span class="p">,</span> <span class="n">ridge_curl_y</span> <span class="o">=</span> <span class="n">r_dy</span><span class="p">,</span> <span class="o">-</span><span class="n">r_dx</span>
+
+<span class="n">r_rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">r_x</span> <span class="o">=</span> <span class="n">r_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2600</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">r_y</span> <span class="o">=</span> <span class="n">r_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2600</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">r_tx</span><span class="p">,</span> <span class="n">r_ty</span> <span class="o">=</span> <span class="n">ride</span><span class="p">(</span><span class="n">ridge_curl_x</span><span class="p">,</span> <span class="n">ridge_curl_y</span><span class="p">,</span> <span class="n">r_x</span><span class="p">,</span> <span class="n">r_y</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">r_tx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">r_ty</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+                                 <span class="n">colors</span><span class="o">=</span><span class="s2">"#BFE8F2"</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The skaters crowd into tight parallel lanes hugging both sides of every crest: a ridge in the potential is a wall of closely packed contour lines, and contour-followers must run along it, single file. Between ridges, in the smooth valleys, the lanes relax and spread. The long exposure reads as a road map of the mountain system, all switchbacks and valley roads, where the smooth potential gave rounded provinces.</p>
+</details>
+<p><strong>(c) Creative challenge: close every circle.</strong> Two roads, pick one. <em>The looping exposure:</em> advect a modest crowd of particles while the field itself travels one full circle of 4D noise (recompute the curl from the current frame’s potential at each step), stamp the trails onto a slowly fading canvas (chapter 19’s trick, arriving early), and export the frames; if the fade has mostly forgotten frame 0 by the time <span class="math notranslate nohighlight">\(\theta\)</span> comes home, the seam disappears. <em>Or the marbling clock:</em> take chapter 11’s domain warp and drive its shove amplitude by <span class="math notranslate nohighlight">\(\sin\theta\)</span> while <span class="math notranslate nohighlight">\(\theta\)</span> walks the circle, so your marbled paper folds itself and unfolds, forever. Both are harder than they look, and both were state of the art on someone’s web gallery in 2015; the tools are all on this page.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Robert Bridson, Jim Hourihan and Marcus Nordenstam, “Curl-Noise for Procedural Fluid Flow”, <em>ACM Transactions on Graphics</em> 26, no. 3 (SIGGRAPH 2007): three pages, one identity, twenty years of film smoke; the source of this chapter’s quarter turn.</p></li>
+<li><p>The Public Domain Review’s page of phenakistiscope discs (digitized by the Library of Congress): the 1830s discs spinning again as, fittingly, GIFs.</p></li>
+<li><p>Etienne Jacob’s tutorial series on looping GIFs with 4D noise at <a class="reference external" href="http://necessarydisorder.wordpress.com">necessarydisorder.wordpress.com</a>: the contemporary folk canon of the technique, with variations far beyond this chapter’s.</p></li>
+<li><p><em>Texturing and Modeling: A Procedural Approach</em> (chapter 11’s shared bookshelf) documents the higher-dimensional noise this chapter quietly relied on, in Darwyn Peachey’s and David Ebert’s chapters on animated textures: someone had to build a 4D noise function before anyone could walk circles through it.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-bridson2007"></span>Bridson, R., Hourihan, J., and Nordenstam, M. (2007). Curl-noise for procedural fluid flow. <em>ACM Transactions on Graphics</em>, 26(3), Article 46. <a class="reference external" href="https://doi.org/10.1145/1276377.1276435">doi:10.1145/1276377.1276435</a>. Source of the quarter turn and of the “gutters” quoted above.</p></li>
+<li><p><span id="ref-eppink2014"></span>Eppink, J. (2014). A brief history of the GIF (so far). <em>Journal of Visual Culture</em>, 13(3), 298–306. <a class="reference external" href="https://doi.org/10.1177/1470412914553365">doi:10.1177/1470412914553365</a>. The GIF’s 1987 CompuServe birth and the 1995 Netscape looping extension.</p></li>
+<li><p><span id="ref-horner1834"></span>Horner, W. G. (1834). On the properties of the Dædaleum, a new instrument of optical illusion. <em>The London and Edinburgh Philosophical Magazine and Journal of Science</em>, 3rd ser., 4(19), 36–41. The disc bent into a drum, in the inventor’s own words.</p></li>
+<li><p><span id="ref-jacob2017"></span>Jacob, É. (2017). Drawing from noise, and then making animated loopy GIFs from there. <em>necessary-disorder tutorials</em>. <a class="reference external" href="https://necessarydisorder.wordpress.com/2017/11/15/drawing-from-noise-and-then-making-animated-loopy-gifs-from-there/">necessarydisorder.wordpress.com</a>. The 4D-noise seamless loop as the folk canon teaches it.</p></li>
+<li><p><span id="ref-lincoln1867"></span>Lincoln, W. E. (1867). Toy. US Patent 64,117, assigned to Milton Bradley and Co., Springfield, Massachusetts, granted 23 April 1867. <a class="reference external" href="https://patents.google.com/patent/US64117A/en">Google Patents</a>. The zoetrope patent.</p></li>
+<li><p><span id="ref-mannoni2000"></span>Mannoni, L. (2000). <em>The Great Art of Light and Shadow: Archaeology of the Cinema</em> (trans. R. Crangle). University of Exeter Press. The scholarly history of pre-cinema devices, Plateau and Stampfer included.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the still at the top of the notebook: 4200 skaters, 600 steps on the chapter’s curl field, glacier palette on deep water, with the loop GIF as its moving companion piece (regenerated by the loop cell above; the PNG is the artwork of record for the gallery). It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the sealed aquarium, long exposure</span>
+<span class="n">sp_rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">sp_x</span> <span class="o">=</span> <span class="n">sp_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">4200</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_y</span> <span class="o">=</span> <span class="n">sp_rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">4200</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_tx</span><span class="p">,</span> <span class="n">sp_ty</span> <span class="o">=</span> <span class="n">ride</span><span class="p">(</span><span class="n">curl_x</span><span class="p">,</span> <span class="n">curl_y</span><span class="p">,</span> <span class="n">sp_x</span><span class="p">,</span> <span class="n">sp_y</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+
+<span class="n">showpiece</span><span class="p">,</span> <span class="n">sp_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">sp_trails</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">sp_tx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">sp_ty</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">GLACIER</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">GLACIER</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4200</span><span class="p">)]</span>
+<span class="n">sp_widths</span> <span class="o">=</span> <span class="n">sp_rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">4200</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">sp_trails</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">sp_colors</span><span class="p">,</span>
+                                    <span class="n">linewidths</span><span class="o">=</span><span class="n">sp_widths</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.13</span><span class="p">))</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">"#0A1220"</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">GRID</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">sp_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/eb51168f5743ec85a5bcab0b1a9979970d241ff3b7302305ab23ef5a5303a660.png" src="../_images/eb51168f5743ec85a5bcab0b1a9979970d241ff3b7302305ab23ef5a5303a660.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch12_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="11-deeper-noise.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">11. Deeper Noise: Cells, Ridges, and Warped Space</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="13-cellular-automata.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">13. Cellular Automata and Emergence</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-smoke-for-the-movies-and-the-wheel-of-life">Context: smoke for the movies, and the wheel of life</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gradient-at-last">The gradient, at last</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-quarter-turn">The quarter turn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-empirical-proof-clumps-vs-evenness">The empirical proof: clumps vs evenness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-long-exposure-without-gutters">The long exposure, without gutters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-as-a-circle">Time as a circle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies-the-breath-and-the-churn">Parameter studies: the breath and the churn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

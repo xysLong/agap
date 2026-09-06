@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>18. Circle Packing: The Portrait in Dots &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/18-circle-packing';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="19. Particles, Agents, and Flocking" href="19-particles-and-flocking.html" />
+    <link rel="prev" title="17. Pixel Sorting: The Aesthetics of the Glitch" href="17-pixel-sorting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>18. Circle Packing: The Portrait in Dots</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-circle-as-compositional-atom">Context: the circle as compositional atom</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-collision-test">The collision test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-by-refusal">Packing by refusal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-by-growth">Packing by growth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-radius-budget-from-the-painting">A radius budget from the painting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kandinsky-variant-rings-instead-of-fills">The Kandinsky variant: rings instead of fills</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies">Parameter studies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="circle-packing-the-portrait-in-dots">
+<h1>18. Circle Packing: The Portrait in Dots<a class="headerlink" href="#circle-packing-the-portrait-in-dots" title="Link to this heading">#</a></h1>
+<p>One rule, <em>circles must not overlap</em>, turns random scatter into organic density. Today we pack a canvas by refusal and then by growth, hand the radius budget to a painting’s light, and rebuild chapter 6’s Monet as a shimmering field of thousands of circles.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>Monet’s water lilies, reassembled from more than seven thousand circles that may kiss but never overlap. The pond’s dark passages are ground into the finest grain, the lily pads breathe in larger coins, and every circle wears the color the painting keeps beneath its center. Not one circle was placed by hand; each one was <em>offered</em> to the canvas at random, and the canvas refused or accepted it. By the end of today you can pack circles into any image, or into pure emptiness, and you will know why the humble word <em>no</em> is one of composition’s strongest tools.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch18_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">7.7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/174a145d850d896bd5e7d608cbd0a86362376c45257019cf9a6cd772e010ee65.png" src="../_images/174a145d850d896bd5e7d608cbd0a86362376c45257019cf9a6cd772e010ee65.png" />
+</div>
+</div>
+</section>
+<section id="context-the-circle-as-compositional-atom">
+<h2>Context: the circle as compositional atom<a class="headerlink" href="#context-the-circle-as-compositional-atom" title="Link to this heading">#</a></h2>
+<p>Among shapes, the circle is the one with no direction, no corner, no top: the mark that is pure <em>presence</em>. Painters of abstraction reached for it early. Kandinsky’s <em>Farbstudie: Quadrate mit konzentrischen Ringen</em> (Color Study: Squares with Concentric Rings, 1913; Städtische Galerie im Lenbachhaus, Munich) is not a finished painting but a small working study in watercolor, gouache and crayon, twelve nests of colored rings in a grid of squares <a class="cite" href="#ref-lenbachhaus">(Lenbachhaus, collection entry)</a>; the German title says rings, not circles, and either way it has become a much-reproduced image. Half a century later and an ocean away, <strong>Yayoi Kusama</strong> made the dot an obsession: in late-1950s New York she began covering enormous canvases with thousands of tiny painted loops, the <em>Infinity Nets</em>, a compulsive space-filling she traces to childhood hallucinations of proliferating dots. In her autobiography <em>Infinity Net</em> (2002; English translation 2011) she names the endpoint of the process ‘self-obliteration’: the self dissolving into an endless field of dots <a class="cite" href="#ref-kusama2011">(Kusama 2011)</a>.</p>
+<p><strong>Damien Hirst</strong>’s spot paintings make a useful counter-example. The gridded ones, the Pharmaceutical Paintings (the series begins in 1986, and most are executed by assistants), follow strict rules: uniform circles on a regular grid, evenly spaced, never touching, and, by Hirst’s own rule, no color repeated within a painting <a class="cite" href="#ref-hirst">(Damien Hirst studio, series text)</a>. Note carefully: a grid is <em>not</em> a packing. Hirst’s spots are <strong>placed</strong>; today’s circles will be <strong>fitted</strong>, each one negotiating its size against every neighbor. That difference, allocation versus negotiation, is the entire lesson, and your eye can tell the two apart at twenty paces.</p>
+<p>The mathematics of fitted circles is old. Apollonius of Perga (c. 262 to c. 190 BC) asked, in a treatise now lost, how to construct a circle tangent to three given ones (<a class="cite" href="#ref-heath1921">Heath 1921</a>; <a class="cite" href="#ref-coxeter1968">Coxeter 1968</a>); Descartes stated the curvature relation for four mutually touching circles in a 1643 letter to Princess Elisabeth of Bohemia; in 1936 the chemist Frederick Soddy rediscovered that relation and published it in <em>Nature</em> as a poem, “The Kiss Precise” <a class="cite" href="#ref-soddy1936">(Soddy 1936)</a>. Fill the gaps between touching circles with ever smaller touching circles, forever, and you get the <strong>Apollonian gasket</strong>, self-similarity made of circles (chapter 8 trained your eye for exactly this), though the fractal packing itself is a modern construction that merely borrows Apollonius’s name.</p>
+<p>And the painterly stakes are familiar ones: chapter 15 rebuilt a Vermeer from <em>points</em>; today’s marks have <strong>area</strong>, so they must negotiate for room. As with Seurat’s divisionism, the image is built from small separate touches of color meant to fuse in the viewer’s eye. Circle packing (Kreispackung) remains a staple of contemporary generative practice, from long-form browser works to pen-plotter prints, precisely because so simple a rule yields such organic density <a class="cite" href="#ref-hobbs2016">(Hobbs 2016)</a>.</p>
+</section>
+<section id="the-collision-test">
+<h2>The collision test<a class="headerlink" href="#the-collision-test" title="Link to this heading">#</a></h2>
+<p>Everything in this chapter rests on one line of geometry. Two circles with centers <span class="math notranslate nohighlight">\(c_1, c_2\)</span> and radii <span class="math notranslate nohighlight">\(r_1, r_2\)</span> <strong>overlap</strong> exactly when the distance between their centers is smaller than the sum of their radii:</p>
+<div class="math notranslate nohighlight">
+\[d(c_1, c_2) \; &lt; \; r_1 + r_2\]</div>
+<p>Equality is the tender boundary case: the circles <em>kiss</em>, touching at a single point (Soddy chose his poem’s title well). Anything larger and daylight shows between them. That is the whole theory; the rest of the chapter is about <em>offering</em> circles to a canvas and letting this test say no.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the collision test, seen: the same two circles at three distances</span>
+<span class="c1"># (plt.Circle + add_patch: chapter 2's Rectangle recipe, with a round patch)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">r_1</span><span class="p">,</span> <span class="n">r_2</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.6</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">verdict</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span>
+                          <span class="p">[</span><span class="s2">"overlap: d &lt; r1 + r2"</span><span class="p">,</span> <span class="s2">"kiss: d = r1 + r2"</span><span class="p">,</span>
+                           <span class="s2">"clear: d &gt; r1 + r2"</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r_1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r_2</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">"o--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"d = </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">verdict</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a2575bd2dcbd248105d940376af39214e9298a2e9352ebaaee48db81dfc78edd.png" src="../_images/a2575bd2dcbd248105d940376af39214e9298a2e9352ebaaee48db81dfc78edd.png" />
+</div>
+</div>
+</section>
+<section id="packing-by-refusal">
+<h2>Packing by refusal<a class="headerlink" href="#packing-by-refusal" title="Link to this heading">#</a></h2>
+<p>How do you <em>fill</em> a canvas with non-overlapping circles? The first honest idea is chapter 15’s rejection sampling, wearing armor: propose a random center, and <strong>refuse</strong> it if a circle of the wanted size would overlap anything already placed. (Chapter 15 refused points by a probability; today the veto is geometric and absolute.) We try it with equal circles and, importantly, we keep the <em>receipts</em>: for every circle that lands, we record how many proposals it cost. Chapter 2’s seeded <code class="docutils literal notranslate"><span class="pre">rng</span></code> makes the whole experiment repeatable.</p>
+<p>One numpy habit before the loop. All the placed centers sit in a plain Python list that grows with <code class="docutils literal notranslate"><span class="pre">.append</span></code>; the moment we need geometry we wrap it in <code class="docutils literal notranslate"><span class="pre">np.array</span></code> and measure every distance at once with <code class="docutils literal notranslate"><span class="pre">np.linalg.norm</span></code> (chapter 15 glossed it: the length of each gap vector). List for growing, array for math: you will see this list-then-array rhythm in both engines today.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># naive packing: equal circles, placed by pure stubborn refusal</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pack_rejection</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">tries</span><span class="p">):</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="p">[]</span>                <span class="c1"># grows as a list; wrapped in np.array for math</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>                  <span class="c1"># proposals each accepted circle cost us</span>
+    <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">proposal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tries</span><span class="p">):</span>
+        <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">centers</span><span class="p">:</span>
+            <span class="n">gaps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span> <span class="o">-</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gaps</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span><span class="p">:</span>     <span class="c1"># overlap exactly when d &lt; r + r: refuse</span>
+                <span class="k">continue</span>
+        <span class="n">centers</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+        <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attempts</span><span class="p">)</span>
+        <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">centers</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">eq_centers</span><span class="p">,</span> <span class="n">eq_costs</span> <span class="o">=</span> <span class="n">pack_rejection</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">tries</span><span class="o">=</span><span class="mi">20000</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">eq_centers</span><span class="p">)</span><span class="si">}</span><span class="s2"> circles landed, </span><span class="si">{</span><span class="mi">20000</span><span class="si">}</span><span class="s2"> proposals spent"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>193 circles landed, 20000 proposals spent
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the pack, and the price of every circle in it</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">eq_centers</span><span class="p">:</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1B4B9B"</span><span class="p">,</span>
+                                 <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">eq_centers</span><span class="p">)</span><span class="si">}</span><span class="s2"> equal circles"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eq_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#D02433"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"circle number"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"proposals it cost"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"the stall: each new circle costs more"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3807b2ff0777221f371a618c114dfcd964c06f82822218970e4a97df358e6ff7.png" src="../_images/3807b2ff0777221f371a618c114dfcd964c06f82822218970e4a97df358e6ff7.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> The first circles cost one or two proposals each; the last ones cost hundreds or thousands, and the curve is still climbing when the budget runs out. The reason is visible on the left: the <em>free</em> area shrinks toward awkward slivers no fixed-size circle fits into, so almost every proposal lands on a refusal. Pure rejection packing stalls, and no budget outruns it: this is our negative control, chapter 10’s TV-static moment for packing.</p>
+<p><strong>Try it.</strong> Rerun the two cells with <code class="docutils literal notranslate"><span class="pre">radius=5</span></code>. More circles land, but watch the cost curve: the stall arrives all the same, only later.</p>
+</section>
+<section id="packing-by-growth">
+<h2>Packing by growth<a class="headerlink" href="#packing-by-growth" title="Link to this heading">#</a></h2>
+<p>The cure is to stop insisting on a size. <strong>Drop small, grow until touch, keep</strong>: propose a center, and if even a tiny circle fits there, let it inflate until it kisses its nearest neighbor (or hits a size limit), then freeze it. Every sliver of leftover space is now a home for <em>something</em>, so the canvas fills with a natural hierarchy: big founders early, generations of ever finer grain in the gaps. Two tools follow, and the pictures right after: the engine (which also accepts a map setting the size limit per location; a painting will play that map shortly) and a renderer we reuse all chapter. This greedy growth is the standard packing move in generative art <a class="cite" href="#ref-hobbs2016">(Hobbs 2016)</a>, and it needs one more observation to be fast: a growing circle always stops at the nearest circle-edge, so instead of inflating in tiny steps we can <em>jump</em> straight to the gap. (The step-by-step version survives as a <code class="docutils literal notranslate"><span class="pre">step</span></code> argument, and it is not useless: quantized radii have a look of their own, as the parameter studies will show.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># growth packing: drop small, grow until touch, keep</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pack_growth</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">min_r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">tries</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
+                <span class="n">cap_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">radii</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>    <span class="c1"># flat lists while growing, arrays for math</span>
+    <span class="k">for</span> <span class="n">proposal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tries</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="c1"># the local size limit: one number, or looked up in a map (soon: a painting)</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">max_r</span> <span class="k">if</span> <span class="n">cap_map</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cap_map</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+        <span class="n">room</span> <span class="o">=</span> <span class="n">cap</span>
+        <span class="k">if</span> <span class="n">xs</span><span class="p">:</span>
+            <span class="c1"># distance to every placed circle's EDGE at once: chapter 15's</span>
+            <span class="c1"># sqrt of squared differences, vectorized over the whole pack</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">room</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cap</span><span class="p">,</span> <span class="p">(</span><span class="n">distances</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">))</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">room</span> <span class="o">&lt;</span> <span class="n">min_r</span><span class="p">:</span>
+            <span class="k">continue</span>              <span class="c1"># no room for even the smallest circle: refuse</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">room</span>              <span class="c1"># grow until touch, jumped in one line</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">min_r</span>             <span class="c1"># or grow in audible clicks of size `step`</span>
+            <span class="k">while</span> <span class="n">r</span> <span class="o">+</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="n">room</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">+=</span> <span class="n">step</span>
+        <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a renderer we will reuse all chapter (ax= follows chapter 6's panel pattern)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_pack</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">rings</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">*</span> <span class="n">height</span> <span class="o">/</span> <span class="n">width</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>             <span class="c1"># one ink for all, or one color each</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">rings</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                      <span class="c1"># filled circle (Rectangle's cousin, ch2)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>                               <span class="c1"># outlines, not fills (the Kandinsky variant, later)</span>
+            <span class="k">for</span> <span class="n">ring_r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">rings</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">ring_r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                        <span class="n">edgecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                  <span class="c1"># image convention: y grows downward</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># growth packing on a blank canvas: watch the hierarchy of generations</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">blank_centers</span><span class="p">,</span> <span class="n">blank_radii</span> <span class="o">=</span> <span class="n">pack_growth</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">min_r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+                                         <span class="n">tries</span><span class="o">=</span><span class="mi">40000</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">blank_radii</span><span class="p">)</span><span class="si">}</span><span class="s2"> circles, radius </span><span class="si">{</span><span class="n">blank_radii</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> "</span>
+      <span class="sa">f</span><span class="s2">"to </span><span class="si">{</span><span class="n">blank_radii</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">art_blank</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">blank_centers</span><span class="p">,</span> <span class="n">blank_radii</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1643 circles, radius 1.0 to 45.0
+</pre></div>
+</div>
+<img alt="../_images/92847430b80af9c09ed2978d59b206796ddaa125801f0cbf1f1048f15977605c.png" src="../_images/92847430b80af9c09ed2978d59b206796ddaa125801f0cbf1f1048f15977605c.png" />
+</div>
+</div>
+<p>No stall this time: where rejection packing left slivers, growth packing mints coins of exactly the sliver’s size. The texture is the negotiation made visible: every circle is precisely as large as its neighbors allowed it to be.</p>
+<p><strong>Try it.</strong> Set <code class="docutils literal notranslate"><span class="pre">min_r=0.4</span></code> and the count explodes into sand; set <code class="docutils literal notranslate"><span class="pre">min_r=6</span></code> and the pack goes back to being coarse and gappy, halfway to the rejection version. The minimum radius is the <em>patience</em> of the packing.</p>
+</section>
+<section id="a-radius-budget-from-the-painting">
+<h2>A radius budget from the painting<a class="headerlink" href="#a-radius-budget-from-the-painting" title="Link to this heading">#</a></h2>
+<p>So far the size limit <code class="docutils literal notranslate"><span class="pre">max_r</span></code> was one number everywhere. The <code class="docutils literal notranslate"><span class="pre">cap_map</span></code> argument lets a <strong>picture</strong> set the limit instead: at every proposal, the engine looks up how large a circle may grow <em>right here</em>. Feed it a painting’s brightness and the packing becomes a portrait: bright passages afford large circles, dark passages only the finest grain, which is chapter 15’s ink logic (dark buys detail) speaking the language of area. We take chapter 6’s Monet, recurring in this book like a motif, and prepare its budget with one adjustment you already know from chapter 15’s engraver (a gamma to steer how fast size falls off with darkness) and one new one: stretching the tones so the budget uses the painting’s full range. A light blur (scipy’s <code class="docutils literal notranslate"><span class="pre">gaussian_filter</span></code>, first met in chapter 17’s showpiece) steadies the map so single bright pixels cannot buy giant circles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 6's Monet becomes a radius budget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter</span>
+
+<span class="n">original</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../assets/images/monet_waterlilies.jpg"</span><span class="p">)</span>
+<span class="n">scale_w</span> <span class="o">=</span> <span class="mi">480</span>
+<span class="n">scale_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">scale_w</span> <span class="o">/</span> <span class="n">original</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">stretched</span> <span class="o">=</span> <span class="p">(</span><span class="n">gray</span> <span class="o">-</span> <span class="n">gray</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">gray</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">gray</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>   <span class="c1"># use the full range</span>
+<span class="n">smooth_light</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">stretched</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">cap_map</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">+</span> <span class="n">smooth_light</span><span class="o">**</span><span class="mf">1.8</span> <span class="o">*</span> <span class="p">(</span><span class="mi">22</span> <span class="o">-</span> <span class="mf">1.1</span><span class="p">)</span>   <span class="c1"># stretches 0..1 into the 1.1..22 px range; the blur pulls both inward</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"the painting"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cap_map</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"its radius budget (bright = large allowed)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/71a1d1ae53bd58f7c5b8ed8fea458c4aad4dbed322fed13edb6e67c4c0c01250.png" src="../_images/71a1d1ae53bd58f7c5b8ed8fea458c4aad4dbed322fed13edb6e67c4c0c01250.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pack the pond: sixty thousand proposals against the budget (about 20 s)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">centers</span><span class="p">,</span> <span class="n">radii</span> <span class="o">=</span> <span class="n">pack_growth</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span> <span class="n">min_r</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span>
+                             <span class="n">tries</span><span class="o">=</span><span class="mi">60000</span><span class="p">,</span> <span class="n">cap_map</span><span class="o">=</span><span class="n">cap_map</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="si">}</span><span class="s2"> circles accepted"</span><span class="p">)</span>
+<span class="n">art_ink</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6603 circles accepted
+</pre></div>
+</div>
+<img alt="../_images/0c23a1b5bccae5a7858c0acc6615f43f12189192bd0802e4b372c8d0af7169be.png" src="../_images/0c23a1b5bccae5a7858c0acc6615f43f12189192bd0802e4b372c8d0af7169be.png" />
+</div>
+</div>
+<p>In ink alone the painting is only half there: packing density is roughly even everywhere, so what carries the image is the <em>grain</em>, fine where the pond is dark, coarse where the lilies catch light. Squint and the composition surfaces. To make it unmistakable we add chapter 15’s exercise idea, now promoted to the canonical move: <strong>each circle samples the painting’s color at its own center</strong>. One refinement travels along from chapter 17’s showpiece: we sample a lightly blurred copy of the painting, so a circle speaks for its neighborhood rather than for one stray bright pixel of brushwork.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the payoff: every circle wears its center's color (sampled from a blurred copy)</span>
+<span class="n">smooth_color</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">smooth_color</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">channel</span><span class="p">],</span> <span class="mf">2.0</span><span class="p">)</span>
+
+<span class="c1"># two index arrays pick one pixel per circle (chapter 15's indexing idiom)</span>
+<span class="n">circle_colors</span> <span class="o">=</span> <span class="n">smooth_color</span><span class="p">[</span><span class="n">centers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+
+<span class="n">art_color</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">circle_colors</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a334f52fafe36dfdcc78eb62bfb91c19e07a269b8a6868b35d7aa44b6a726ff.png" src="../_images/6a334f52fafe36dfdcc78eb62bfb91c19e07a269b8a6868b35d7aa44b6a726ff.png" />
+</div>
+</div>
+<p>There is the pond: not one line drawn, and yet water, lilies and reflected sky sort themselves out, because color and grain now agree about where things are. As with Seurat, the touches are meant to fuse at viewing distance; lean back from the screen and watch it happen.</p>
+</section>
+<section id="the-kandinsky-variant-rings-instead-of-fills">
+<h2>The Kandinsky variant: rings instead of fills<a class="headerlink" href="#the-kandinsky-variant-rings-instead-of-fills" title="Link to this heading">#</a></h2>
+<p>The renderer’s <code class="docutils literal notranslate"><span class="pre">rings</span></code> argument replaces every fill with a nest of concentric outlines, a quiet bow to the 1913 color study. The result is also, not by accident, a drawing made of nothing but strokes: chapter 26 will take exactly this discipline (lines only, no fills) all the way to a pen plotter’s paper.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># concentric rings: the packed pond as a field of nested outlines</span>
+<span class="n">art_rings</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">circle_colors</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span>
+                      <span class="n">rings</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c350b639d1c87c15959819f1d33f8455c67a6a7751d703739c7cc008e4fec40e.png" src="../_images/c350b639d1c87c15959819f1d33f8455c67a6a7751d703739c7cc008e4fec40e.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Fill and rings carry the same geometry, but the fills read as mosaic while the rings read as <em>drawing</em>: the paper breathes through every circle, and the big lily-pad circles turn into little targets that pull the eye. Which serves the pond better? Which would survive being drawn in ink by a machine that cannot fill?</p>
+</section>
+<section id="parameter-studies">
+<h2>Parameter studies<a class="headerlink" href="#parameter-studies" title="Link to this heading">#</a></h2>
+<p>Four packs of the same blank square, same seed, different rules. The radius range sets the grain, <code class="docutils literal notranslate"><span class="pre">step</span></code> quantizes it, and the <code class="docutils literal notranslate"><span class="pre">tries</span></code> budget decides how far the negotiation is allowed to run.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four temperaments of the same square (same seed throughout)</span>
+<span class="n">studies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"coarse: min 3, max 45"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">min_r</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">45</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"fine: min 0.8, max 9"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">min_r</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">9</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"quantized: step 4"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">min_r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">4</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"scarce: 3000 tries"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">min_r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">tries</span><span class="o">=</span><span class="mi">3000</span><span class="p">)),</span>
+<span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">studies</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="c1"># **settings unpacks the dictionary into keyword arguments</span>
+    <span class="n">st_centers</span><span class="p">,</span> <span class="n">st_radii</span> <span class="o">=</span> <span class="n">pack_growth</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">draw_pack</span><span class="p">(</span><span class="n">st_centers</span><span class="p">,</span> <span class="n">st_radii</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st_radii</span><span class="p">)</span><span class="si">}</span><span class="s2"> circles)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/85befb690ddc42d444acde0db9b60df4b8ce89cc1e1fc29e5d07630e030e6046.png" src="../_images/85befb690ddc42d444acde0db9b60df4b8ce89cc1e1fc29e5d07630e030e6046.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Coarse is a pebble beach, fine is roe, the quantized pack snaps to a few sizes and starts to look <em>manufactured</em> (Hirst’s grid winking from inside a packing), and the scarce pack is airy, all founders and no grain. Which one feels most like something grown? Which parameter is responsible: the range, the quantization, or the budget?</p>
+<p><strong>Try it.</strong> In the quantized study, change <code class="docutils literal notranslate"><span class="pre">step=4</span></code> to <code class="docutils literal notranslate"><span class="pre">step=10</span></code>: the pack collapses to just two or three sizes, and the manufactured look wins completely.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Pack your own: swap in another image from <code class="docutils literal notranslate"><span class="pre">assets/images/</span></code> (the Vermeer packs into a haunting darkness; the Hokusai’s wave froths), or pack a blank canvas and color it from a palette. Adjust the radius range, the gamma of the budget, <code class="docutils literal notranslate"><span class="pre">rings</span></code>, the seed. Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust the pack and its dress, replace 'yourname'</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">circle_colors</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a334f52fafe36dfdcc78eb62bfb91c19e07a269b8a6868b35d7aa44b6a726ff.png" src="../_images/6a334f52fafe36dfdcc78eb62bfb91c19e07a269b8a6868b35d7aa44b6a726ff.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch18_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: three grains.</strong> Pack the blank 400-square three times with the same seed and the radius pairs <code class="docutils literal notranslate"><span class="pre">(0.6,</span> <span class="pre">6)</span></code>, <code class="docutils literal notranslate"><span class="pre">(1.5,</span> <span class="pre">18)</span></code> and <code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">60)</span></code>. Describe each in chapter 15’s stippling vocabulary: where does the ink budget go, which surface is fine grain and which coarse, which of the three feels calm? Then find the pair at which the pack stops feeling grown and starts feeling like polka dots, and defend your boundary in one sentence.</p>
+<p><strong>(b) Code modification: pack inside a silhouette.</strong> Restrict the packing to a <em>mask</em>: load the Vermeer in grayscale, threshold its darkness into a True/False silhouette, and write a masked variant of <code class="docutils literal notranslate"><span class="pre">pack_growth</span></code> in which proposals landing outside the mask are refused (a fresh copy is cleaner than editing the original). Ink on paper, no colors needed. With the threshold on <em>darkness</em>, the territory is the dark ground and the girl emerges as untouched paper: a portrait in negative, drawn entirely by refusal. (When you reach chapter 20, its frost-inside-a-figure exercise is this one’s sibling: same move, different growth.)</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vermeer</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../assets/images/vermeer_pearl_earring.jpg"</span><span class="p">)</span>
+<span class="n">v_w</span> <span class="o">=</span> <span class="mi">360</span>
+<span class="n">v_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vermeer</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">v_w</span> <span class="o">/</span> <span class="n">vermeer</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+<span class="n">v_gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vermeer</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">v_w</span><span class="p">,</span> <span class="n">v_h</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="n">silhouette</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">v_gray</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.55</span>        <span class="c1"># True where the painting is dark</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pack_in_mask</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">allowed</span><span class="p">,</span> <span class="n">min_r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_r</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">tries</span><span class="o">=</span><span class="mi">40000</span><span class="p">):</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">allowed</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">centers</span><span class="p">,</span> <span class="n">radii</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">proposal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tries</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)]:</span>  <span class="c1"># outside the silhouette: refuse</span>
+            <span class="k">continue</span>
+        <span class="n">room</span> <span class="o">=</span> <span class="n">max_r</span>
+        <span class="k">if</span> <span class="n">centers</span><span class="p">:</span>
+            <span class="n">gaps</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span> <span class="o">-</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">))</span>
+            <span class="n">room</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_r</span><span class="p">,</span> <span class="n">gaps</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">room</span> <span class="o">&lt;</span> <span class="n">min_r</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">centers</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+        <span class="n">radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">room</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">centers</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">m_centers</span><span class="p">,</span> <span class="n">m_radii</span> <span class="o">=</span> <span class="n">pack_in_mask</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">silhouette</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">m_centers</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">,</span> <span class="n">v_w</span><span class="p">,</span> <span class="n">v_h</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Only the <em>center</em> is tested against the mask, so border circles lean out over the silhouette’s edge and soften it, which suits the subject. Pack <code class="docutils literal notranslate"><span class="pre">~silhouette</span></code> (the mask inverted) instead and the logic flips: now the girl herself fills with grain and the room goes blank. For a strict fit, refuse a proposal unless the mask is also True at the four compass points <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">-</span> <span class="pre">room,</span> <span class="pre">y)</span></code>, <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">room,</span> <span class="pre">y)</span></code>, <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">room)</span></code>, <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y</span> <span class="pre">+</span> <span class="pre">room)</span></code> (clipped to the canvas so the probes stay in bounds).</p>
+</details>
+<p><strong>(c) Creative challenge: one level deeper.</strong> Two directions, pick one. <em>Gasket-flavored</em>: choose the largest circle in a finished pack, treat its interior as a fresh canvas, and run <code class="docutils literal notranslate"><span class="pre">pack_growth</span></code> again inside it (refuse proposals farther than its radius from its center), so one founder carries a whole second generation. <em>Or the motif</em>: instead of a fill, draw your own small motif at every circle’s center, scaled by its radius: a chapter 3 star, a spiral, a letter of your name. Either way the packing is no longer the artwork; it has become the <em>composition</em> underneath one, which is how the technique earns its living in the wild. Name the piece and bring it to the gallery.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Yayoi Kusama, <em>Infinity Net: The Autobiography of Yayoi Kusama</em> (trans. Ralph McCarthy, Tate Publishing, 2011): obsessive space-filling from the inside, by the person who lives there.</p></li>
+<li><p>Helmut Friedel and Annegret Hoberg, <em>Kandinsky: Absolute. Abstract.</em> (Prestel, 2008): the retrospective catalogue from the Lenbachhaus, home of the concentric-rings color study.</p></li>
+<li><p>John Shier and Paul Bourke, “An Algorithm for Random Fractal Filling of Space”, <em>Computer Graphics Forum</em> 32.8 (2013), with the picture-rich companion page at <a class="reference external" href="https://paulbourke.net/fractals/randomtile/">paulbourke.net/fractals/randomtile</a>: what happens to packing when the sizes follow a strict power law.</p></li>
+<li><p>Tyler Hobbs, “A Randomized Approach to Circle Packing” (2016, free on <a class="reference external" href="http://tylerxhobbs.com">tylerxhobbs.com</a>): a leading generative artist’s working notes on exactly today’s algorithm, trade-offs included.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-coxeter1968"></span>Coxeter, H. S. M. (1968). The problem of Apollonius. <em>Canadian Mathematical Bulletin</em>, 11(1), 1–17. <a class="reference external" href="https://doi.org/10.4153/CMB-1968-001-7">doi:10.4153/CMB-1968-001-7</a>. Retells the whole lineage: Apollonius’s lost treatise, Descartes’s 1643 letters to Elisabeth, Soddy’s poem.</p></li>
+<li><p><span id="ref-hirst"></span>Damien Hirst studio. Spot paintings: series text. <a class="reference external" href="https://www.damienhirst.com/texts1/series/spots">damienhirst.com</a>. The Pharmaceutical series and its rules, in the studio’s own words.</p></li>
+<li><p><span id="ref-heath1921"></span>Heath, T. L. (1921). <em>A History of Greek Mathematics</em>, vol. II. Clarendon Press. Apollonius’s dates and the lost treatise on tangencies.</p></li>
+<li><p><span id="ref-hobbs2016"></span>Hobbs, T. (2016). A Randomized Approach to Circle Packing. <a class="reference external" href="https://www.tylerxhobbs.com/words/a-randomized-approach-to-circle-packing">tylerxhobbs.com</a>. A leading generative artist’s working notes on exactly this chapter’s algorithm.</p></li>
+<li><p><span id="ref-kusama2011"></span>Kusama, Y. (2011). <em>Infinity Net: The Autobiography of Yayoi Kusama</em> (trans. R. McCarthy). Tate Publishing. First published in Japanese, 2002; the <em>Infinity Nets</em> and “self-obliteration” from the inside.</p></li>
+<li><p><span id="ref-soddy1936"></span>Soddy, F. (1936). The Kiss Precise. <em>Nature</em>, 137, 1021. <a class="reference external" href="https://doi.org/10.1038/1371021a0">doi:10.1038/1371021a0</a>. The theorem, in verse.</p></li>
+<li><p><span id="ref-lenbachhaus"></span>Städtische Galerie im Lenbachhaus und Kunstbau, München. <em>Farbstudie – Quadrate mit konzentrischen Ringen</em>, Wassily Kandinsky, 1913. <a class="reference external" href="https://www.lenbachhaus.de/en/digital/collection-online/detail/farbstudie-quadrate-mit-konzentrischen-ringen-30017624">Collection entry</a>.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook: ninety thousand proposals, over seven thousand circles, well under a minute of negotiation. It runs automatically with <em>Restart &amp; Run All</em>. At home, raise <code class="docutils literal notranslate"><span class="pre">tries</span></code> to 150000 and lower <code class="docutils literal notranslate"><span class="pre">min_r</span></code> to 0.8 for an even silkier grain.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: the packed-circle Monet</span>
+<span class="n">rng_show</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1906</span><span class="p">)</span>
+<span class="n">show_centers</span><span class="p">,</span> <span class="n">show_radii</span> <span class="o">=</span> <span class="n">pack_growth</span><span class="p">(</span><span class="n">rng_show</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span> <span class="n">min_r</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
+                                       <span class="n">max_r</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">tries</span><span class="o">=</span><span class="mi">90000</span><span class="p">,</span> <span class="n">cap_map</span><span class="o">=</span><span class="n">cap_map</span><span class="p">)</span>
+<span class="n">show_colors</span> <span class="o">=</span> <span class="n">smooth_color</span><span class="p">[</span><span class="n">show_centers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+                           <span class="n">show_centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">show_radii</span><span class="p">)</span><span class="si">}</span><span class="s2"> circles"</span><span class="p">)</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">draw_pack</span><span class="p">(</span><span class="n">show_centers</span><span class="p">,</span> <span class="n">show_radii</span><span class="p">,</span> <span class="n">show_colors</span><span class="p">,</span> <span class="n">scale_w</span><span class="p">,</span> <span class="n">scale_h</span><span class="p">,</span>
+                      <span class="n">figsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7296 circles
+saved: assets/outputs/ch18_showpiece.png
+</pre></div>
+</div>
+<img alt="../_images/8fd997bcbf2ae5e74ccb44ffa320924fe3bbb37fb0dda444f107d4ba3759a980.png" src="../_images/8fd997bcbf2ae5e74ccb44ffa320924fe3bbb37fb0dda444f107d4ba3759a980.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="17-pixel-sorting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">17. Pixel Sorting: The Aesthetics of the Glitch</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="19-particles-and-flocking.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">19. Particles, Agents, and Flocking</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-circle-as-compositional-atom">Context: the circle as compositional atom</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-collision-test">The collision test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-by-refusal">Packing by refusal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-by-growth">Packing by growth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-radius-budget-from-the-painting">A radius budget from the painting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kandinsky-variant-rings-instead-of-fills">The Kandinsky variant: rings instead of fills</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies">Parameter studies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

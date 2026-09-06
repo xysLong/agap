@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>27. Synthesis: Systems, Authorship, and the Final Project &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/27-synthesis';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="26. The Plotted Line: Vector Graphics and the Machine’s Hand" href="26-the-plotted-line.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-cellular-automata.html">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>27. Synthesis: Systems, Authorship, and the Final Project</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stuttgart-question">The Stuttgart question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-creativities">Three creativities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-market-finds-it-twice">The market finds it, twice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-combinator-three-worked-recipes">The combinator: three worked recipes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-1-a-meadow-for-monet">Recipe 1: a meadow for Monet</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-2-a-turing-quilt">Recipe 2: a Turing quilt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-3-the-flock-printed">Recipe 3: the flock, printed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-project">The final project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-the-semester-at-one-glance">Appendix: the semester at one glance</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="synthesis-systems-authorship-and-the-final-project">
+<h1>27. Synthesis: Systems, Authorship, and the Final Project<a class="headerlink" href="#synthesis-systems-authorship-and-the-final-project" title="Link to this heading">#</a></h1>
+<p>The last chapter is mostly a conversation: about who, exactly, made the images in this book. Around the conversation sit three worked recipes for combining everything you have learned, and the brief for the final project.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>The whole course on one sheet: every chapter’s showpiece, one semester of systems. Every tile below was generated by code you have read, run, and modified. By the end of today you will have three recipes for combining these systems into new ones, and the brief for the artwork of your own that closes the course.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch27_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1ff6cf0f6b68809863d62e1be6de7179fc9a68b21a0dc32f6f68e945b8c0bb8d.png" src="../_images/1ff6cf0f6b68809863d62e1be6de7179fc9a68b21a0dc32f6f68e945b8c0bb8d.png" />
+</div>
+</div>
+</section>
+<section id="the-stuttgart-question">
+<h2>The Stuttgart question<a class="headerlink" href="#the-stuttgart-question" title="Link to this heading">#</a></h2>
+<p>In February 1965, in the study gallery of the Technische Hochschule Stuttgart, <strong>Georg Nees</strong> showed plotter drawings made by his programs: by most countings, the first gallery exhibition of digital computer art anywhere <a class="cite" href="#ref-compart">(compArt, database entry)</a>. The philosopher <strong>Max Bense</strong>, who hosted it, had been arguing for years that aesthetics could be made rigorous; the artists in the audience were less sure. As <strong>Frieder Nake</strong> tells the story, one artist asked Nees whether he could make his machine draw the way <em>the artist</em> drew. Nees is said to have answered, honestly and devastatingly: yes, if you tell me how you do it. The room did not thank him, and Bense reportedly defused the moment by declaring the plotter’s work <em>künstliche Kunst</em>, artificial art, a category safely apart from the real thing <a class="cite" href="#ref-nake2005">(Nake 2005)</a>.</p>
+<p>Sixty years later the question has not aged a day; it has only changed instruments. You have spent a semester inside it. When your chapter 7 fern grew from a handful of rewriting rules, who drew it? You chose the rules (or borrowed them from Lindenmayer), a random number generator you seeded chose the branchings, and a renderer we wrote together chose the greens. The honest answer seems to be distributed: authorship in generative art is a <em>supply chain</em>, and the interesting arguments are about which links deserve names on the wall label. Sol LeWitt settled his version of it in 1967 with a sentence you met in chapter 1: “the idea becomes a machine that makes the art.” <a class="cite" href="#ref-lewitt1967">(LeWitt 1967)</a> Notice what the sentence quietly assumes: that the idea is <em>yours</em>, and the machine merely faithful. Chance (chapter 2), emergence in all its costumes (the ladder of Parts II and IV: rules on a grid, chemistry in a field, agents watching agents, agents freezing into form, agents wired to a field), selection itself (chapter 23, where your only act was choosing), and trained models (today’s image generators) each loosen that assumption a little more.</p>
+</section>
+<section id="three-creativities">
+<h2>Three creativities<a class="headerlink" href="#three-creativities" title="Link to this heading">#</a></h2>
+<p>The philosopher <strong>Margaret Boden</strong> gave this debate its most useful map. In <a class="cite" href="#ref-boden1990"><em>The Creative Mind</em> (1990)</a> she distinguishes three kinds of creativity: <strong>combinational</strong> (familiar ideas joined in unfamiliar ways), <strong>exploratory</strong> (roaming a space of possibilities whose rules are fixed), and <strong>transformational</strong> (changing the rules of the space itself, so that previously impossible things become thinkable). The map fits this course uncannily well. Every playground section, where you swept bandwidths and seeds and weights, was exploratory creativity: the generator defined a space and you traveled it. Today’s recipes are combinational: fern plus flow field plus extracted palette. And every time you rewrote a rule rather than a parameter (a new L-system production, a new boid urge, your own kernel in chapter 16), you nudged the third and rarest kind.</p>
+<p>Boden’s question for us: which of the three can the <em>program</em> do? A program explores its parameter space effortlessly, combines whatever we wire together, and transforms, so far, nothing, because it cannot yet want the rules to be otherwise. That “so far” is where the argument now lives.</p>
+</section>
+<section id="the-market-finds-it-twice">
+<h2>The market finds it, twice<a class="headerlink" href="#the-market-finds-it-twice" title="Link to this heading">#</a></h2>
+<p>For most of her life, <strong>Vera Molnár</strong>, who began making combinatorial drawings with a <em>machine imaginaire</em> in 1959 and with a real computer in 1968 (<a class="cite" href="#ref-molnar1975">Molnár 1975</a>; <a class="cite" href="#ref-williams2023">Williams 2023</a>), was a well-kept secret of a small field. The recognition arrived compressed into her final years: a place in the main exhibition of the 2022 Venice Biennale, a late collaboration sold at Sotheby’s, a Centre Pompidou retrospective planned for her hundredth birthday. She died in December 2023, weeks short of it <a class="cite" href="#ref-williams2023">(Williams 2023)</a>. Ask what changed in those last years, because it was not her work, which had been rigorous for six decades.</p>
+<p>Part of the answer is infrastructure. In 2021, platforms such as <strong>Art Blocks</strong> (launched late in 2020) attached generative programs to blockchain tokens: a collector buys a seed, the program runs once, the output is theirs (<a class="cite" href="#ref-artblocks">Art Blocks, about page</a>; <a class="cite" href="#ref-hobbs2021">Hobbs 2021</a>). <strong>Tyler Hobbs’</strong> <em>Fidenza</em> series (June 2021, 999 flow-field works; the algorithm is a cousin of your chapter 10) became the emblem: sold out in minutes, with single pieces reselling within weeks for sums that had never been attached to generative art before (<a class="cite" href="#ref-hobbsfidenza">Hobbs, <em>Fidenza</em></a>; <a class="cite" href="#ref-gao2023">Gao 2023</a>). The boom collapsed almost as quickly; by 2023 prices were a fraction of their peak <a class="cite" href="#ref-mcandrew2024">(McAndrew 2024)</a>, and the lasting deposit was not the money but the audience: more people looked seriously at generative art in two years than in the previous fifty.</p>
+<p>And then, while that wave receded, another arrived: image models that generate not from readable rules but from a billion trained weights and a sentence of English. This course took a quiet position on them in chapter 1, and you are now equipped to defend or attack it: every system in this book is <em>legible</em>. You can read the fern’s rules aloud, point to the line that makes disorder grow downward in <em>Schotter</em> <a class="cite" href="#ref-vamschotter">(Victoria and Albert Museum, collection entry)</a>, and say precisely what you authored. A prompt is also authorship, but of a different kind, brokered by a model nobody can read. Whether that difference is fundamental or nostalgic is genuinely open, and it is the last question below.</p>
+</section>
+<section id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>When Nees’s plotter drew <em>Schotter</em>’s cousins, who made the artwork: Nees, the program, the plotter, or the random number generator? Does your answer change for the fern you grew in chapter 7, and if so, which ingredient changed it? And for the creatures you bred in chapter 23, was choosing enough to make you the author?</p></li>
+<li><p>Boden’s three creativities: which did you practice most this semester? Give one concrete moment for each kind that you can point to in your own notebooks.</p></li>
+<li><p>LeWitt: “the idea becomes a machine that makes the art.” Is a text prompt to an image model such an idea, and the model such a machine? If you feel a difference, state it without using the word “soul”.</p></li>
+<li><p>Molnár waited half a century; <em>Fidenza</em> sold out in minutes. What changed: the art, the audience, or the infrastructure? What does the crash that followed suggest about which of the three was carrying the price?</p></li>
+<li><p>Write the wall label for your favorite artwork you made this semester. What must it disclose to be honest: the seed, the code, the number of attempts you curated away, the chapters you copied from? Compare with how museums label Riley’s assistant-executed paintings <a class="cite" href="#ref-nmwa">(National Museum of Women in the Arts, artist profile)</a>.</p></li>
+<li><p>Which chapter’s system felt most like a collaborator, and which most like a tool? Try to name what made the difference: randomness, emergence, or simply your own fluency with it.</p></li>
+</ol>
+<p>In class we take these in two rounds: questions 1 to 3 now, questions 4 to 6 after the three recipes below, once you have just combined systems yourself and are about to write wall labels of your own.</p>
+<p>Take these seriously; question 5 is a rehearsal for the statement you will write for your final project.</p>
+</section>
+<section id="the-combinator-three-worked-recipes">
+<h2>The combinator: three worked recipes<a class="headerlink" href="#the-combinator-three-worked-recipes" title="Link to this heading">#</a></h2>
+<p>Everything in this course composes, and the pattern is always the same three slots:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{generator} \;\rightarrow\; \textbf{transformer} \;\rightarrow\; \textbf{palette}\]</div>
+<p>Something makes structure, something reshapes it, something dresses it. Below are three worked combinations, each a few cells long. We rebuild the borrowed machinery in condensed form (as chapter 6 did with its triptych) so this notebook stays self-contained; in your own project, copying the cells you need from earlier chapters is not a workaround, it is the intended technique.</p>
+<section id="recipe-1-a-meadow-for-monet">
+<h3>Recipe 1: a meadow for Monet<a class="headerlink" href="#recipe-1-a-meadow-for-monet" title="Link to this heading">#</a></h3>
+<p>L-system ferns (chapter 7) planted along a noise breeze (chapter 10), colored from the water lilies (chapter 6). First, the L-system engine, condensed, with one new argument: the turtle’s starting heading, so a plant can grow leaning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 7's engine, condensed: rewrite strings, then walk them as a turtle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rewrite</span><span class="p">(</span><span class="n">axiom</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">iterations</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">axiom</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="n">next_string</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+            <span class="n">next_string</span> <span class="o">=</span> <span class="n">next_string</span> <span class="o">+</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">next_string</span>
+    <span class="k">return</span> <span class="n">string</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">interpret</span><span class="p">(</span><span class="n">instructions</span><span class="p">,</span> <span class="n">angle_degrees</span><span class="p">,</span> <span class="n">heading0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+    <span class="n">heading</span> <span class="o">=</span> <span class="n">heading0</span>                     <span class="c1"># new, in radians: a plant can start out leaning</span>
+    <span class="n">turn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">)</span>
+    <span class="n">stack</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">depths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">instructions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">:</span>
+            <span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
+            <span class="n">y_new</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">)))</span>
+            <span class="n">depths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">))</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">y_new</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"+"</span><span class="p">:</span>
+            <span class="n">heading</span> <span class="o">=</span> <span class="n">heading</span> <span class="o">+</span> <span class="n">turn</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"-"</span><span class="p">:</span>
+            <span class="n">heading</span> <span class="o">=</span> <span class="n">heading</span> <span class="o">-</span> <span class="n">turn</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"["</span><span class="p">:</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">heading</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"]"</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">heading</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">segments</span><span class="p">,</span> <span class="n">depths</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 6's palette extractor, condensed: image in, six hex colors out</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">rgb2lab</span><span class="p">,</span> <span class="n">lab2rgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_hex</span><span class="p">,</span> <span class="n">to_rgb</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_palette</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">small</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_colors</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">rgb2lab</span><span class="p">(</span><span class="n">small</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>                  <span class="c1"># dark to light</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">lab2rgb</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="n">order</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_colors</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_colors</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">palette</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">:</span>
+        <span class="n">palette</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_hex</span><span class="p">(</span><span class="n">center</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">palette</span>
+
+<span class="n">monet</span> <span class="o">=</span> <span class="n">extract_palette</span><span class="p">(</span><span class="s2">"../assets/images/monet_waterlilies.jpg"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"the Monet palette:"</span><span class="p">,</span> <span class="n">monet</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the Monet palette: ['#4e6a8a', '#4b7475', '#5e7888', '#5d8c70', '#5d88a8', '#90a2a0']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the meadow: forty ferns leaning with one breeze, dressed by Monet</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opensimplex</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineCollection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">PALETTES</span><span class="p">,</span> <span class="n">save_artwork</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="n">opensimplex</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">breeze</span> <span class="o">=</span> <span class="n">opensimplex</span><span class="o">.</span><span class="n">noise2array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fern</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"X"</span><span class="p">:</span> <span class="s2">"F-[[X]+X]+F[+FX]-X"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">:</span> <span class="s2">"FF"</span><span class="p">}</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">y0</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">40</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>        <span class="c1"># back rows drawn first</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">97</span><span class="p">)</span>
+    <span class="n">segments</span><span class="p">,</span> <span class="n">depths</span> <span class="o">=</span> <span class="n">interpret</span><span class="p">(</span><span class="n">rewrite</span><span class="p">(</span><span class="s2">"X"</span><span class="p">,</span> <span class="n">fern</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mf">22.5</span><span class="p">,</span>
+                                 <span class="n">heading0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">0.55</span> <span class="o">*</span> <span class="n">breeze</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x0</span><span class="p">)])</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">)</span>  <span class="c1"># front rows grow taller</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">segments</span> <span class="o">*</span> <span class="n">height</span> <span class="o">/</span> <span class="n">segments</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">]</span>
+    <span class="n">blend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">depths</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">depths</span><span class="p">)</span>
+    <span class="n">dark</span><span class="p">,</span> <span class="n">light</span> <span class="o">=</span> <span class="n">monet</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">monet</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">blend</span><span class="p">)</span> <span class="o">*</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">dark</span><span class="p">)</span> <span class="o">+</span> <span class="n">blend</span> <span class="o">*</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">light</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">combo_1</span> <span class="o">=</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3f4c75fe5daebe56b1bc4f13e723302c220388dc297543d7eee61218b534ecbb.png" src="../_images/3f4c75fe5daebe56b1bc4f13e723302c220388dc297543d7eee61218b534ecbb.png" />
+</div>
+</div>
+<p>One system grew the plants, a second bent them, a third painted them; no single chapter could have made this image, and every part of it is legible. Note the quiet trick: the breeze is <em>one</em> noise row shared by all plants, so neighboring ferns lean together like grass under the same gust.</p>
+<p><strong>Try it.</strong> The meadow accepts any six-color dark-to-light palette: swap <code class="docutils literal notranslate"><span class="pre">monet</span></code> for <code class="docutils literal notranslate"><span class="pre">PALETTES[&quot;magma&quot;]</span></code> and rerun. Then raise the lean factor 0.55 until the breeze becomes a gale.</p>
+</section>
+<section id="recipe-2-a-turing-quilt">
+<h3>Recipe 2: a Turing quilt<a class="headerlink" href="#recipe-2-a-turing-quilt" title="Link to this heading">#</a></h3>
+<p>Reaction-diffusion textures (chapter 14) sewn into Voronoi patches (chapter 15): chemistry as fabric, geometry as tailor. First grow two textures, then let each Voronoi cell wear one of them in its own colors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 14's chemistry, condensed: two Gray-Scott textures, grown fresh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
+
+<span class="n">LAPLACIAN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grow_texture</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="n">center</span><span class="p">,</span> <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">10</span>
+    <span class="n">u</span><span class="p">[</span><span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">,</span> <span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">,</span> <span class="n">center</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">center</span> <span class="o">+</span> <span class="n">half</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">lap_u</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">LAPLACIAN</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+        <span class="n">lap_v</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">LAPLACIAN</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+        <span class="n">reaction</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v</span> <span class="o">*</span> <span class="n">v</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="n">lap_u</span> <span class="o">-</span> <span class="n">reaction</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">lap_v</span> <span class="o">+</span> <span class="n">reaction</span> <span class="o">-</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">v</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="n">coral</span> <span class="o">=</span> <span class="n">grow_texture</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mf">0.0545</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.062</span><span class="p">)</span>      <span class="c1"># about ten seconds for the pair</span>
+<span class="n">maze</span> <span class="o">=</span> <span class="n">grow_texture</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mf">0.029</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.057</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the quilt: every Voronoi cell wears one texture in its own two colors</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">turing_quilt</span><span class="p">(</span><span class="n">palette</span><span class="p">,</span> <span class="n">n_cells</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">textures</span><span class="o">=</span><span class="p">(</span><span class="n">coral</span><span class="p">,</span> <span class="n">maze</span><span class="p">)):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">seeds</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">pixels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">grid_x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">grid_y</span><span class="o">.</span><span class="n">ravel</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">pixels</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">paper_rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>          <span class="c1"># lightest color as ground</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cells</span><span class="p">):</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="n">owner</span> <span class="o">==</span> <span class="n">cell</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">textures</span><span class="p">[</span><span class="n">cell</span> <span class="o">%</span> <span class="mi">2</span><span class="p">][</span><span class="n">inside</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span>        <span class="c1"># this cell's fabric</span>
+        <span class="n">ink</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">palette</span><span class="p">[</span><span class="n">cell</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]))</span>
+        <span class="n">image</span><span class="p">[</span><span class="n">inside</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">paper_rgb</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">ink</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+<span class="n">quilt</span> <span class="o">=</span> <span class="n">turing_quilt</span><span class="p">(</span><span class="n">PALETTES</span><span class="p">[</span><span class="s2">"bauhaus"</span><span class="p">])</span>
+<span class="n">show</span><span class="p">(</span><span class="n">quilt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/720c320db057468de13c20458222764dfce75d0fdb640fb3e1b04df7a7e1c981.png" src="../_images/720c320db057468de13c20458222764dfce75d0fdb640fb3e1b04df7a7e1c981.png" />
+</div>
+</div>
+<p>The seams need no drawing: wherever the ownership changes, the fabric and its colors change with it, and the eye stitches the boundary. The quilt is also a quiet argument about pattern: chapter 14’s textures were <em>processes</em> frozen mid-run, and chapter 15’s cells are pure geometry, yet sewn together they read instantly as textile, the oldest algorithmic art of all (chapter 13’s looms send their regards).</p>
+<p><strong>Try it.</strong> Re-cut the quilt with <code class="docutils literal notranslate"><span class="pre">n_cells=120</span></code> (confetti) or <code class="docutils literal notranslate"><span class="pre">n_cells=12</span></code> (banners), or dress it in <code class="docutils literal notranslate"><span class="pre">PALETTES[&quot;magma&quot;]</span></code>, whose last color happens to be its lightest.</p>
+</section>
+<section id="recipe-3-the-flock-printed">
+<h3>Recipe 3: the flock, printed<a class="headerlink" href="#recipe-3-the-flock-printed" title="Link to this heading">#</a></h3>
+<p>Chapter 19’s boids leave trails; chapter 16’s error diffusion prints them. A simulation becomes a photograph becomes a print: three chapters, three transformations, one artifact.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chapter 19's society, condensed into one function returning all positions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flock_history</span><span class="p">(</span><span class="n">n_boids</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span> <span class="n">n_frames</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                  <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">),</span> <span class="n">radii</span><span class="o">=</span><span class="p">(</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">n_boids</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n_boids</span><span class="p">)</span>
+    <span class="n">vel</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_frames</span><span class="p">):</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">off</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">near</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">crowd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">near</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">has_neighbors</span> <span class="o">=</span> <span class="n">near</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>   <span class="c1"># True counts as 1 (chapter 20's trick)</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span>
+                                       <span class="o">-</span><span class="n">off</span> <span class="o">/</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                 <span class="o">+</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="n">near</span> <span class="o">*</span> <span class="n">vel</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">crowd</span> <span class="o">-</span> <span class="n">vel</span><span class="p">)</span>
+                 <span class="o">*</span> <span class="n">has_neighbors</span>
+                 <span class="o">+</span> <span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="n">near</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">crowd</span> <span class="o">-</span> <span class="n">pos</span><span class="p">)</span>
+                 <span class="o">*</span> <span class="n">has_neighbors</span>
+                 <span class="o">+</span> <span class="mf">0.08</span> <span class="o">*</span> <span class="p">((</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&gt;</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)))</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vel</span> <span class="o">+</span> <span class="n">force</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="mf">1e-9</span><span class="p">)</span>
+        <span class="n">vel</span> <span class="o">=</span> <span class="p">(</span><span class="n">vel</span> <span class="o">+</span> <span class="n">force</span><span class="p">)</span> <span class="o">/</span> <span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">vel</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="n">flock_history</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># expose the flight onto a pixel canvas: a grayscale photograph of time</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="mi">250</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># open the shutter late: one gesture</span>
+<span class="n">resolution</span> <span class="o">=</span> <span class="mi">240</span>
+<span class="c1"># np.histogram2d (chapter 9's census of visits): ch19 stamped, here we count</span>
+<span class="n">counts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                              <span class="n">bins</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">]])</span>  <span class="c1"># _ = bin edges, unused</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">9</span><span class="p">)</span>         <span class="c1"># ch16's blur joins the dots</span>
+<span class="n">photograph</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">counts</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># 1.6 = exposure gain; 0 ink, 1 paper</span>
+<span class="n">show</span><span class="p">(</span><span class="n">photograph</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/14c880cb59b2803da95b77a877db485d71422e986d669d8722cb821f3ed7fcf7.png" src="../_images/14c880cb59b2803da95b77a877db485d71422e986d669d8722cb821f3ed7fcf7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print it: chapter 16's error diffusion, then two colors and hard pixels</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">floyd_steinberg</span><span class="p">(</span><span class="n">gray</span><span class="p">):</span>
+    <span class="n">canvas</span> <span class="o">=</span> <span class="n">gray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="n">old</span> <span class="o">=</span> <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">old</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">old</span> <span class="o">-</span> <span class="n">new</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">canvas</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">/</span> <span class="mi">16</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">16</span>
+                <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">16</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                    <span class="n">canvas</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">16</span>
+    <span class="k">return</span> <span class="n">canvas</span>
+
+<span class="n">printed</span> <span class="o">=</span> <span class="n">floyd_steinberg</span><span class="p">(</span><span class="n">photograph</span><span class="p">)</span>
+<span class="n">combo_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">printed</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">to_rgb</span><span class="p">(</span><span class="s2">"#F2EFE9"</span><span class="p">),</span>
+                   <span class="n">to_rgb</span><span class="p">(</span><span class="s2">"#1B4B9B"</span><span class="p">))</span>
+<span class="n">combo_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">combo_3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>         <span class="c1"># 9x: print-size pixels</span>
+<span class="n">show</span><span class="p">(</span><span class="n">combo_3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f963477f71392631d964d8d5350a5841f968a062239916db0250c75ab463fff7.png" src="../_images/f963477f71392631d964d8d5350a5841f968a062239916db0250c75ab463fff7.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Three recipes, three temperaments: the meadow is <em>pastoral</em> (systems imitating nature imitating systems), the quilt is <em>constructive</em> (pure process wearing pure geometry), the print is <em>documentary</em> (a simulation’s biography in ink). Which slot did the most aesthetic work in each: the generator, the transformer, or the palette? There is no right answer, but your final project will force you to have an opinion.</p>
+</section>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Save whichever recipe, or variation of one, you like best; replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> as always. (<code class="docutils literal notranslate"><span class="pre">combo_3</span></code> is an image array, so it lands at its native pixel size; pass <code class="docutils literal notranslate"><span class="pre">combo_1</span></code>, the meadow figure, to save that instead. And as in every chapter: all seeds above are invitations.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: pick a recipe output, then replace 'yourname'</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">combo_3</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch27_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-final-project">
+<h2>The final project<a class="headerlink" href="#the-final-project" title="Link to this heading">#</a></h2>
+<p>The course ends the way it began, with a system, except this time it is yours.</p>
+<p><strong>The task.</strong> In your group (3 to 4 people), design and implement a generative artwork that combines <strong>at least two techniques</strong> from this course. Combination is the point: a fern is chapter 7’s, but a fern <em>drawn in stipples sampled by darkness</em> is yours. The three recipes above are the template for how little glue code this needs.</p>
+<p><strong>Deliverables.</strong></p>
+<ol class="arabic simple">
+<li><p><strong>The artwork:</strong> one PNG, at least 2000 pixels on the long side (<code class="docutils literal notranslate"><span class="pre">save_artwork</span></code> guarantees this for figures; for image arrays, scale with <code class="docutils literal notranslate"><span class="pre">np.kron</span></code> as above). If your piece is line-based, you may add its SVG (chapter 26’s export) as an optional extra; the PNG stays mandatory.</p></li>
+<li><p><strong>The code:</strong> the notebook or script that generates it, runnable top to bottom, seeds fixed so the submitted artwork is reproducible.</p></li>
+<li><p><strong>The statement:</strong> about 500 words situating the work art-historically or mathematically (which conversations from this course does it join?), including a <strong>contribution note</strong> (who did what, briefly and honestly) and a <strong>disclosure of AI-tool use</strong> (which tools, for what; using them is fine, hiding them is not).</p></li>
+<li><p><strong>The presentation:</strong> about 12 minutes as a group, plus discussion. Show the work, show the system, name your choices; question 5 above is the rehearsal.</p></li>
+</ol>
+<p><strong>Rubric.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Criterion</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>What convinces us</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Concept</p></td>
+<td><p>30%</p></td>
+<td><p>a real idea about combining systems, not two techniques stapled together</p></td>
+</tr>
+<tr class="row-odd"><td><p>Execution</p></td>
+<td><p>30%</p></td>
+<td><p>working, readable, reproducible code; techniques used correctly</p></td>
+</tr>
+<tr class="row-even"><td><p>Aesthetic intent</p></td>
+<td><p>20%</p></td>
+<td><p>visible, defended choices: palette, composition, parameters are argued, not defaults</p></td>
+</tr>
+<tr class="row-odd"><td><p>Statement</p></td>
+<td><p>20%</p></td>
+<td><p>situates the work, honest contribution note and AI disclosure, ~500 words</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>The mid-semester pitch.</strong> Around unit 9 or 10, each group gives a ~5 minute pitch: the concept in two sentences, the techniques you intend to combine, one sketch or reference image, and the division of labor. The pitch is not binding (projects are allowed to drift as you learn more techniques), but “we have not decided yet” is not a pitch.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: re-season a recipe.</strong> Take one of the three recipes and change its temperament without changing its structure: a winter meadow (sparser plants, a Vermeer palette, a harder lean), a silk quilt (two gentler presets from chapter 14, a pastel palette, 120 cells), a red print (different flock weights, Ben-Day red on cream). One recipe, five dials, twenty minutes.</p>
+<p><strong>(b) Code modification: the quilt goes to sea.</strong> <code class="docutils literal notranslate"><span class="pre">turing_quilt</span></code> takes any palette whose last color is its lightest, and <code class="docutils literal notranslate"><span class="pre">extract_palette</span></code> (recipe 1) produces exactly that from any image. Dress the quilt in the colors of the Great Wave; one line of glue is enough.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hokusai</span> <span class="o">=</span> <span class="n">extract_palette</span><span class="p">(</span><span class="s2">"../assets/images/hokusai_wave.jpg"</span><span class="p">)</span>
+<span class="n">quilt_2</span> <span class="o">=</span> <span class="n">turing_quilt</span><span class="p">(</span><span class="n">hokusai</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">quilt_2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Prussian blues on cream, and the quilt suddenly reads as indigo-dyed cloth. This is the whole recipe pattern in one line: <code class="docutils literal notranslate"><span class="pre">extract_palette</span></code> is a palette slot, <code class="docutils literal notranslate"><span class="pre">turing_quilt</span></code> is a generator+transformer pair, and any image you own can now dress any system in this book. (Try the Seurat next: its extracted palette comes out surprisingly gray, which is a chapter 6 lesson in itself. What “the palette of a painting” means is not obvious; Seurat’s shimmer lived <em>between</em> his dots, not in them.)</p>
+</details>
+<p><strong>(c) Creative challenge: the prototype.</strong> Build a first draft of your final project: one combination of two techniques, any quality, ugly allowed. Bring it to the gallery with a one-sentence wall label. The distance between this prototype and your final submission is where the project’s concept will be found.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Margaret Boden, <em>The Creative Mind: Myths and Mechanisms</em> (2nd ed., Routledge, 2004): the three creativities, and the strongest philosophical toolkit for arguing about machine creativity without hand-waving.</p></li>
+<li><p>Grant D. Taylor, <em>When the Machine Made Art: The Troubled History of Computer Art</em> (Bloomsbury, 2014): why the art world resisted for fifty years, and what that resistance was defending.</p></li>
+<li><p>Philip Galanter, “What Is Generative Art? Complexity Theory as a Context for Art Theory” (Generative Art conference, 2003): the definition this course has leaned on since chapter 1; read it in full now that you have made the things it describes.</p></li>
+<li><p>Tyler Hobbs, “The Rise of Long-Form Generative Art” (2021, free on <a class="reference external" href="http://tylerxhobbs.com">tylerxhobbs.com</a>): a practitioner’s account of the Art Blocks moment by the maker of <em>Fidenza</em>, written while it happened.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-artblocks"></span>Art Blocks. About Art Blocks. <a class="reference external" href="https://www.artblocks.io/about">artblocks.io/about</a>. Founded 2020; the platform’s own description of the mint: a purchase triggers one run of the artist’s algorithm, and the never-before-seen output belongs to the collector.</p></li>
+<li><p><span id="ref-boden1990"></span>Boden, M. A. (1990). <em>The Creative Mind: Myths and Mechanisms</em>. Weidenfeld and Nicolson. (2nd ed., Routledge, 2004.) The source of the combinational, exploratory, and transformational triad.</p></li>
+<li><p><span id="ref-compart"></span>compArt daDA: the database of Digital Art. <em>rot 19. Computer-Grafik</em>, publication entry. <a class="reference external" href="http://dada.compart-bremen.de/item/publication/362">dada.compart-bremen.de/item/publication/362</a>. Dates and places the Nees show, February 1965, Studiengalerie of the TH Stuttgart, “the first exhibition of computer-generated algorithmic art world-wide”.</p></li>
+<li><p><span id="ref-gao2023"></span>Gao, J. (2023). Fidenza: the NFT collection leading generative art revolution. DappRadar blog, 17 July 2023. <a class="reference external" href="https://dappradar.com/blog/fidenza-the-nft-collection-leading-generative-art-revolution">dappradar.com</a>. The market data: 999 works released on Art Blocks in June 2021 at about <span class="math notranslate nohighlight">\(400 each, with resales above \)</span>1 million within months.</p></li>
+<li><p><span id="ref-hobbs2021"></span>Hobbs, T. (2021). The rise of long-form generative art. Essay, 6 August 2021. <a class="reference external" href="https://www.tylerxhobbs.com/words/the-rise-of-long-form-generative-art">tylerxhobbs.com</a>. The Art Blocks moment described from inside, while it happened.</p></li>
+<li><p><span id="ref-hobbsfidenza"></span>Hobbs, T. (2021). Fidenza. Essay, 11 June 2021. <a class="reference external" href="https://www.tylerxhobbs.com/fidenza">tylerxhobbs.com/fidenza</a>. The algorithm’s own description: a flow field the artist had worked with since 2016.</p></li>
+<li><p><span id="ref-lewitt1967"></span>LeWitt, S. (1967). Paragraphs on conceptual art. <em>Artforum</em>, 5(10), 79–83. The machine sentence, verbatim.</p></li>
+<li><p><span id="ref-mcandrew2024"></span>McAndrew, C. (2024). <em>The Art Basel and UBS Global Art Market Report 2024</em>. Art Basel and UBS. <a class="reference external" href="https://theartmarket.artbasel.com/the-art-market-2024/global-market">theartmarket.artbasel.com</a>. Documents the fall of art-related NFT sales from the 2021 peak of <span class="math notranslate nohighlight">\(2.9 billion to \)</span>1.2 billion in 2023, the second consecutive year of decline.</p></li>
+<li><p><span id="ref-molnar1975"></span>Molnár, V. (1975). Toward aesthetic guidelines for paintings with the aid of a computer. <em>Leonardo</em>, 8(3), 185–189. <a class="reference external" href="https://doi.org/10.2307/1573236">doi:10.2307/1573236</a>. Her own account of the stepwise method and of the computer she began using in 1968.</p></li>
+<li><p><span id="ref-nake2005"></span>Nake, F. (2005). Computer art: a personal recollection. In <em>Proceedings of the 5th Conference on Creativity and Cognition</em> (C&amp;C ‘05). ACM. <a class="reference external" href="https://doi.org/10.1145/1056224.1056234">doi:10.1145/1056224.1056234</a>. Nake’s telling of the Stuttgart opening, the artists’ challenge, and Bense’s rescue.</p></li>
+<li><p><span id="ref-nmwa"></span>National Museum of Women in the Arts. <em>Bridget Riley</em>. Artist profile, Washington, DC. <a class="reference external" href="https://nmwa.org/art/artists/bridget-riley/">nmwa.org/art/artists/bridget-riley</a>. “Riley supervises a workshop of assistants who aid in executing her large paintings.”</p></li>
+<li><p><span id="ref-vamschotter"></span>Victoria and Albert Museum. <em>Schotter</em> (Georg Nees, 1968–70). Collection entry, London. <a class="reference external" href="https://collections.vam.ac.uk/item/O221321/">collections.vam.ac.uk/item/O221321</a>. The gravel field itself, disorder growing downward.</p></li>
+<li><p><span id="ref-williams2023"></span>Williams, A. (2023). Vera Molnár, pioneer of computer art, dies at 99. <em>The New York Times</em>, 15 December 2023. The obituary: machine imaginaire 1959, computer 1968, Venice Biennale 2022, the Sotheby’s sale, the Pompidou show planned for her centenary, death on 7 December 2023.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-the-semester-at-one-glance">
+<h3>Appendix: the semester at one glance<a class="headerlink" href="#appendix-the-semester-at-one-glance" title="Link to this heading">#</a></h3>
+<p>The closing cell gathers every chapter’s showpiece into one contact sheet: the whole course as a single image, and this chapter’s own showpiece. It runs automatically with <em>Restart &amp; Run All</em> (it only needs the earlier chapters’ showpieces to exist in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>, which they do if you ran the chapters).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the contact sheet: every chapter's showpiece, one semester</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>                                    <span class="c1"># glob lists files matching a pattern</span>
+
+<span class="n">sheet_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">"stripes"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">"random walks"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">"chance"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">"symmetry"</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">"Truchet tiles"</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">"recursion"</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s2">"color"</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s2">"L-systems"</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s2">"fractals"</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s2">"attractors"</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="s2">"flow fields"</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s2">"deeper noise"</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s2">"curl and loops"</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="s2">"automata"</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="s2">"reaction-diffusion"</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="s2">"stippling"</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="s2">"dithering"</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="s2">"pixel sorting"</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s2">"circle packing"</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="s2">"flocking"</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="s2">"aggregation"</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="s2">"physarum"</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">:</span> <span class="s2">"differential growth"</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="s2">"evolving images"</span><span class="p">,</span> <span class="mi">24</span><span class="p">:</span> <span class="s2">"heatmaps"</span><span class="p">,</span>
+    <span class="mi">25</span><span class="p">:</span> <span class="s2">"sounding image"</span><span class="p">,</span> <span class="mi">26</span><span class="p">:</span> <span class="s2">"plotted line"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"../assets/outputs/ch??_showpiece.png"</span><span class="p">))</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span> <span class="k">if</span> <span class="s2">"ch27"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">p</span><span class="p">]</span>   <span class="c1"># the sheet itself stays out</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">//</span> <span class="mi">5</span>                    <span class="c1"># 5 tiles per row, as many rows as needed</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mf">2.9</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>                              <span class="c1"># also blanks any unused end panels</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>   <span class="c1"># "ch08_showpiece.png" -&gt; 8</span>
+    <span class="n">tile</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">tile</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">((</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">))</span>                  <span class="c1"># shrink: a contact sheet, not a vault</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tile</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sheet_labels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#5A5148"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Algorithmic Generative Art with Python: the semester at one glance"</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#5A5148"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3d6f1648be767b93808b671960c0fafbcfe1e9f3fafcd77e95c2c18446aaad57.png" src="../_images/3d6f1648be767b93808b671960c0fafbcfe1e9f3fafcd77e95c2c18446aaad57.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch27_showpiece.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="26-the-plotted-line.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">26. The Plotted Line: Vector Graphics and the Machine’s Hand</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stuttgart-question">The Stuttgart question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-creativities">Three creativities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-market-finds-it-twice">The market finds it, twice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-combinator-three-worked-recipes">The combinator: three worked recipes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-1-a-meadow-for-monet">Recipe 1: a meadow for Monet</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-2-a-turing-quilt">Recipe 2: a Turing quilt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-3-the-flock-printed">Recipe 3: the flock, printed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-project">The final project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-the-semester-at-one-glance">Appendix: the semester at one glance</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

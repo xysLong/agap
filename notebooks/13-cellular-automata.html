@@ -1,0 +1,949 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>13. Cellular Automata and Emergence &#8212; Algorithmic Generative Art with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88c4d4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/13-cellular-automata';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/custom.js?v=f7d7f947"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="14. Reaction-Diffusion: Turing Patterns" href="14-reaction-diffusion.html" />
+    <link rel="prev" title="12. Curl and the Endless Loop: Fields in Motion" href="12-curl-and-loops.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Algorithmic Generative Art with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Algorithmic Generative Art with Python
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prelude</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00-warming-up.html">0. Warming Up: Python and Mathematics from Zero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I · Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-random-walks.html">1. Random Walks: The First Generative System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-chance-and-randomness.html">2. Chance Operations and Controlled Randomness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-geometric-patterns.html">3. Geometric Patterns and Symmetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-truchet-tiles.html">4. Truchet Tiles: Chance on a Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-recursion-and-subdivision.html">5. Recursion and Subdivision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-color.html">6. Color: Spaces, Palettes, Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II · Growth and Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-l-systems.html">7. L-Systems and Botanical Form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-fractals.html">8. Fractals: Infinite Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-strange-attractors.html">9. Strange Attractors: The Shape of Chaos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III · Fields and Grids</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10-noise-and-flow-fields.html">10. Noise and Flow Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deeper-noise.html">11. Deeper Noise: Cells, Ridges, and Warped Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-curl-and-loops.html">12. Curl and the Endless Loop: Fields in Motion</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. Cellular Automata and Emergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reaction-diffusion.html">14. Reaction-Diffusion: Turing Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV · The Image, Transformed</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="15-voronoi-and-stippling.html">15. Voronoi, Delaunay, and Stippling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-filters-and-dithering.html">16. Filters, Edges, and Dithering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-pixel-sorting.html">17. Pixel Sorting: The Aesthetics of the Glitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18-circle-packing.html">18. Circle Packing: The Portrait in Dots</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V · Agents and Complexity</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="19-particles-and-flocking.html">19. Particles, Agents, and Flocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-diffusion-limited-aggregation.html">20. Aggregation: Growth by Random Walk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="21-physarum.html">21. Physarum: The Trail-Laying Swarm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22-differential-growth.html">22. Differential Growth: The Restless Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23-evolving-images.html">23. Evolving Images: Breeding as Composition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part VI · Coda</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="24-heatmaps.html">24. Attention Made Visible: Gaussians, KDE, Heatmaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25-the-sounding-image.html">25. The Sounding Image: From Pixels to Sound</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26-the-plotted-line.html">26. The Plotted Line: Vector Graphics and the Machine’s Hand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27-synthesis.html">27. Synthesis: Systems, Authorship, and the Final Project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>13. Cellular Automata and Emergence</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-loom-that-taught-machines-to-read">Context: the loom that taught machines to read</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eight-bits-of-law-the-rule-table">Eight bits of law: the rule table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-weaving-draft">The weaving draft</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-game-of-life">The Game of Life</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gun-that-conway-bet-against">The gun that Conway bet against</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cellular-automata-and-emergence">
+<h1>13. Cellular Automata and Emergence<a class="headerlink" href="#cellular-automata-and-emergence" title="Link to this heading">#</a></h1>
+<p>A row of cells, each obeying one tiny rule about its two neighbors, weaves patterns that nobody designed. Today we build cellular automata, meet Conway’s Game of Life, and add the course’s key concept of <strong>emergence</strong>: global order that the local rules never mention.</p>
+<section id="today-s-destination">
+<h2>Today’s destination<a class="headerlink" href="#today-s-destination" title="Link to this heading">#</a></h2>
+<p>The spacetime weave of <strong>rule 110</strong>: one line of cells evolving downward, row by row, from a random start. Every triangle, glider and collision in this image follows from a rule that fits in eight bits, and this particular rule has been proved capable of universal computation. The picture is, quite literally, a fabric computing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display this chapter's showpiece (generated by the last cell of this notebook)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpimg</span>
+
+<span class="n">showpiece_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch13_showpiece.png"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">showpiece_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not generated yet -- run the whole notebook once and come back."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0578d855e735caeb04bdf9ae5dd268ca709d1f129846fcf5f7f3076fcae26975.png" src="../_images/0578d855e735caeb04bdf9ae5dd268ca709d1f129846fcf5f7f3076fcae26975.png" />
+</div>
+</div>
+</section>
+<section id="context-the-loom-that-taught-machines-to-read">
+<h2>Context: the loom that taught machines to read<a class="headerlink" href="#context-the-loom-that-taught-machines-to-read" title="Link to this heading">#</a></h2>
+<p>Computing’s ancestry runs through art history, and specifically through textiles. In 1804 <strong>Joseph Marie Jacquard</strong> of Lyon perfected a loom attachment that read <strong>punched cards</strong>: each card row decided which warp threads lifted, so a chain of cards <em>was</em> the pattern, storable, copyable, editable. Decades later the technology wove its own showpiece, an 1839 silk portrait of Jacquard himself, programmed on roughly 24,000 cards; <strong>Charles Babbage</strong> proudly owned a copy, and his collaborator <strong>Ada Lovelace</strong> drew the connection that matters to us, writing in 1843 that the planned Analytical Engine “weaves algebraical patterns just as the Jacquard-loom weaves flowers and leaves” <a class="cite" href="#ref-lovelace1843">(Lovelace 1843)</a>. Punched cards went on to tabulate the 1890 US census on <strong>Herman Hollerith</strong>’s machines, and Hollerith’s company folded into what became IBM: from ornament to data processing in three steps <a class="cite" href="#ref-essinger2004">(Essinger 2004)</a>. Weaving kept its algorithmic soul, too. At the Bauhaus and later at Black Mountain College <a class="cite" href="#ref-albersfoundation">(Josef and Anni Albers Foundation, biography)</a>, <strong>Anni Albers</strong> treated the weaving draft, the grid notation of over-or-under, as a binary compositional language, and her book <em>On Weaving</em> <a class="cite" href="#ref-albers1965">(1965)</a> reads in places like a programming manual for cloth.</p>
+<p>The mathematics of grids of cells came from a different direction, beginning with John von Neumann’s self-reproducing automata of the 1940s <a class="cite" href="#ref-vonneumann1966">(von Neumann 1966)</a>. In 1970, via Martin Gardner’s <em>Scientific American</em> column, the mathematician <strong>John Conway</strong> published the <strong>Game of Life</strong> <a class="cite" href="#ref-gardner1970">(Gardner 1970)</a>, a two-dimensional world whose four-line rulebook produced gliders, oscillators, and eventually (Conway had offered 50 dollars for it) Bill Gosper’s <em>glider gun</em>, a pattern that manufactures moving patterns forever <a class="cite" href="#ref-gardner1971">(Gardner 1971)</a>. Life escaped mathematics within months and never returned: over the years it became a screensaver, a hacker emblem <a class="cite" href="#ref-raymond2003">(Raymond 2003)</a>, and a philosophical toy about whether life itself might be rule-following at scale. In the 1980s <strong>Stephen Wolfram</strong> systematized the simplest possible case, the 256 <em>elementary</em> one-dimensional automata, sorted their behaviors into four classes <a class="cite" href="#ref-wolfram1984">(Wolfram 1984)</a>, and pointed out that <strong>rule 30</strong> produces disorder good enough to serve as a random number generator <a class="cite" href="#ref-wolfram1986">(Wolfram 1986)</a>, while looking uncannily like the pigmentation of the cone snail <em>Conus textile</em> <a class="cite" href="#ref-wolfram2002">(Wolfram 2002)</a>: nature, apparently, runs cellular automata on seashells. <strong>Rule 110</strong> went further: Matthew Cook proved (published 2004) that it can simulate any computation whatsoever <a class="cite" href="#ref-cook2004">(Cook 2004)</a>.</p>
+<p>The concept these systems crystallize is <strong>emergence</strong> (Emergenz): structure at the large scale that is present nowhere in the small-scale rules. It is this course’s fourth encounter with the theme, after chance (chapter 2), the Truchet grid’s unplanned paths (chapter 4), and growth (chapter 7), and the most radical: nothing in rule 110’s eight bits mentions triangles, yet triangles are what it makes. Hold on to the question of where, in that case, the pattern <em>comes from</em>; it returns with flocking in chapter 19.</p>
+</section>
+<section id="eight-bits-of-law-the-rule-table">
+<h2>Eight bits of law: the rule table<a class="headerlink" href="#eight-bits-of-law-the-rule-table" title="Link to this heading">#</a></h2>
+<p>An <strong>elementary cellular automaton</strong> (zellulärer Automat) lives on a row of cells, each 0 (paper) or 1 (ink). Time ticks row by row: a cell’s next state depends only on its own state and its two neighbors’, the three-cell <strong>neighborhood</strong>. Three binary cells have <span class="math notranslate nohighlight">\(2^3 = 8\)</span> possible neighborhoods, so a rule is one answer (0 or 1) for each of the eight: eight bits, hence <span class="math notranslate nohighlight">\(2^8 = 256\)</span> possible rules, numbered 0-255 by reading those answers as a binary number. Rule 30 decoded by hand, since <span class="math notranslate nohighlight">\(30 = 00011110_2\)</span>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>neighborhood</p></th>
+<th class="head text-center"><p>111</p></th>
+<th class="head text-center"><p>110</p></th>
+<th class="head text-center"><p>101</p></th>
+<th class="head text-center"><p>100</p></th>
+<th class="head text-center"><p>011</p></th>
+<th class="head text-center"><p>010</p></th>
+<th class="head text-center"><p>001</p></th>
+<th class="head text-center"><p>000</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>new cell</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Read the new-cell row left to right and you are reading the binary digits of the rule number itself: <span class="math notranslate nohighlight">\(00011110_2 = 16 + 8 + 4 + 2 = 30\)</span> (the small <span class="math notranslate nohighlight">\(_2\)</span> marks a binary number; its digits are worth 1, 2, 4, 8, 16…, doubling leftward, and only the digits showing 1 are added). The code below does this decoding for any rule number, using the bit-shift trick <code class="docutils literal notranslate"><span class="pre">(rule</span> <span class="pre">&gt;&gt;</span> <span class="pre">i)</span> <span class="pre">&amp;</span> <span class="pre">1</span></code>: two new operators, where <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span> <span class="pre">i</span></code> shifts a number’s binary digits <span class="math notranslate nohighlight">\(i\)</span> places to the right (dropping what falls off the end) and <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">1</span></code> keeps only the last remaining digit. The <code class="docutils literal notranslate"><span class="pre">:03b</span></code> in the print is a cousin of chapter 0’s <code class="docutils literal notranslate"><span class="pre">:.2f</span></code>: it formats a number as three binary digits.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># decode a rule number into its eight answers, one per neighborhood</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rule_table</span><span class="p">(</span><span class="n">rule_number</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rule_number</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>     <span class="c1"># bit i of the rule number</span>
+    <span class="k">return</span> <span class="n">table</span>                                 <span class="c1"># table[n] answers neighborhood n</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">rule_table</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rule 30:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">neighborhood</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">neighborhood</span><span class="si">:</span><span class="s2">03b</span><span class="si">}</span><span class="s2">"</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">table</span><span class="p">[</span><span class="n">neighborhood</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rule 30:
+  111 -&gt; 0
+  110 -&gt; 0
+  101 -&gt; 0
+  100 -&gt; 1
+  011 -&gt; 1
+  010 -&gt; 1
+  001 -&gt; 1
+  000 -&gt; 0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Matches the hand-made table, good. Now evolution. For speed we update all cells at once with a vectorized trick worth learning: <code class="docutils literal notranslate"><span class="pre">np.roll</span></code> shifts a whole array one step left or right (wrapping around the edges, which conveniently makes our world a ring). Each cell then reads its neighborhood as the number <span class="math notranslate nohighlight">\(4\cdot\text{left} + 2\cdot\text{self} + \text{right}\)</span>, which is exactly an index into the rule table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># evolve a starting row for many steps; stack the rows into a spacetime image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span><span class="n">rule_number</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">initial_row</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rule_table</span><span class="p">(</span><span class="n">rule_number</span><span class="p">))</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">initial_row</span><span class="p">]</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">initial_row</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">neighborhood</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">left</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">current</span> <span class="o">+</span> <span class="n">right</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">neighborhood</span><span class="p">]</span>            <span class="c1"># everyone updates at once</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+<span class="n">single_seed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">301</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">single_seed</span><span class="p">[</span><span class="mi">150</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>                             <span class="c1"># one ink cell in the middle</span>
+<span class="n">spacetime</span> <span class="o">=</span> <span class="n">evolve</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">single_seed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"spacetime image:"</span><span class="p">,</span> <span class="n">spacetime</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">"(rows are time steps)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>spacetime image: (151, 301) (rows are time steps)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four famous rules: two from one seed, two from random soup</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">random_row</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
+
+<span class="n">panels</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">30</span><span class="p">,</span> <span class="n">single_seed</span><span class="p">,</span> <span class="s2">"rule 30: chaos from one cell"</span><span class="p">),</span>
+          <span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">single_seed</span><span class="p">,</span> <span class="s2">"rule 90: the Sierpinski lace"</span><span class="p">),</span>
+          <span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">random_row</span><span class="p">,</span> <span class="s2">"rule 110: structures that compute"</span><span class="p">),</span>
+          <span class="p">(</span><span class="mi">184</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">301</span><span class="p">),</span> <span class="s2">"rule 184: traffic jams"</span><span class="p">)]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">panels</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">evolve</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">start</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"binary"</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/36f36999579dd4f8fa1318f63458b431efed6554dba2fc794d88225f185e316a.png" src="../_images/36f36999579dd4f8fa1318f63458b431efed6554dba2fc794d88225f185e316a.png" />
+</div>
+</div>
+<p>Four rules, four personalities, spanning three of Wolfram’s four classes; only the dullest class, the one that fades to uniformity, goes unrepresented. Rule 90 grows the Sierpinski triangle, self-similar like chapter 8’s fractals (it is one, and a two-line program made it). Rule 30 boils: aperiodic, unpredictable, the seashell rule. Rule 110 is the strange one: local order, drifting particles, collisions that compute. Rule 184 is secretly a traffic model <a class="cite" href="#ref-nagel1996">(Nagel 1996)</a>, read each row as cars: the jams (thick black bands) move <em>backwards</em> while every car moves forward, a small emergence lesson all by itself.</p>
+<p><strong>Try it.</strong> Swap in rules 45, 73, 150, or any number under 256, with either starting row. Before running, guess from the binary digits whether you will get order or chaos. (You will be wrong often; that unpredictability from eight visible bits is Wolfram’s whole point.)</p>
+</section>
+<section id="the-weaving-draft">
+<h2>The weaving draft<a class="headerlink" href="#the-weaving-draft" title="Link to this heading">#</a></h2>
+<p>Now dress the automaton as what it always was: a textile pattern. A weaving draft marks which threads cross over which; our spacetime diagram is exactly such a draft. Two changes of clothing take it there: a two-color palette instead of black on white, and a hair of space between cells, like threads in cloth. <code class="docutils literal notranslate"><span class="pre">pcolormesh</span></code> (a cousin of <code class="docutils literal notranslate"><span class="pre">imshow</span></code> that draws each cell as an outlined rectangle) provides the gaps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># an automaton in textile clothing: two yarn colors, hairline gaps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agap.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAPER</span><span class="p">,</span> <span class="n">save_artwork</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ca_weave</span><span class="p">(</span><span class="n">rule_number</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="s2">"#1B4B9B"</span><span class="p">),</span>
+             <span class="n">random_start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">random_start</span><span class="p">:</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">start</span><span class="p">[</span><span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">fabric</span> <span class="o">=</span> <span class="n">evolve</span><span class="p">(</span><span class="n">rule_number</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">steps</span> <span class="o">/</span> <span class="n">width</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">PAPER</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">fabric</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">),</span>
+                  <span class="n">edgecolors</span><span class="o">=</span><span class="n">PAPER</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.35</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">art_1</span> <span class="o">=</span> <span class="n">ca_weave</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="s2">"#1B4B9B"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3b81e990ae8df0be3d26c8bce79f8154d9f4472e9849f7828e83260e80c29037.png" src="../_images/3b81e990ae8df0be3d26c8bce79f8154d9f4472e9849f7828e83260e80c29037.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># temperament 2 and 3: chaos yarn, and rule 73's barred structures</span>
+<span class="n">art_2</span> <span class="o">=</span> <span class="n">ca_weave</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s2">"#F5E960"</span><span class="p">,</span> <span class="s2">"#3B0A0E"</span><span class="p">),</span> <span class="n">random_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">art_3</span> <span class="o">=</span> <span class="n">ca_weave</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="s2">"#701C1C"</span><span class="p">),</span> <span class="n">random_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/94fe0ea76c4c7bec9e03e067e6d4c943703dea71045f7d82e60f5b56856c4ff5.png" src="../_images/94fe0ea76c4c7bec9e03e067e6d4c943703dea71045f7d82e60f5b56856c4ff5.png" />
+<img alt="../_images/8ae513192926da47fe5c9df5138412bab8bdb3f2f00094cf01da851fe9e81d6e.png" src="../_images/8ae513192926da47fe5c9df5138412bab8bdb3f2f00094cf01da851fe9e81d6e.png" />
+</div>
+</div>
+<p><strong>Look and compare.</strong> Which of the three would you actually wear? Textile designers answered this question for centuries under a constraint our screen ignores: a loom’s pattern must behave <em>everywhere</em>, no lucky crops. Notice how rule 73’s walls and ladders feel woven while rule 30 feels printed; can you say why in terms of repetition? And connect backwards: these grids are chapter 2’s color grids again, except no cell was chosen by chance; every single pixel is law.</p>
+</section>
+<section id="the-game-of-life">
+<h2>The Game of Life<a class="headerlink" href="#the-game-of-life" title="Link to this heading">#</a></h2>
+<p>Two dimensions now. Conway’s <strong>Game of Life</strong> upgrades the neighborhood to all eight surrounding cells and uses one rulebook, named <strong>B3/S23</strong> in the automata trade: a dead cell with exactly 3 live neighbors is <strong>B</strong>orn; a live cell with 2 or 3 live neighbors <strong>S</strong>urvives; everything else dies (loneliness or overcrowding). Counting eight neighbors for every cell at once is a job for <code class="docutils literal notranslate"><span class="pre">scipy.ndimage.convolve</span></code>, the sliding-window workhorse: slide a 3x3 ring of ones over the grid, and each cell receives its neighbor count. Remember this function; it carries all of chapter 14 and returns in chapter 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one Life step: convolve counts neighbors, the B3/S23 rulebook decides</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span>
+
+<span class="n">NEIGHBORS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">life_step</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">NEIGHBORS</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+    <span class="n">birth</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">survive</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">((</span><span class="n">count</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">birth</span> <span class="o">|</span> <span class="n">survive</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.35</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># 35% alive at the start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"living cells at start:"</span><span class="p">,</span> <span class="n">soup</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>living cells at start: 3580
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># five snapshots of the soup settling into gliders, blinkers, still lifes</span>
+<span class="n">snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">150</span><span class="p">]</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()}</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">snapshots</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">life_step</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">:</span>
+        <span class="n">frames</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">snapshots</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">step</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"binary"</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8cf16ec66db2595621506a8ba00126ebe71e144aeb2e4ac15cd7f8237efd0909.png" src="../_images/8cf16ec66db2595621506a8ba00126ebe71e144aeb2e4ac15cd7f8237efd0909.png" />
+</div>
+</div>
+<p>The early steps churn; by step 150 the world has cooled into a sparse ecology of stable blocks, blinking pairs, and the occasional glider crawling off on its own.</p>
+<p><strong>Try it.</strong> The soup’s density is the <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">0.35</span></code> in the seeding cell. Try <code class="docutils literal notranslate"><span class="pre">0.10</span></code> and <code class="docutils literal notranslate"><span class="pre">0.60</span></code> (rerun both cells above): when is the world stillborn, and when does it choke before it can organize? Stills undersell this; Life wants to move. The next cell writes the whole run as an animated GIF with chapter 12’s <code class="docutils literal notranslate"><span class="pre">imageio</span></code> export, scaling each frame up with <code class="docutils literal notranslate"><span class="pre">np.kron</span></code>, which replaces every cell by a 4x4 block of itself: pixel art’s zoom.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># export the run as an animated GIF and show it inline</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">imageio.v2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">imageio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">GifImage</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gif_frames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="n">gif_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">big</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>      <span class="c1"># 1 - grid: ink cells dark</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">life_step</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+<span class="n">gif_path</span> <span class="o">=</span> <span class="s2">"../assets/outputs/ch13_life.gif"</span>
+<span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="n">gif_path</span><span class="p">,</span> <span class="n">gif_frames</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">GifImage</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gif_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a6dcfb73656d430c582cfc3f4331788634eb9c0780e84af9eee73a5aeae73f2f.gif" src="../_images/a6dcfb73656d430c582cfc3f4331788634eb9c0780e84af9eee73a5aeae73f2f.gif" />
+</div>
+</div>
+</section>
+<section id="the-gun-that-conway-bet-against">
+<h2>The gun that Conway bet against<a class="headerlink" href="#the-gun-that-conway-bet-against" title="Link to this heading">#</a></h2>
+<p>Conway initially conjectured that no pattern could grow forever, and put 50 dollars on it <a class="cite" href="#ref-gardner1970">(Gardner 1970)</a>. Within the year, Bill Gosper’s group at MIT found the counterexample: the <strong>glider gun</strong>, a factory of thirty-six cells that fires a glider every thirty steps, forever (<a class="cite" href="#ref-gardner1971">Gardner 1971</a>; <a class="cite" href="#ref-lifewikigun">LifeWiki, “Gosper glider gun”</a>). Here it is, hardcoded cell by cell, the way patterns circulated in 1970s newsletters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the Gosper glider gun: 36 cells that manufacture motion forever</span>
+<span class="n">GUN</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+       <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+       <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+       <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+       <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">35</span><span class="p">)]</span>
+
+<span class="n">world</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">70</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">GUN</span><span class="p">:</span>
+    <span class="n">world</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">column</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">stages</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">181</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">):</span>
+        <span class="n">stages</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">world</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">world</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>               <span class="c1"># gliders die at the border</span>
+    <span class="n">world</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">world</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">world</span> <span class="o">=</span> <span class="n">life_step</span><span class="p">(</span><span class="n">world</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">stages</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">stages</span><span class="p">[</span><span class="n">step</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"binary"</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1229a17b8b7029b2edf028f94de977cd61a82692b435163c8f17d147892a1f4b.png" src="../_images/1229a17b8b7029b2edf028f94de977cd61a82692b435163c8f17d147892a1f4b.png" />
+</div>
+</div>
+<p>By step 60 the first gliders are away; by 180 a procession marches toward the corner, where our hard border quietly retires them. A pattern that <em>produces</em> patterns: the gun settled the growth bet, and it also settled something deeper, since streams of gliders can carry bits, and crossing streams can compute. Life is, like rule 110, a universal computer <a class="cite" href="#ref-berlekamp1982">(Berlekamp et al. 1982)</a>, and everything on this screen today is in principle buildable inside it.</p>
+</section>
+<section id="export-your-artwork">
+<h2>Export your artwork<a class="headerlink" href="#export-your-artwork" title="Link to this heading">#</a></h2>
+<p>Weave a rule of your own choosing in your own two yarns (any rule number under 256, any two hex colors, single seed or soup). Replace <code class="docutils literal notranslate"><span class="pre">yourname</span></code> and run; the print-quality PNG lands in <code class="docutils literal notranslate"><span class="pre">assets/outputs/</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save YOUR artwork: adjust rule, colors and start, replace 'yourname', run</span>
+<span class="n">my_artwork</span> <span class="o">=</span> <span class="n">ca_weave</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+                      <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s2">"#F2EFE9"</span><span class="p">,</span> <span class="s2">"#1A1A1A"</span><span class="p">),</span> <span class="n">random_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                      <span class="n">seed</span><span class="o">=</span><span class="mi">2026</span><span class="p">)</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">my_artwork</span><span class="p">,</span> <span class="s2">"yourname"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cda1fcccfac652383665a16eccb725c9fc75ff65fa04dc435a1f31b4af3d3115.png" src="../_images/cda1fcccfac652383665a16eccb725c9fc75ff65fa04dc435a1f31b4af3d3115.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch13_yourname.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p><strong>(a) Parameter exploration: the rule census.</strong> Render all 256 elementary rules from a single seed as tiny thumbnails in a 16x16 grid (small width, few steps; a double loop over subplots does it). Pick your top three purely aesthetically and defend the choices in one sentence each. Then check: are your favorites orderly, chaotic, or on the edge? Most people’s picks cluster at the edge of chaos, which is itself a finding about taste.</p>
+<p><strong>(b) Code modification: Day &amp; Night.</strong> Life is one point in a space of rulebooks. Implement <strong>B3678/S34678</strong> (born with 3, 6, 7 or 8 neighbors; surviving with 3, 4, 6, 7 or 8), known as <em>Day &amp; Night</em> <a class="cite" href="#ref-lifewikiday">(LifeWiki, “Day &amp; Night”)</a> because its ink and paper behave symmetrically: run it from a soup and watch continents with smooth coastlines form and erode. <code class="docutils literal notranslate"><span class="pre">np.isin(count,</span> <span class="pre">[3,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8])</span></code> spares you a chain of comparisons.</p>
+<details><summary>Solution</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">day_and_night_step</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">NEIGHBORS</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"wrap"</span><span class="p">)</span>
+    <span class="n">birth</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+    <span class="n">survive</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">birth</span> <span class="o">|</span> <span class="n">survive</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">301</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">300</span><span class="p">):</span>
+        <span class="n">shots</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">day_and_night_step</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">shots</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="n">step</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"binary"</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6B6B6B"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The 50% soup organizes into black and white territories whose borders round themselves off like surface tension. Swap every 0 for 1 in the start grid and the film plays identically with colors exchanged; that symmetry is baked into the rule numbers, and nothing in Life has it.</p>
+</details>
+<p><strong>(c) Creative challenge: a painting decays.</strong> Load <code class="docutils literal notranslate"><span class="pre">monet_waterlilies.jpg</span></code> (chapter 6 shows how), downscale it hard, threshold its darkness into a starting grid (<code class="docutils literal notranslate"><span class="pre">grid</span> <span class="pre">=</span> <span class="pre">(gray</span> <span class="pre">&lt;</span> <span class="pre">0.5).astype(int)</span></code>), and let Life run on the painting. Export the frame where the Monet is still <em>just</em> recognizable: the moment between image and ecology. A GIF of the full decay makes a fine gallery entry, and a fine metaphor.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Martin Gardner, “The fantastic combinations of John Conway’s new solitaire game ‘life’”, <em>Scientific American</em>, October 1970: the column that released Life into the world; short and still delightful.</p></li>
+<li><p>Anni Albers, <em>On Weaving</em> (1965): grids, notation, and pattern thought through by hand, decades before pixels; read chapter and plate side by side with today’s outputs.</p></li>
+<li><p>The <a class="reference external" href="https://conwaylife.com/wiki/">LifeWiki</a>: thousands of catalogued patterns with animations, from the glider to computers built inside Life.</p></li>
+<li><p>Stephen Wolfram, <em>A New Kind of Science</em> (2002), <a class="reference external" href="https://www.wolframscience.com/nks/">free online</a>: the elementary automata in obsessive depth; browse chapter 2 for the rule zoo and the shell.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span id="ref-albers1965"></span>Albers, A. (1965). <em>On Weaving</em>. Wesleyan University Press. Grids, notation, and pattern thought through by hand; also this chapter’s Further Reading.</p></li>
+<li><p><span id="ref-berlekamp1982"></span>Berlekamp, E. R., Conway, J. H., and Guy, R. K. (1982). <em>Winning Ways for Your Mathematical Plays</em>, vol. 2. Academic Press. Chapter 25, “What Is Life?”, sketches the computer built of glider streams.</p></li>
+<li><p><span id="ref-cook2004"></span>Cook, M. (2004). Universality in elementary cellular automata. <em>Complex Systems</em>, 15(1), 1–40. <a class="reference external" href="https://www.complex-systems.com/abstracts/v15_i01_a01/">Journal page</a>. The rule 110 universality proof.</p></li>
+<li><p><span id="ref-essinger2004"></span>Essinger, J. (2004). <em>Jacquard’s Web: How a Hand-Loom Led to the Birth of the Information Age</em>. Oxford University Press. The whole chain: loom, woven portrait, Babbage, Hollerith, IBM.</p></li>
+<li><p><span id="ref-gardner1970"></span>Gardner, M. (1970). Mathematical Games: The fantastic combinations of John Conway’s new solitaire game “life”. <em>Scientific American</em>, 223(4), 120–123. <a class="reference external" href="https://doi.org/10.1038/scientificamerican1070-120">doi:10.1038/scientificamerican1070-120</a>. The column that released Life, 50-dollar wager included.</p></li>
+<li><p><span id="ref-gardner1971"></span>Gardner, M. (1971). Mathematical Games: On cellular automata, self-reproduction, the Garden of Eden and the game “life”. <em>Scientific American</em>, 224(2), 112–117. Reports Gosper’s glider gun and the settled bet.</p></li>
+<li><p><span id="ref-albersfoundation"></span>Josef and Anni Albers Foundation. Anni Albers: biography. <a class="reference external" href="https://www.albersfoundation.org/alberses/biography">albersfoundation.org/alberses/biography</a>. Bauhaus weaving workshop 1922–32, Black Mountain College 1933–49.</p></li>
+<li><p><span id="ref-lifewikiday"></span>LifeWiki. Day &amp; Night. <a class="reference external" href="https://conwaylife.com/wiki/OCA:Day_%26_Night">conwaylife.com/wiki/OCA:Day_%26_Night</a>. The rule’s catalogue entry, its ink-paper symmetry included.</p></li>
+<li><p><span id="ref-lifewikigun"></span>LifeWiki. Gosper glider gun. <a class="reference external" href="https://conwaylife.com/wiki/Gosper_glider_gun">conwaylife.com/wiki/Gosper_glider_gun</a>. Cell count, period, and history of the gun.</p></li>
+<li><p><span id="ref-lovelace1843"></span>Lovelace, A. A. (1843). Notes by the translator, appended to Menabrea, L. F., Sketch of the Analytical Engine invented by Charles Babbage. <em>Taylor’s Scientific Memoirs</em>, 3, 666–731. <a class="reference external" href="https://www.fourmilab.ch/babbage/sketch.html">Full text at fourmilab.ch</a>. The weaving sentence is in Note A.</p></li>
+<li><p><span id="ref-nagel1996"></span>Nagel, K. (1996). Particle hopping models and traffic flow theory. <em>Physical Review E</em>, 53(5), 4655–4672. <a class="reference external" href="https://doi.org/10.1103/PhysRevE.53.4655">doi:10.1103/PhysRevE.53.4655</a>. Places rule 184, the minimal deterministic model, within traffic-flow theory.</p></li>
+<li><p><span id="ref-raymond2003"></span>Raymond, E. S. (2003). The glider: an Appropriate Hacker Emblem. <a class="reference external" href="http://www.catb.org/hacker-emblem/">catb.org/hacker-emblem</a>. The October 2003 proposal itself.</p></li>
+<li><p><span id="ref-vonneumann1966"></span>von Neumann, J. (1966). <em>Theory of Self-Reproducing Automata</em> (edited and completed by A. W. Burks). University of Illinois Press. The 1940s self-reproduction work in book form.</p></li>
+<li><p><span id="ref-wolfram1984"></span>Wolfram, S. (1984). Universality and complexity in cellular automata. <em>Physica D</em>, 10(1–2), 1–35. <a class="reference external" href="https://doi.org/10.1016/0167-2789(84)90245-8">doi:10.1016/0167-2789(84)90245-8</a>. The four classes of elementary-automaton behavior.</p></li>
+<li><p><span id="ref-wolfram1986"></span>Wolfram, S. (1986). Random sequence generation by cellular automata. <em>Advances in Applied Mathematics</em>, 7(2), 123–169. <a class="reference external" href="https://doi.org/10.1016/0196-8858(86)90028-X">doi:10.1016/0196-8858(86)90028-X</a>. Rule 30 as a random number generator.</p></li>
+<li><p><span id="ref-wolfram2002"></span>Wolfram, S. (2002). <em>A New Kind of Science</em>. Wolfram Media. <a class="reference external" href="https://www.wolframscience.com/nks/">Free online</a>. Page 423 sets mollusc-shell pigmentation, the textile cone included, beside one-dimensional automaton output.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="appendix-regenerate-the-showpiece">
+<h3>Appendix: regenerate the showpiece<a class="headerlink" href="#appendix-regenerate-the-showpiece" title="Link to this heading">#</a></h3>
+<p>This last cell (re)creates the image shown at the top of the notebook: rule 110 at loom width, ink on paper. It runs automatically with <em>Restart &amp; Run All</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># regenerate this chapter's showpiece: rule 110 as a large two-tone weave</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_rgb</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">fabric</span> <span class="o">=</span> <span class="n">evolve</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="mi">532</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+
+<span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">fabric</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>          <span class="c1"># 5x pixel zoom</span>
+<span class="n">ink</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_rgb</span><span class="p">(</span><span class="s2">"#1A1A1A"</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">paper</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">PAPER</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">showpiece</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">big</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">showpiece</span><span class="p">[</span><span class="n">big</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">paper</span>
+<span class="n">showpiece</span><span class="p">[</span><span class="n">big</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ink</span>
+<span class="n">saved_path</span> <span class="o">=</span> <span class="n">save_artwork</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="s2">"showpiece"</span><span class="p">,</span> <span class="n">chapter</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">showpiece</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>saved: assets/outputs/ch13_showpiece.png
+</pre></div>
+</div>
+<img alt="../_images/7a90e5d9a4e7e42a525165d6d48dcaa5ae6594e82db7e97c287c34cc740416cd.png" src="../_images/7a90e5d9a4e7e42a525165d6d48dcaa5ae6594e82db7e97c287c34cc740416cd.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="12-curl-and-loops.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">12. Curl and the Endless Loop: Fields in Motion</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="14-reaction-diffusion.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">14. Reaction-Diffusion: Turing Patterns</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-destination">Today’s destination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-the-loom-that-taught-machines-to-read">Context: the loom that taught machines to read</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eight-bits-of-law-the-rule-table">Eight bits of law: the rule table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-weaving-draft">The weaving draft</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-game-of-life">The Game of Life</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gun-that-conway-bet-against">The gun that Conway bet against</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-your-artwork">Export your artwork</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-regenerate-the-showpiece">Appendix: regenerate the showpiece</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://kunstgeschichte.univie.ac.at/en/staff/academic-personnel/xingyu-long/">Xingyu Long</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
