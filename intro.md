@@ -19,7 +19,7 @@
 | 1 | [Random Walks: The First Generative System](notebooks/01-random-walks.ipynb) | loops, randomness, plotting | Sol LeWitt, Georg Nees *Schotter*, Vera Molnár |
 | 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
 | 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
-| 4 | Truchet Tiles: Chance on a Grid *(in preparation)* | grid randomness, tile sets | Truchet 1704, Douat, Smith, *10 PRINT* |
+| 4 | [Truchet Tiles: Chance on a Grid](notebooks/04-truchet-tiles.ipynb) | grid randomness, tile sets | Truchet 1704, Douat, Smith, *10 PRINT* |
 | 5 | [Recursion and Subdivision](notebooks/05-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
 | 6 | [Color: Spaces, Palettes, Extraction](notebooks/06-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
 

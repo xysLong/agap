@@ -11,7 +11,7 @@ parts:
       - file: notebooks/01-random-walks
       - file: notebooks/02-chance-and-randomness
       - file: notebooks/03-geometric-patterns
-      # - file: notebooks/04-truchet-tiles
+      - file: notebooks/04-truchet-tiles
       - file: notebooks/05-recursion-and-subdivision
       - file: notebooks/06-color
   - caption: "Part II · Growth and Iteration"
