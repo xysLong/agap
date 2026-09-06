@@ -107,6 +107,41 @@ nav.bd-links .toc-chapter-number {
   }
 }
 
+/* citations: accent-colored like links; hover shows the full reference
+   (tooltip built by custom.js); click jumps to the chapter's reference list */
+a.cite {
+  color: var(--pst-color-link);
+}
+.cite-tooltip {
+  position: absolute;
+  z-index: 2000;
+  max-width: 26rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--pst-color-background, #fff);
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--pst-color-text-base, #2a2a2a);
+}
+.cite-tooltip p {
+  margin: 0;
+}
+/* a clicked citation lands its reference below the page edge, briefly tinted */
+span[id^="ref-"] {
+  scroll-margin-top: 3rem;
+}
+li:has(span[id^="ref-"]:target) {
+  background: #eef3ff;
+}
+html[data-theme="dark"] .cite-tooltip {
+  border-color: #444;
+}
+html[data-theme="dark"] li:has(span[id^="ref-"]:target) {
+  background: #1c2333;
+}
+
 /* kill visual noise: hairline borders, no shadows */
 .admonition, div.admonition {
   border-width: 1px;

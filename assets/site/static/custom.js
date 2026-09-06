@@ -18,3 +18,38 @@ document.addEventListener("DOMContentLoaded", () => {
     a.append(num, m[2]);
   });
 });
+
+// Citations: hovering an inline citation shows its full reference entry
+// (the chapter-end list item its href points at) in a floating tooltip.
+document.addEventListener("DOMContentLoaded", () => {
+  const cites = document.querySelectorAll("a.cite");
+  if (!cites.length) return;
+
+  const tip = document.createElement("div");
+  tip.className = "cite-tooltip";
+  tip.hidden = true;
+  document.body.appendChild(tip);
+
+  cites.forEach((a) => {
+    const href = a.getAttribute("href") || "";
+    if (!href.startsWith("#")) return;
+    const anchor = document.getElementById(decodeURIComponent(href.slice(1)));
+    if (!anchor) return;
+    const entry = anchor.closest("li");
+    if (!entry) return;
+
+    a.addEventListener("mouseenter", () => {
+      const clone = entry.cloneNode(true);
+      clone.querySelectorAll("span[id]").forEach((s) => s.remove());
+      tip.innerHTML = clone.innerHTML;
+      tip.hidden = false;
+      const r = a.getBoundingClientRect();
+      const maxLeft = window.scrollX + window.innerWidth - tip.offsetWidth - 8;
+      tip.style.left = Math.max(8, Math.min(window.scrollX + r.left, maxLeft)) + "px";
+      tip.style.top = window.scrollY + r.bottom + 6 + "px";
+    });
+    a.addEventListener("mouseleave", () => {
+      tip.hidden = true;
+    });
+  });
+});
