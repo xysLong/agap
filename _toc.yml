@@ -18,7 +18,7 @@ parts:
     chapters:
       - file: notebooks/07-l-systems
       - file: notebooks/08-fractals
-      # - file: notebooks/09-strange-attractors
+      - file: notebooks/09-strange-attractors
   - caption: "Part III · Fields and Grids"
     chapters:
       - file: notebooks/10-noise-and-flow-fields

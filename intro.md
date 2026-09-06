@@ -29,7 +29,7 @@
 |----:|-------|-------------|------------|
 | 7 | [L-Systems and Botanical Form](notebooks/07-l-systems.ipynb) | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
 | 8 | [Fractals: Infinite Detail](notebooks/08-fractals.ipynb) | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
-| 9 | Strange Attractors: The Shape of Chaos *(in preparation)* | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
+| 9 | [Strange Attractors: The Shape of Chaos](notebooks/09-strange-attractors.ipynb) | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
 
 ### Part III · Fields and Grids
 
