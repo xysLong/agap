@@ -69,10 +69,42 @@
 | 26 | [The Plotted Line: Vector Graphics and the Machine's Hand](notebooks/26-the-plotted-line.ipynb) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
 | 27 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/27-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
+## Why rebuild what already exists
+
+This book asks you to reimplement, from scratch, systems whose outputs already hang
+in museums. That is a method, not a detour. Archaeologists learned long ago that some
+knowledge only surfaces when you rebuild the thing: casting a bronze axe or raising a
+megalith exposes decisions, constraints, and skills that no amount of looking at the
+finished object can recover <a class="cite" href="#ref-coles1973">(Coles 1973)</a>,
+and experimental archaeology is today an established way of testing what we think we
+know about how things were made <a class="cite" href="#ref-outram2008">(Outram 2008)</a>.
+Making as a mode of inquiry has the same standing closer to home: building a working
+version of a concept is itself a way of thinking the concept through, what Ratto calls
+critical making <a class="cite" href="#ref-ratto2011">(Ratto 2011)</a>.
+
+Recoding Georg Nees's *Schotter* or a Vera Molnár series works exactly this way. Every
+parameter your version needs before it runs (how much disorder, which stopping rule,
+what line weight) is a question the original artist once answered, and reimplementation
+turns you from a viewer of the answer into a witness of the decision. The images this
+book has you generate are side products in the best sense: what you are actually
+building is an understanding of the systems behind them, precise enough to run.
+
+**References**
+
+- <span id="ref-coles1973"></span>Coles, John M. *Archaeology by Experiment*. London: Hutchinson University Library, 1973.
+- <span id="ref-outram2008"></span>Outram, Alan K. "Introduction to Experimental Archaeology." *World Archaeology* 40, no. 1 (2008), 1-6. [doi:10.1080/00438240801889456](https://doi.org/10.1080/00438240801889456)
+- <span id="ref-ratto2011"></span>Ratto, Matt. "Critical Making: Conceptual and Material Studies in Technology and Social Life." *The Information Society* 27, no. 4 (2011), 252-260. [doi:10.1080/01972243.2011.583819](https://doi.org/10.1080/01972243.2011.583819)
+
 ## How to use this book
 
 Every chapter is a fully executed notebook: all generated art is embedded,
 and reading online requires no installation.
+
+Each chapter opens with a Context section on the artists and ideas behind its
+technique and closes with further reading and references; these are reference
+material, meant for reading the way you would read the wall texts of an exhibition.
+The working core of a chapter (the mathematics, the code, the images, the exercises)
+is sized for roughly one 90-minute session.
 
 ## How to cite
 
