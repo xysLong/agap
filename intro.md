@@ -20,13 +20,13 @@
 | 2 | [Chance Operations and Controlled Randomness](notebooks/02-chance-and-randomness.ipynb) | distributions, seeding, weighted choice | Arp, Duchamp, Cage, Kelly, Richter |
 | 3 | [Geometric Patterns and Symmetry](notebooks/03-geometric-patterns.ipynb) | trigonometry, rotation, tiling | Alhambra, girih tiles, Owen Jones, Escher |
 | 4 | [Truchet Tiles: Chance on a Grid](notebooks/04-truchet-tiles.ipynb) | grid randomness, tile sets | Truchet 1704, Douat, Smith, *10 PRINT* |
-| 5 | [Recursion and Subdivision](notebooks/05-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
-| 6 | [Color: Spaces, Palettes, Extraction](notebooks/06-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
+| 5 | [Color: Spaces, Palettes, Extraction](notebooks/05-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
 
 ### Part II · Growth and Iteration
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
+| 6 | [Recursion and Subdivision](notebooks/06-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
 | 7 | [L-Systems and Botanical Form](notebooks/07-l-systems.ipynb) | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
 | 8 | [Fractals: Infinite Detail](notebooks/08-fractals.ipynb) | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
 | 9 | [Strange Attractors: The Shape of Chaos](notebooks/09-strange-attractors.ipynb) | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
