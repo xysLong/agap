@@ -11,8 +11,8 @@ in museums. That is a method, not a detour. Archaeologists learned long ago that
 knowledge only surfaces when you rebuild the thing: casting a bronze axe or raising a
 megalith exposes decisions, constraints, and skills that no amount of looking at the
 finished object can recover <a class="cite" href="#ref-coles1973">(Coles 1973)</a>,
-and experimental archaeology is today an established way of testing what we think we
-know about how things were made <a class="cite" href="#ref-outram2008">(Outram 2008)</a>.
+a practice of testing what we think we know about how things were made, known today
+as *experimental archaeology* <a class="cite" href="#ref-outram2008">(Outram 2008)</a>.
 Making as a mode of inquiry has the same standing closer to home: building a working
 version of a concept is itself a way of thinking the concept through, what Ratto calls
 *critical making* <a class="cite" href="#ref-ratto2011">(Ratto 2011)</a>. Media studies
