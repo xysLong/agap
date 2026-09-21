@@ -2,7 +2,7 @@
 
 **A hands-on book teaching mathematics and Python through the making of generative art, written for art historians.**
 
-This book is in active use: it is the course text of [*Algorithmic Generative Art with Python* (course 080120)](https://ufind.univie.ac.at/en/course.html?lv=080120&semester=2026W) at the University of Vienna, taught in the winter semester 2026/27 in the Master's programme in Art History.
+This book is in active use: it is the course text of <a href="https://ufind.univie.ac.at/en/course.html?lv=080120&amp;semester=2026W"><em>Algorithmic Generative Art with Python</em> (course 080120)</a> at the University of Vienna, taught in the winter semester 2026/27 in the Master's programme in Art History.
 
 ![Artworks generated in this book, one row per part](assets/site/hero.jpg)
 
