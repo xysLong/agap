@@ -1,14 +1,14 @@
 # Algorithmic Generative Art with Python
 
-**A hands-on book teaching mathematics and Python through the making of generative art, written for art historians.**
+**Hands-on course notes teaching mathematics and Python through the making of generative art, written for art historians.**
 
-This book is in active use: it is the course text of <a href="https://ufind.univie.ac.at/en/course.html?lv=080120&amp;semester=2026W"><em>Algorithmic Generative Art with Python</em> (course 080120)</a> at the University of Vienna, taught in the winter semester 2026/27 in the Master's programme in Art History.
+These notes are in active use: they are the course text of <a href="https://ufind.univie.ac.at/en/course.html?lv=080120&amp;semester=2026W"><em>Algorithmic Generative Art with Python</em> (course 080120)</a> at the University of Vienna, taught in the winter semester 2026/27 in the Master's programme in Art History.
 
-![Artworks generated in this book, chapters 0 to 26](assets/site/hero.jpg)
+![Artworks generated in these notes, chapters 0 to 26](assets/site/hero.jpg)
 
 ## Why rebuild what already exists
 
-This book asks you to reimplement, from scratch, systems whose outputs already hang
+This text asks you to reimplement, from scratch, systems whose outputs already hang
 in museums. That is a method, not a detour. Archaeologists learned long ago that some
 knowledge only surfaces when you rebuild the thing: casting a bronze axe or raising a
 megalith exposes decisions, constraints, and skills that no amount of looking at the
@@ -28,7 +28,7 @@ Recoding Georg Nees's *Schotter* or a Vera Molnár series works exactly this way
 parameter your version needs before it runs (how much disorder, which stopping rule,
 what line weight) is a question the original artist once answered, and *reimplementation*
 turns you from a viewer of the answer into a witness of the decision. The images this
-book has you generate are side products in the best sense: what you are actually
+text has you generate are side products in the best sense: what you are actually
 building is an understanding of the systems behind them, precise enough to run.
 
 **References**
@@ -103,7 +103,7 @@ building is an understanding of the systems behind them, precise enough to run.
 | 26 | [The Plotted Line: Vector Graphics and the Machine's Hand](notebooks/26-the-plotted-line.ipynb) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
 | 27 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/27-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
-## How to use this book
+## How to use these notes
 
 Every chapter is a fully executed notebook: all generated art is embedded,
 and reading online requires no installation.
@@ -116,17 +116,18 @@ is sized for roughly one 90-minute session.
 
 ## How to cite
 
-If you use this book in your research or teaching, please cite it as:
+If you use these notes in your research or teaching, please cite them as:
 
-> Long, Xingyu. *Algorithmic Generative Art with Python.* 2026.
-> https://xyslong.github.io/agap/
+> Long, Xingyu. *Algorithmic Generative Art with Python.* Online course notes,
+> University of Vienna, 2026. https://xyslong.github.io/agap/
 
 ```bibtex
-@book{long2026agap,
-  author = {Long, Xingyu},
-  title  = {Algorithmic Generative Art with Python},
-  year   = {2026},
-  url    = {https://xyslong.github.io/agap/}
+@misc{long2026agap,
+  author       = {Long, Xingyu},
+  title        = {Algorithmic Generative Art with Python},
+  year         = {2026},
+  howpublished = {Online course notes, University of Vienna},
+  url          = {https://xyslong.github.io/agap/}
 }
 ```
 
