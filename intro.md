@@ -1,6 +1,6 @@
 # Algorithmic Generative Art with Python
 
-**Hands-on course notes teaching mathematics and Python through the making of generative art, written for art historians.**
+**Hands-on lecture notes teaching mathematics and Python through the making of generative art, written for art historians.**
 
 These notes are in active use: they are the course text of <a href="https://ufind.univie.ac.at/en/course.html?lv=080120&amp;semester=2026W"><em>Algorithmic Generative Art with Python</em> (course 080120)</a> at the University of Vienna, taught in the winter semester 2026/27 in the Master's programme in Art History.
 
@@ -118,16 +118,15 @@ is sized for roughly one 90-minute session.
 
 If you use these notes in your research or teaching, please cite them as:
 
-> Long, Xingyu. *Algorithmic Generative Art with Python.* Online course notes,
+> Long, Xingyu. *Algorithmic Generative Art with Python.* Lecture notes,
 > University of Vienna, 2026. https://xyslong.github.io/agap/
 
 ```bibtex
 @misc{long2026agap,
-  author       = {Long, Xingyu},
-  title        = {Algorithmic Generative Art with Python},
-  year         = {2026},
-  howpublished = {Online course notes, University of Vienna},
-  url          = {https://xyslong.github.io/agap/}
+  author = {Long, Xingyu},
+  title  = {Algorithmic Generative Art with Python},
+  year   = {2026},
+  url    = {https://xyslong.github.io/agap/}
 }
 ```
 
