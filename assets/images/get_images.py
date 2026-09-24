@@ -8,10 +8,12 @@ All artworks are public domain, served by Wikimedia Commons. If a download
 fails (no internet, changed URL), a synthetic stand-in image is generated
 instead so that no notebook ever breaks offline. Chapter 24's pair of files
 ships with the repository instead of being downloaded: the Kandinsky
-reproduction `kandinsky_yellow_red_blue.jpg` and the fixation data
-`assets/data/kandinsky_fixations.csv` are exact crops/slices of an
-eye-tracking study's stimulus and recordings (Long et al. 2026, see the
-chapter's references) and cannot be regenerated here.
+reproduction `kandinsky_yellow_red_blue.jpg` is a public-domain Wikimedia
+Commons photograph of Yellow-Red-Blue (1925), cropped and scaled to the
+pixel frame of an eye-tracking study's stimulus, and the fixation data
+`assets/data/kandinsky_fixations.csv` is a slice of that study's recordings
+(Long et al. 2026, see the chapter's references) and cannot be regenerated
+here.
 """
 
 import urllib.parse

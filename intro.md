@@ -15,7 +15,7 @@ in museums. That is a method, not a detour. Archaeologists learned long ago that
 knowledge only surfaces when you rebuild the thing: casting a bronze axe or raising a
 megalith exposes decisions, constraints, and skills that no amount of looking at the
 finished object can recover <a class="cite" href="#ref-coles1973">(Coles 1973)</a>,
-a practice of testing what we think we know about how things were made, known today
+a practice of testing what we think we know about how things were made, known
 as *experimental archaeology* <a class="cite" href="#ref-outram2008">(Outram 2008)</a>.
 Making as a mode of inquiry has the same standing closer to home: building a working
 version of a concept is itself a way of thinking the concept through, what Ratto calls
@@ -24,9 +24,10 @@ has drawn the same lesson under the name *media archaeology*: the media of the p
 understood not from the standard histories alone, but by digging into the neglected
 machines, formats, and practices themselves
 <a class="cite" href="#ref-huhtamo2011">(Huhtamo and Parikka 2011)</a>. Early computer
-art, drawn by plotters from code that rarely survives, is exactly such a site.
+art, drawn by plotters from code that often survives only in print, in fragments,
+or not at all, is exactly such a site.
 
-Recoding Georg Nees's *Schotter* or a Vera Molnár series works exactly this way. Every
+Recoding Georg Nees's *Schotter* or a Vera Molnár series works in much the same way. Every
 parameter your version needs before it runs (how much disorder, which stopping rule,
 what line weight) is a question the original artist once answered, and *reimplementation*
 turns you from a viewer of the answer into a witness of the decision. The images this
@@ -134,4 +135,14 @@ If you use these notes in your research or teaching, please cite them as:
 
 ---
 
-Code is licensed under the MIT License; text under CC BY 4.0.
+Code is licensed under the [MIT License](https://opensource.org/license/mit), text under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Quotations from other authors,
+reproductions of artworks, and the eye-tracking data in `assets/data/` are excluded from
+these licenses and remain with their respective rights holders.
+
+Painting reproductions: Claude Monet, *Water Lilies* (1906), Art Institute of Chicago;
+Georges Seurat, *A Sunday on La Grande Jatte* (1884-86), Art Institute of Chicago;
+Johannes Vermeer, *Girl with a Pearl Earring* (c. 1665), Mauritshuis, The Hague;
+Katsushika Hokusai, *The Great Wave off Kanagawa* (c. 1830-32), Metropolitan Museum of Art;
+Wassily Kandinsky, *Yellow-Red-Blue* (1925), Centre Pompidou, Paris. All five works are in
+the public domain; reproductions via Wikimedia Commons.
