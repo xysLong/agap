@@ -138,7 +138,8 @@ If you use these notes in your research or teaching, please cite them as:
 Code is licensed under the [MIT License](https://opensource.org/license/mit), text under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Quotations from other authors,
 reproductions of artworks, and the eye-tracking data in `assets/data/` are excluded from
-these licenses and remain with their respective rights holders.
+these licenses; the underlying dataset is published separately on
+[Zenodo](https://doi.org/10.5281/zenodo.21983283) under CC BY 4.0.
 
 Painting reproductions: Claude Monet, *Water Lilies* (1906), Art Institute of Chicago;
 Georges Seurat, *A Sunday on La Grande Jatte* (1884-86), Art Institute of Chicago;
