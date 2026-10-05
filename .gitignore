@@ -5,6 +5,7 @@ assets/outputs/*
 # downloaded input images (re-fetch with assets/images/get_images.py);
 # poster_demo.png IS tracked: a downsampled real poster, not regenerable
 assets/images/*.jpg
+!assets/images/kandinsky_yellow_red_blue.jpg
 
 # jupyter-book build output
 _build/

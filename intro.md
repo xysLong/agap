@@ -20,7 +20,7 @@ as *experimental archaeology* <a class="cite" href="#ref-outram2008">(Outram 200
 Making as a mode of inquiry has the same standing closer to home: building a working
 version of a concept is itself a way of thinking the concept through, what Ratto calls
 *critical making* <a class="cite" href="#ref-ratto2011">(Ratto 2011)</a>. Media studies
-has drawn the same lesson under the name *media archaeology*: the media of the past are
+has a neighbouring approach under the name *media archaeology*: the media of the past are
 understood not from the standard histories alone, but by digging into the neglected
 machines, formats, and practices themselves
 <a class="cite" href="#ref-huhtamo2011">(Huhtamo and Parikka 2011)</a>. Early computer

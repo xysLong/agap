@@ -12,7 +12,7 @@ reproduction `kandinsky_yellow_red_blue.jpg` is a public-domain Wikimedia
 Commons photograph of Yellow-Red-Blue (1925), cropped and scaled to the
 pixel frame of an eye-tracking study's stimulus, and the fixation data
 `assets/data/kandinsky_fixations.csv` is a slice of that study's recordings
-(Long et al. 2026, see the chapter's references) and cannot be regenerated
+(Kury et al. 2026, see the chapter's references) and cannot be regenerated
 here.
 """
 

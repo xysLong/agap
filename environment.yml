@@ -10,6 +10,7 @@ dependencies:
   - scikit-learn
   - scikit-image
   - jupyter
+  - ipykernel<7
   - ipywidgets
   - imageio
   - pip
