@@ -13,35 +13,37 @@ parts:
       - file: notebooks/03-geometric-patterns
       - file: notebooks/04-truchet-tiles
       - file: notebooks/05-color
-  - caption: "Part II · Growth and Iteration"
-    chapters:
-      - file: notebooks/06-recursion-and-subdivision
-      - file: notebooks/07-l-systems
-      - file: notebooks/08-fractals
-      - file: notebooks/09-strange-attractors
-  - caption: "Part III · Fields and Grids"
-    chapters:
-      - file: notebooks/10-noise-and-flow-fields
-      - file: notebooks/11-deeper-noise
-      - file: notebooks/12-curl-and-loops
-      - file: notebooks/13-cellular-automata
-      - file: notebooks/14-reaction-diffusion
-  - caption: "Part IV · The Image, Transformed"
-    chapters:
-      - file: notebooks/15-voronoi-and-stippling
-      - file: notebooks/16-filters-and-dithering
-      - file: notebooks/17-pixel-sorting
-      - file: notebooks/18-circle-packing
-  - caption: "Part V · Agents and Complexity"
-    chapters:
-      - file: notebooks/19-particles-and-flocking
-      - file: notebooks/20-diffusion-limited-aggregation
-      - file: notebooks/21-physarum
-      - file: notebooks/22-differential-growth
-      - file: notebooks/23-evolving-images
-  - caption: "Part VI · Coda"
-    chapters:
-      - file: notebooks/24-heatmaps
-      - file: notebooks/25-the-sounding-image
-      - file: notebooks/26-the-plotted-line
-      - file: notebooks/27-synthesis
+# Parts II to VI are held back until their final verification pass is complete
+# (first class 07.10.2026; release planned before the topic-preference form goes out).
+#   - caption: "Part II · Growth and Iteration"
+#     chapters:
+#       - file: notebooks/06-recursion-and-subdivision
+#       - file: notebooks/07-l-systems
+#       - file: notebooks/08-fractals
+#       - file: notebooks/09-strange-attractors
+#   - caption: "Part III · Fields and Grids"
+#     chapters:
+#       - file: notebooks/10-noise-and-flow-fields
+#       - file: notebooks/11-deeper-noise
+#       - file: notebooks/12-curl-and-loops
+#       - file: notebooks/13-cellular-automata
+#       - file: notebooks/14-reaction-diffusion
+#   - caption: "Part IV · The Image, Transformed"
+#     chapters:
+#       - file: notebooks/15-voronoi-and-stippling
+#       - file: notebooks/16-filters-and-dithering
+#       - file: notebooks/17-pixel-sorting
+#       - file: notebooks/18-circle-packing
+#   - caption: "Part V · Agents and Complexity"
+#     chapters:
+#       - file: notebooks/19-particles-and-flocking
+#       - file: notebooks/20-diffusion-limited-aggregation
+#       - file: notebooks/21-physarum
+#       - file: notebooks/22-differential-growth
+#       - file: notebooks/23-evolving-images
+#   - caption: "Part VI · Coda"
+#     chapters:
+#       - file: notebooks/24-heatmaps
+#       - file: notebooks/25-the-sounding-image
+#       - file: notebooks/26-the-plotted-line
+#       - file: notebooks/27-synthesis

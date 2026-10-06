@@ -59,52 +59,56 @@ building is an understanding of the systems behind them, precise enough to run.
 | 4 | [Truchet Tiles: Chance on a Grid](notebooks/04-truchet-tiles.ipynb) | grid randomness, tile sets | Truchet 1704, Douat, Smith, *10 PRINT* |
 | 5 | [Color: Spaces, Palettes, Extraction](notebooks/05-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
 
+```{note}
+Parts II to VI (chapters 6 to 27) are not online yet. They follow in a second release once their final verification pass is complete; the tables below show what is coming.
+```
+
 ### Part II · Growth and Iteration
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 6 | [Recursion and Subdivision](notebooks/06-recursion-and-subdivision.ipynb) | recursive functions | Mondrian, De Stijl |
-| 7 | [L-Systems and Botanical Form](notebooks/07-l-systems.ipynb) | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
-| 8 | [Fractals: Infinite Detail](notebooks/08-fractals.ipynb) | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
-| 9 | [Strange Attractors: The Shape of Chaos](notebooks/09-strange-attractors.ipynb) | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
+| 6 | Recursion and Subdivision | recursive functions | Mondrian, De Stijl |
+| 7 | L-Systems and Botanical Form | string rewriting, turtle graphics | Merian, Besler, Haeckel, D'Arcy Thompson |
+| 8 | Fractals: Infinite Detail | complex iteration, escape time | Mandelbrot, Hokusai, the Pollock controversy |
+| 9 | Strange Attractors: The Shape of Chaos | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
 
 ### Part III · Fields and Grids
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 10 | [Noise and Flow Fields](notebooks/10-noise-and-flow-fields.ipynb) | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
-| 11 | [Deeper Noise: Cells, Ridges, and Warped Space](notebooks/11-deeper-noise.ipynb) | Worley noise, ridged fbm, domain warping | Ebru marbling, Worley, Musgrave, Quilez |
-| 12 | [Curl and the Endless Loop: Fields in Motion](notebooks/12-curl-and-loops.ipynb) | curl noise, seamless loops | Bridson, phenakistiscope, the GIF |
-| 13 | [Cellular Automata and Emergence](notebooks/13-cellular-automata.ipynb) | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
-| 14 | [Reaction-Diffusion: Turing Patterns](notebooks/14-reaction-diffusion.ipynb) | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
+| 10 | Noise and Flow Fields | coherent noise, vector fields | Perlin, Tyler Hobbs *Fidenza* |
+| 11 | Deeper Noise: Cells, Ridges, and Warped Space | Worley noise, ridged fbm, domain warping | Ebru marbling, Worley, Musgrave, Quilez |
+| 12 | Curl and the Endless Loop: Fields in Motion | curl noise, seamless loops | Bridson, phenakistiscope, the GIF |
+| 13 | Cellular Automata and Emergence | rule tables, Game of Life | Jacquard loom, Anni Albers, Conway |
+| 14 | Reaction-Diffusion: Turing Patterns | Gray-Scott model | Turing 1952, Morris, Jugendstil ornament |
 
 ### Part IV · The Image, Transformed
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 15 | [Voronoi, Delaunay, and Stippling](notebooks/15-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
-| 16 | [Filters, Edges, and Dithering](notebooks/16-filters-and-dithering.ipynb) | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
-| 17 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/17-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
-| 18 | [Circle Packing: The Portrait in Dots](notebooks/18-circle-packing.ipynb) | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
+| 15 | Voronoi, Delaunay, and Stippling | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
+| 16 | Filters, Edges, and Dithering | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
+| 17 | Pixel Sorting: The Aesthetics of the Glitch | sorting, masks, interval detection | Paik, Menkman, Asendorf |
+| 18 | Circle Packing: The Portrait in Dots | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
 
 ### Part V · Agents and Complexity
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 19 | [Particles, Agents, and Flocking](notebooks/19-particles-and-flocking.ipynb) | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
-| 20 | [Aggregation: Growth by Random Walk](notebooks/20-diffusion-limited-aggregation.ipynb) | diffusion-limited aggregation | Bentley, Lichtenberg figures, Witten & Sander |
-| 21 | [Physarum: The Trail-Laying Swarm](notebooks/21-physarum.ipynb) | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
-| 22 | [Differential Growth: The Restless Line](notebooks/22-differential-growth.ipynb) | neighbor forces, node insertion | Nervous System, Anders Hoff, kale and coral |
-| 23 | [Evolving Images: Breeding as Composition](notebooks/23-evolving-images.ipynb) | mutation, selection by eye | Dawkins, Latham, Sims |
+| 19 | Particles, Agents, and Flocking | Boids, simulation | Calder, Riley, teamLab, Reynolds 1987 |
+| 20 | Aggregation: Growth by Random Walk | diffusion-limited aggregation | Bentley, Lichtenberg figures, Witten & Sander |
+| 21 | Physarum: The Trail-Laying Swarm | agents coupled to a field | slime mold, Tero, Barnett, Jenson |
+| 22 | Differential Growth: The Restless Line | neighbor forces, node insertion | Nervous System, Anders Hoff, kale and coral |
+| 23 | Evolving Images: Breeding as Composition | mutation, selection by eye | Dawkins, Latham, Sims |
 
 ### Part VI · Coda
 
 | Ch. | Title | Core method | Art anchor |
 |----:|-------|-------------|------------|
-| 24 | [Attention Made Visible: Gaussians, KDE, Heatmaps](notebooks/24-heatmaps.ipynb) | kernel density estimation | Yarbus, museum eye tracking |
-| 25 | [The Sounding Image: From Pixels to Sound](notebooks/25-the-sounding-image.ipynb) | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
-| 26 | [The Plotted Line: Vector Graphics and the Machine's Hand](notebooks/26-the-plotted-line.ipynb) | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
-| 27 | [Synthesis: Systems, Authorship, and the Final Project](notebooks/27-synthesis.ipynb) | combining techniques | Boden, Molnár's late fame, the NFT arc |
+| 24 | Attention Made Visible: Gaussians, KDE, Heatmaps | kernel density estimation | Yarbus, museum eye tracking |
+| 25 | The Sounding Image: From Pixels to Sound | additive synthesis, spectrogram | Kandinsky, Fischinger, Xenakis |
+| 26 | The Plotted Line: Vector Graphics and the Machine's Hand | SVG, line displacement, hatching | Molnár, Nake, the pulsar plot |
+| 27 | Synthesis: Systems, Authorship, and the Final Project | combining techniques | Boden, Molnár's late fame, the NFT arc |
 
 ## How to use these notes
 
