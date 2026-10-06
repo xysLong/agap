@@ -60,7 +60,7 @@ building is an understanding of the systems behind them, precise enough to run.
 | 5 | [Color: Spaces, Palettes, Extraction](notebooks/05-color.ipynb) | RGB/HSV/LAB, k-means | Itten, Albers, Rothko |
 
 ```{note}
-Parts II to VI (chapters 6 to 27) are not online yet. They follow in a second release once their final verification pass is complete; the tables below show what is coming.
+Parts II to VI (chapters 6 to 27) are not online yet and will be published in the coming weeks; the tables below show what is coming.
 ```
 
 ### Part II · Growth and Iteration
