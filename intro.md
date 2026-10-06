@@ -34,12 +34,81 @@ turns you from a viewer of the answer into a witness of the decision. The images
 text has you generate are side products in the best sense: what you are actually
 building is an understanding of the systems behind them, precise enough to run.
 
+One clarification, since the word *generative* has come to mean something else. These
+notes do not use image models: no prompts, nothing downloaded that draws for you. Every
+image here is produced by code you can read in full, usually a few dozen lines, and that
+is the point. The objective is that you can read, write and understand the code and the
+mathematics behind generative images; the images are the working material. No prior
+programming or mathematics is assumed. Chapter 0 starts from zero.
+
+## Computation is older than computers
+
+Until the 1940s, *computer* was a job title. A computer was a person, very often a woman,
+who carried out a written procedure step by step: tables of logarithms, the positions of
+comets, the paths of shells, each entry produced by following instructions that somebody
+else had written, without needing to know why they worked
+<a class="cite" href="#ref-grier2005">(Grier 2005)</a>. When Alan Turing set out in 1936
+to say precisely what it means to compute, he did not describe an electrical device. He
+described that person, reduced to essentials: a strip of paper, a pencil, and a small table
+of rules saying what to write and where to look next
+<a class="cite" href="#ref-turing1937">(Turing 1937)</a>. Everything a laptop does still
+fits inside that picture.
+
+That is the first beautiful thing about computation, and the one these notes keep
+returning to. A rule written precisely enough can be carried out by anyone, or anything,
+and gives the same result every time. The rule is portable; the person who wrote it no
+longer needs to be in the room. Artists noticed this long before there were machines to
+exploit it. In 1704 the mathematician Sébastien Truchet looked at a floor tile, one square
+split diagonally into two colours, and asked what repeated copies of it could make; his
+memoir is a catalogue of patterns grown from a single tile and a rule for turning it
+<a class="cite" href="#ref-truchet1704">(Truchet 1704)</a>, and chapter 4 rebuilds it.
+In 1967 Sol LeWitt wrote that in conceptual art "the idea becomes a machine that makes
+the art" <a class="cite" href="#ref-lewitt1967">(LeWitt 1967)</a>. To an artist the
+sentence was a manifesto; to a programmer it is a plain description of a job: instructions
+written by one person, executed by others. Chapter 1 begins there.
+
+Every picture in the image at the top of this page was made that way. A Truchet field is
+one tile and four ways to turn it. A fern is one letter, replaced by a short string, five
+times over. The Mandelbrot set is "square it and add a constant", repeated, with each
+point coloured by how quickly it runs away. A cellular automaton is a table of eight
+cases. The rule fits on one line; the picture does not fit in your head. That gap,
+between how little was written and how much came out, is the subject of these notes.
+
+## When the image is a consequence of a rule
+
+Three things follow once a picture is the output of a rule, and the course is built
+around them.
+
+*The same rule gives the same picture, forever.* Run it today or in ten years, on any
+machine, and the image is identical to the pixel. That is rare in art and ordinary in
+computation, and it is what makes a generative system something you can study rather
+than only look at: change one thing, run it again, and you see exactly what that one
+thing did.
+
+*Every number is a decision.* Change one parameter and you get a neighbour of the
+picture; sweep it and you get a family. Deciding which numbers exist at all, which dials
+the system has and which it does not, is where the composition happens, and it is
+exactly the decision that reimplementation makes visible.
+
+*Chance is a number too.* Randomness enters a program only where the programmer lets it
+in, and in the amount the programmer sets. The dice do not compose; the person who placed
+them did. Chapter 2 is about placing them well.
+
+So who made the picture: the person who wrote the rule, the machine that ran it, or the
+one who chose the numbers? Chapter 1 opens the question and chapter 27 takes it up in
+full. By the end of the course you will answer it with a system of your own on the
+screen.
+
 **References**
 
 - <span id="ref-coles1973"></span>Coles, John M. *Archaeology by Experiment*. London: Hutchinson University Library, 1973.
+- <span id="ref-grier2005"></span>Grier, David Alan. *When Computers Were Human*. Princeton: Princeton University Press, 2005.
 - <span id="ref-huhtamo2011"></span>Huhtamo, Erkki, and Jussi Parikka, eds. *Media Archaeology: Approaches, Applications, and Implications*. Berkeley: University of California Press, 2011.
+- <span id="ref-lewitt1967"></span>LeWitt, Sol. "Paragraphs on Conceptual Art." *Artforum* 5, no. 10 (1967), 79-83.
 - <span id="ref-outram2008"></span>Outram, Alan K. "Introduction to Experimental Archaeology." *World Archaeology* 40, no. 1 (2008), 1-6. [doi:10.1080/00438240801889456](https://doi.org/10.1080/00438240801889456)
 - <span id="ref-ratto2011"></span>Ratto, Matt. "Critical Making: Conceptual and Material Studies in Technology and Social Life." *The Information Society* 27, no. 4 (2011), 252-260. [doi:10.1080/01972243.2011.583819](https://doi.org/10.1080/01972243.2011.583819)
+- <span id="ref-truchet1704"></span>Truchet, Sébastien. "Mémoire sur les combinaisons." *Mémoires de l'Académie Royale des Sciences* (1704), 363-372. [gallica.bnf.fr](https://gallica.bnf.fr/ark:/12148/bpt6k3486m)
+- <span id="ref-turing1937"></span>Turing, Alan M. "On Computable Numbers, with an Application to the Entscheidungsproblem." *Proceedings of the London Mathematical Society* s2-42, no. 1 (1937), 230-265. [doi:10.1112/plms/s2-42.1.230](https://doi.org/10.1112/plms/s2-42.1.230)
 
 ## Chapters
 
