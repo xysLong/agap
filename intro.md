@@ -43,35 +43,36 @@ programming or mathematics is assumed. Chapter 0 starts from zero.
 
 ## Computation is older than computers
 
-Until the 1940s, *computer* was a job title. A computer was a person, very often a woman,
+Until the middle of the twentieth century, *computer* was a job title. A computer was a person, very often a woman,
 who carried out a written procedure step by step: tables of logarithms, the positions of
 comets, the paths of shells, each entry produced by following instructions that somebody
 else had written, without needing to know why they worked
 <a class="cite" href="#ref-grier2005">(Grier 2005)</a>. When Alan Turing set out in 1936
 to say precisely what it means to compute, he did not describe an electrical device. He
-described that person, reduced to essentials: a strip of paper, a pencil, and a small table
+described that person, reduced to essentials: a strip of paper, a pencil, and a short table
 of rules saying what to write and where to look next
-<a class="cite" href="#ref-turing1937">(Turing 1937)</a>. Everything a laptop does still
+<a class="cite" href="#ref-turing1937">(Turing 1937)</a>. Everything a laptop computes still
 fits inside that picture.
 
 That is the first beautiful thing about computation, and the one these notes keep
 returning to. A rule written precisely enough can be carried out by anyone, or anything,
 and gives the same result every time. The rule is portable; the person who wrote it no
-longer needs to be in the room. Artists noticed this long before there were machines to
-exploit it. In 1704 the mathematician Sébastien Truchet looked at a floor tile, one square
-split diagonally into two colours, and asked what repeated copies of it could make; his
-memoir is a catalogue of patterns grown from a single tile and a rule for turning it
+longer needs to be in the room. People noticed this long before there were machines to
+exploit it, and artists went on noticing it after there were. In 1704 the Carmelite friar
+and engineer Sébastien Truchet looked at a floor tile, one square split diagonally into two
+colours, and asked what repeated copies of it could make; his memoir is a catalogue of
+patterns built from a single tile turned four ways
 <a class="cite" href="#ref-truchet1704">(Truchet 1704)</a>, and chapter 4 rebuilds it.
 In 1967 Sol LeWitt wrote that in conceptual art "the idea becomes a machine that makes
-the art" <a class="cite" href="#ref-lewitt1967">(LeWitt 1967)</a>. To an artist the
-sentence was a manifesto; to a programmer it is a plain description of a job: instructions
+the art" <a class="cite" href="#ref-lewitt1967">(LeWitt 1967)</a>. Artists read the
+sentence as a manifesto; to a programmer it is a plain description of a job: instructions
 written by one person, executed by others. Chapter 1 begins there.
 
 Every picture in the image at the top of this page was made that way. A Truchet field is
-one tile and four ways to turn it. A fern is one letter, replaced by a short string, five
-times over. The Mandelbrot set is "square it and add a constant", repeated, with each
-point coloured by how quickly it runs away. A cellular automaton is a table of eight
-cases. The rule fits on one line; the picture does not fit in your head. That gap,
+one tile and two ways to turn it, chosen at random for every cell. A fern is two letters,
+each replaced by a short string, six times over. The Mandelbrot set is "square it and add a constant", repeated, with each
+point coloured by how quickly it runs away. An elementary cellular automaton is a table of
+eight cases. The rule fits on one line; the picture does not fit in your head. That gap,
 between how little was written and how much came out, is the subject of these notes.
 
 ## When the image is a consequence of a rule
@@ -79,8 +80,9 @@ between how little was written and how much came out, is the subject of these no
 Three things follow once a picture is the output of a rule, and the course is built
 around them.
 
-*The same rule gives the same picture, forever.* Run it today or in ten years, on any
-machine, and the image is identical to the pixel. That is rare in art and ordinary in
+*The same rule gives the same picture.* Run it again with the same numbers and the image
+is identical to the pixel, for as long as the software it runs on survives (which is what
+early computer art mostly did not manage). That is rare in art and ordinary in
 computation, and it is what makes a generative system something you can study rather
 than only look at: change one thing, run it again, and you see exactly what that one
 thing did.
