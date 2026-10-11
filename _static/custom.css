@@ -1,0 +1,152 @@
+/* Lean book look: subtraction, not decoration. */
+
+/* typeface: IBM Plex Sans, webfont so all readers see the same face */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
+
+html {
+  --pst-font-family-base: "IBM Plex Sans", var(--pst-font-family-base-system);
+  --pst-font-family-heading: "IBM Plex Sans", var(--pst-font-family-base-system);
+  font-size: 16px;
+}
+
+/* macOS renders thinner, leaner strokes with this (Molnar's book sets it too);
+   without it the same font looks fatter */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* article text slightly below UI size; headings keep the rem scale */
+.bd-article {
+  font-size: 0.95rem;
+}
+
+/* prose column: comfortable book measure; code cells and figures may run wider */
+.bd-article-container {
+  max-width: 46rem;
+}
+.bd-article-container .cell_output img,
+.bd-article-container .cell {
+  max-width: 100%;
+}
+
+/* typography */
+.bd-article-container p,
+.bd-article-container li {
+  line-height: 1.65;
+}
+h1, h2, h3 {
+  color: #2a2a2a;
+  letter-spacing: -0.01em;
+}
+
+/* links: one restrained accent, underline on hover only */
+html[data-theme="light"] {
+  --pst-color-primary: #2761e3;
+  --pst-color-link: #2761e3;
+  --pst-color-link-hover: #1a4bc4;
+}
+.bd-article-container a {
+  text-decoration: none;
+}
+.bd-article-container a:hover {
+  text-decoration: underline;
+}
+
+/* primary sidebar: smaller and quieter, current page marked by color only;
+   wide enough that full chapter titles stay on one line */
+.bd-sidebar-primary {
+  font-size: 0.8rem;
+}
+@media (min-width: 960px) {
+  .bd-sidebar-primary {
+    width: 23rem;
+  }
+}
+/* flex layout: number in a fixed slot, title in its own box, so any wrapped
+   line aligns under the title (no text-indent: it inherits and misplaces) */
+nav.bd-links li > a.reference.internal {
+  display: flex;
+}
+.bd-sidebar-primary .sidebar-primary-items__start .caption,
+.bd-sidebar-primary p.caption {
+  font-weight: 600;
+  color: #6b6b6b;
+}
+nav.bd-links li > a {
+  font-weight: 400;
+}
+nav.bd-links li > a.current,
+nav.bd-links .current > a {
+  background: none;
+  color: var(--pst-color-primary);
+  font-weight: 400;
+}
+/* chapter number: dark and column-ish, title stays muted (blue when current);
+   spans created by custom.js */
+nav.bd-links .toc-chapter-number {
+  flex: 0 0 1.2em;
+  margin-right: 0.4em;
+  text-align: right;
+  color: var(--pst-color-text-base);
+  font-variant-numeric: tabular-nums;
+}
+
+/* no search in the article header; the sidebar's search field is enough */
+.bd-header-article .search-button {
+  display: none;
+}
+/* desktop: no top navbar (only held a redundant search bar) and no broken
+   sidebar toggle; on mobile the toggle is the nav opener, so keep it there */
+@media (min-width: 960px) {
+  header.bd-header {
+    display: none;
+  }
+  button.sidebar-toggle.primary-toggle {
+    display: none;
+  }
+}
+
+/* citations: accent-colored like links; hover shows the full reference
+   (tooltip built by custom.js); click jumps to the chapter's reference list */
+a.cite {
+  color: var(--pst-color-link);
+}
+.cite-tooltip {
+  position: absolute;
+  z-index: 2000;
+  max-width: 26rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--pst-color-background, #fff);
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--pst-color-text-base, #2a2a2a);
+}
+.cite-tooltip p {
+  margin: 0;
+}
+/* a clicked citation lands its reference below the page edge, briefly tinted */
+span[id^="ref-"] {
+  scroll-margin-top: 3rem;
+}
+li:has(span[id^="ref-"]:target) {
+  background: #eef3ff;
+}
+html[data-theme="dark"] .cite-tooltip {
+  border-color: #444;
+}
+html[data-theme="dark"] li:has(span[id^="ref-"]:target) {
+  background: #1c2333;
+}
+
+/* kill visual noise: hairline borders, no shadows */
+.admonition, div.admonition {
+  border-width: 1px;
+  box-shadow: none;
+}
+.cell .cell_output, div.output_area {
+  box-shadow: none;
+}
