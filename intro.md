@@ -345,17 +345,17 @@ yourself, which is the point of the course, set up your own copy once:
    somewhere you will find again. Keep its structure as it is: the notebooks live in
    `notebooks/`, and they expect the `agap/` toolbox and the `assets/` folder next to them.
 2. **Install Python.** Install [Miniforge](https://conda-forge.org/download/) (free, for
-   Windows, macOS and Linux), then open a terminal (on Windows: the *Miniforge Prompt*
+   Windows, macOS and Linux). If you already have a Python 3 installation you are happy
+   with, keep it.
+3. **Install the libraries (once).** Open a terminal (on Windows: the *Miniforge Prompt*
    from the Start menu), move into the course folder with `cd`, and run
-   `conda env create -f environment.yml`. This creates an environment named `agap`
-   with every library the notes use. If you already have a Python 3 installation you
-   are happy with, `pip install -r requirements.txt` in the course folder does the
-   same job.
-3. **Start Jupyter.** In the terminal, inside the course folder, run
-   `conda activate agap` and then `jupyter lab`. A browser tab opens; use its file
-   list to open `notebooks/00-warming-up.ipynb`. Chapter 0 explains the rest, starting
-   with how to run a cell.
-4. **Fetch the paintings (once, with internet).** Chapters 5 and later work on
+   `pip install -r requirements.txt`. This installs every library the notes use. (If you
+   prefer a separate environment, `conda env create -f environment.yml` creates one named
+   `agap`; activate it with `conda activate agap` before the next step.)
+4. **Start Jupyter.** In the terminal, inside the course folder, run `jupyter lab`. A
+   browser tab opens; use its file list to open `notebooks/00-warming-up.ipynb`. Chapter 0
+   explains the rest, starting with how to run a cell.
+5. **Fetch the paintings (once, with internet).** Chapters 5 and later work on
    public-domain reproductions of four paintings that are not included in the folder:
    `python assets/images/get_images.py` downloads them from Wikimedia Commons.
 
