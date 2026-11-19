@@ -294,7 +294,7 @@ screen.
 | 9 | [Strange Attractors: The Shape of Chaos](notebooks/09-strange-attractors.ipynb) | iterated 2D maps, density rendering | Lorenz, Gleick, Pickover, de Jong |
 
 ```{note}
-Of Parts III to VI, chapters 10 and 15 are online; the remaining chapters (11 to 14 and 16 to 27) will be published as their verification is completed. The tables below show what is coming.
+Of Parts III to VI, chapters 10, 15 and 17 are online; the remaining chapters (11 to 14, 16 and 18 to 27) will be published as their verification is completed. The tables below show what is coming.
 ```
 
 ### Part III · Fields and Grids
@@ -313,7 +313,7 @@ Of Parts III to VI, chapters 10 and 15 are online; the remaining chapters (11 to
 |----:|-------|-------------|------------|
 | 15 | [Voronoi, Delaunay, and Stippling](notebooks/15-voronoi-and-stippling.ipynb) | tessellation, Lloyd relaxation | Seurat, mosaic, Secord stippling |
 | 16 | Filters, Edges, and Dithering | convolution, Gabor, Floyd-Steinberg | Lichtenstein, halftone, glitch |
-| 17 | Pixel Sorting: The Aesthetics of the Glitch | sorting, masks, interval detection | Paik, Menkman, Asendorf |
+| 17 | [Pixel Sorting: The Aesthetics of the Glitch](notebooks/17-pixel-sorting.ipynb) | sorting, masks, interval detection | Paik, Menkman, Asendorf |
 | 18 | Circle Packing: The Portrait in Dots | collision tests, greedy growth | Kandinsky, Kusama, the Apollonian gasket |
 
 ### Part V · Agents and Complexity

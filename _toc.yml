@@ -19,7 +19,7 @@ parts:
       - file: notebooks/07-l-systems
       - file: notebooks/08-fractals
       - file: notebooks/09-strange-attractors
-# WS 2026/27 release: chapters 0-10 and 15. The other chapters of Parts III to VI are held back
+# WS 2026/27 release: chapters 0-10, 15 and 17. The other chapters of Parts III to VI are held back
 # until their source verification is complete (per-chapter release, decided 2026-11-18).
   - caption: "Part III · Fields and Grids"
     chapters:
@@ -32,7 +32,7 @@ parts:
     chapters:
       - file: notebooks/15-voronoi-and-stippling
 #      - file: notebooks/16-filters-and-dithering
-#      - file: notebooks/17-pixel-sorting
+      - file: notebooks/17-pixel-sorting
 #      - file: notebooks/18-circle-packing
 #  - caption: "Part V · Agents and Complexity"
 #    chapters:
